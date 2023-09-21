@@ -25,18 +25,22 @@ function _Operations() {
 
 function Operations () {
     const opRef = useRef<HTMLDivElement>(null)
+    const {operationDash} = useGrapholio().operations
     useEffect(() => {
         console.info("Operation RERENDERED")
     }, []);
     useEffect(() => {
+        console.clear()
+        console.log("run operation dash detect")
         if (opRef.current){
             const elementTop = opRef.current.getBoundingClientRect().top;
             const distanceToBottom = window.innerHeight - elementTop;
-            opRef.current.style.maxHeight = String(distanceToBottom )+"px" ;
+            if (operationDash === OperationDash.CODE) opRef.current.style.height = String(window.innerHeight - 50) + "px"
+            else opRef.current.style.height = String(distanceToBottom )+"px" ;
 
         }
 
-    }, []);
+    }, [operationDash]);
     return (
         <div ref={opRef} className={"overflow-y-auto scrollbar-thin scrollbar-thumb-green-600"}>
         <_Operations/>

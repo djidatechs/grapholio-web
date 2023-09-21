@@ -1,6 +1,13 @@
 import  {createContext,  ReactNode, useContext, useEffect, useState} from "react";
 import {GrapholioManager} from "../../Logic/GrapholioManager/GrapholioManager";
-import {AccordationsOptions, Application, BlackBoardMenu, OperationDash, Operations} from "../../Constants.ts";
+import {
+    AccordationsOptions,
+    Application,
+    BlackBoardMenu,
+    GivosContext,
+    OperationDash,
+    Operations
+} from "../../Constants.ts";
 import {Icontextual} from "./BlackBoard/test.Contextual.tsx";
 
 
@@ -9,7 +16,8 @@ interface GrapholioContextValue {
     grapholioManager: GrapholioManager;
     application : Application,
     operations : Operations ,
-    blackBoardMenu : BlackBoardMenu
+    blackBoardMenu : BlackBoardMenu,
+    givos : GivosContext
 
 }
 
@@ -24,11 +32,16 @@ export default function GrapholioProvider ({ children }:{children:ReactNode})   
     const [RequestValue,_RequestOperationUpdate] = useState<number>(1);
     const [visualItem,_setVisualItem] = useState<string|undefined>(undefined);
     const [accordation,setAccordation] = useState<AccordationsOptions>({});
+    const [code,setCode] = useState<string>("//code here ...");
     const value : GrapholioContextValue  = {
         grapholioManager : grapholioManager as GrapholioManager,
         application : {
             appChange,
             apply : ()=>_apply(c=>c+1)
+        },
+        givos : {
+            code : code,
+            write : (code:string)=>setCode(code)
         },
         operations : {
             operationDash,

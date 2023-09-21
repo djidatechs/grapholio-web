@@ -16,7 +16,7 @@ interface IGraphFunction {
 
 }
 export default function OperationsChoices () {
-    const {operateOn, setAccordation} = useGrapholio().operations
+    const {operateOn,operationDash, setAccordation} = useGrapholio().operations
     const ResizeAdjustements = ()=>{
         const parentContainer = document.getElementById(resizeEventIdSaver.Container)
         const items = document.querySelectorAll("#"+resizeEventIdSaver.Operation+" > h1")
@@ -41,6 +41,7 @@ export default function OperationsChoices () {
     useEffect(() => {
         ResizeAdjustements();
     }, []);
+    if (operationDash ===  OperationDash.CODE) return <></>
 
     return (
         <div className="w-full p-2 ">

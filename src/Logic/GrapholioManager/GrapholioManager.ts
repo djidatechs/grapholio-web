@@ -147,14 +147,15 @@ export class GrapholioManager {
         g?.setEdgeAttribute(id,attr,parseInt(value));
         user?.getEdgeWeight(id).setAttr("text", parseInt(value))
     }
-    if (attr === "weightTextSize") {
+    else if (attr === "weightTextSize") {
         g?.setEdgeAttribute(id,attr,parseInt(value));
         user?.getEdgeWeight(id).setAttr("fontSize", parseInt(value))
     }
-    if (attr === "color") {
+    else if (attr === "color") {
         g?.setEdgeAttribute(id,attr,value)
         user?.getEdgeById(id).setAttr("stroke", value)
     }
+    else g?.setEdgeAttribute(id,attr,value);
     this.useOperations()?.SentUpdateRequest();
     }
     updateNodeAttr (node :string ,attr : string , value : any) {
@@ -210,6 +211,7 @@ export class GrapholioManager {
             g?.setNodeAttribute(node,attr,parseInt(value));
             this.blackboard.use()?.getNodeText(node)?.setAttr("fontSize", parseInt(value))
         }
+        else g?.setNodeAttribute(node,attr,value);
 
         this.useOperations()?.SentUpdateRequest();
 

@@ -7,6 +7,7 @@ export const NodeAutoAction = AutoAction+"node_v2.1"+Separator;
 export const EdgeAutoAction = AutoAction+"edge_v2.1"+Separator;
 export const GraphAutoAction = AutoAction+"graph_v2.1"+Separator;
 export const naturalDashboardWidth = "33%";
+export const CodeDashboardWidth = "50%";
 export const MovingArrow_Id = EdgeAutoAction+"MovingArrow"
 export const ContextualDivId = AutoAction+"contextual_v2.1"+Separator
 export const NodeFastControlId = NodeAutoAction + "NodeFastControlId"
@@ -19,6 +20,10 @@ export const enumsMakerSeperator = Separator+"enum"+Separator
 export type Application = {
     appChange : number ,
     apply : ()=>void
+}
+export type GivosContext = {
+    code : string ,
+    write : (code : string)=>void
 }
 export type BlackBoardMenu = {
     props : Icontextual,

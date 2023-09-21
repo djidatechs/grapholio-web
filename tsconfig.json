@@ -22,5 +22,6 @@
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }],
-  "exclude" : ["src/Logic/GraphlolioScriptLanguage/*","src/Pages/Application/Dashboard/Operations/CodeOperations.jsx"]
+  //"exclude" : ["src/Logic/GraphlolioScriptLanguage/*","src/Pages/Application/Dashboard/Operations/CodeOperations.jsx"]
+  "exclude" : ["src/Pages/Application/Dashboard/Operations/CodeOperations.jsx"]
 }

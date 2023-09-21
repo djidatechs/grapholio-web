@@ -37,6 +37,7 @@ export default function GraphTabs () {
 
         application.apply();
     }
+    if (operations.operationDash ===  OperationDash.CODE) return <></>
 
     return application.appChange && (
         <div className="border-primary ">
