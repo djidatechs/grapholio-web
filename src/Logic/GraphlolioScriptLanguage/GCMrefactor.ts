@@ -91,7 +91,11 @@ export class GrapholioCommandManager_refactor {
 
 
     private getEdgesBetweenWithAttrs(n1: Node, n2: Node, attrs?: Attributes): string[] {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         const useN1 = typeof n1 === "string" ? n1 : n1.id;
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         const useN2 = typeof n2 === "string" ? n2 : n2.id;
 
         const manager = this.managerRef as GrapholioManager;
@@ -114,7 +118,11 @@ export class GrapholioCommandManager_refactor {
 
     add_edge(node1: Node | string, node2: Node | string, attrs: Attributes | undefined = undefined) {
         const manager = this.managerRef as GrapholioManager;
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         const useNode1 = typeof node1 === "string" ? node1 : node1.id;
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         const useNode2 = typeof node2 === "string" ? node2 : node2.id;
 
         const edge = manager.addEdge(useNode1, useNode2, attrs || {}) as string;
@@ -151,20 +159,49 @@ export class GrapholioCommandManager_refactor {
         return true ;
     }
 
+
     eval(jscode: string) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         const window = undefined;
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         const document = undefined
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         const global = undefined
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         const add_node = this.add_node.bind(this);
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+
         const get_node = this.get_node.bind(this);
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         const get_nodes = this.get_nodes.bind(this);
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         const get_edge = this.get_edge.bind(this);
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         const get_edges = this.get_edges.bind(this);
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         const stack = this.stack.bind(this);
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         const add_edge = this.add_edge.bind(this);
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         const clear = this.clear.bind(this);
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         const union = this.union.bind(this);
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         const find = this.find.bind(this);
+        console.log(!!{window, global, document, add_edge, add_node, get_nodes, get_node, get_edge, get_edges, clear, union, find, stack})
         eval(jscode)
     }
 }

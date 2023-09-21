@@ -1,4 +1,4 @@
-import {GrapholioManager} from "../GrapholioManager/GrapholioManager";
+/*import {GrapholioManager} from "../GrapholioManager/GrapholioManager";
 import {Attributes} from "graphology-types";
 import {Node}from "./Node.ts"
 import {Edge} from "./Edge.ts";
@@ -151,6 +151,7 @@ export class GrapholioCommandManager {
 
         return (nodeObjects);
     }*/
+/*
     add_edge(node1:Node|string,node2:Node|string,attrs:Attributes|undefined=undefined){
         const manager = this.managerRef as GrapholioManager
         const useNode1 =(typeof node1 === "string") ? node1 :  node1.id ;
@@ -280,4 +281,4 @@ export class GrapholioCommandManager {
     }
 }
 
-
+*/
