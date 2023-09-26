@@ -81,7 +81,7 @@ export function NodeDetails ({title,defaultVisible,accordation}:IAccorditionOpti
                            value={getPropableNodeAttributes("text_size")} className="input input-bordered w-72 ml-auto mr-0" />
                 </label>
             </div>
-            <h2>To see other attributes that are not linked visually, you should use the script language , click here </h2>
+            <h2>To see other attributes that are not linked visually, you should use the script language </h2>
 
 
 
@@ -144,7 +144,7 @@ function InformationTable ({title,defaultVisible,accordation}:IAccorditionOption
 function NodesOperations() {
 
     return (
-        <div className="p-2 overflow-x-auto">
+        <div className="p-2 overflow-auto">
           <Accordion>
               <InformationTable title={"Information Table"} accordation={Accoradations.INFO}  />
               <NodeDetails title={"Selected Node Details"}   accordation={Accoradations.DETAILS} />

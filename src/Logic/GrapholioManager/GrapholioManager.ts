@@ -4,9 +4,8 @@ import {
     VisualGraphsManager
 } from "../GraphInCanvasImplementations/VisualGraphsManager.ts";
 import {
-    AutoAction,
     BlackBoardMenu, circlePos, colorToHex, DefaultLabelText, DefaultNodeSize, DefaultWeightText,
-    EdgeAutoAction,
+    EdgeAutoAction, GraphAutoAction,
     NodeAutoAction,
     OperationDash,
     Operations, rectanglePos,
@@ -73,12 +72,16 @@ export class GrapholioManager {
     inject (){}
 
     newGraph(name :string = "Graph"+GrapholioManager.graphCount.toString() , options:GraphOptions){
-        const graphId = AutoAction+ (GrapholioManager.graphCount++).toString()
+        const graphId = GraphAutoAction+ (GrapholioManager.graphCount++).toString()
         const g = new Graph(options);
         g.setAttribute("name",name);
         this.graphSet?.set(graphId,g);
         this.blackboard.newGraph(graphId);
         return graphId
+    }
+    selectInstall (){
+        const stage = this.blackboard.exposeLayer()?.getStage()
+        if (stage)    this.watch.selectInstall(stage)
     }
     removeGraph (){
         if (this.graphSet && this.graphSet.size > 0 && this.selected_graph_id) {
@@ -274,15 +277,12 @@ export class GrapholioManager {
     }
 
     addEdge (node1:string,node2:string,attrs : Attributes,showError:boolean=true){
-        console.log("add edge")
         const g = this.getCurrentGraph()
         if (!g) return
-
         const id = EdgeAutoAction+(++g.edge_id).toString();
-        console.log({id})
         if (g.hasEdge(id)) return EdgeIdExist();
         attrs.id = id
-        if(! attrs.weight)  attrs.weight = 1 // todo : remove ? from EdgeVIsualIdentity and make the constant canvas variable weight text size
+        if(! attrs.weight)  attrs.weight = 1
         if(!attrs.color) attrs.color = "#FFFFFF"
         if( ! attrs?.text_size)  attrs.text_size = DefaultWeightText()
         try {
@@ -400,7 +400,7 @@ export class GrapholioManager {
     import (json:string) {
         const loadedData : Iimport = JSON.parse(json);
         let g = new Graph(loadedData.graphology.options);
-        const graphId = AutoAction+ (GrapholioManager.graphCount++).toString()
+        const graphId = GraphAutoAction+ (GrapholioManager.graphCount++).toString()
         g = g.import(loadedData.graphology)
         g.node_id = loadedData.extra.node_id
         g.edge_id = loadedData.extra.edge_id
@@ -408,9 +408,8 @@ export class GrapholioManager {
         const layer = this.blackboard.import(graphId,loadedData.canvas)
         if (!layer) return
         this.watch.handleImportedGraph(layer)
-
-        this.write(loadedData.script,graphId)
         this.switchTo(graphId);
+        this.write(loadedData.script,graphId)
         this.useOperations()?.operateOn(OperationDash.INFO)
     }
     export () {
@@ -711,7 +710,7 @@ export class GrapholioManager {
     }
     write(code:string,graph?:string){
         if (graph) this.scripts.set(graph, code )
-        if (this.selected_graph_id)  this.scripts.set(this.selected_graph_id, code )
+        else if (this.selected_graph_id)  this.scripts.set(this.selected_graph_id, code )
     }
     graph_script(){
          return this.scripts.get(this.selected_graph_id||'') || '//code here'

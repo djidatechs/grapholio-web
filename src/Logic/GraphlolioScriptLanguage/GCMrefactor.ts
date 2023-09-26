@@ -193,7 +193,6 @@ export class GrapholioCommandManager_refactor {
         return this.getEdge(edge);
     }
 
-
     stack() {
         return new Stack<any>();
     }
@@ -239,16 +238,33 @@ export class GrapholioCommandManager_refactor {
     }
     private ArrayRecursive (arr : any[]) : any {
         if (!arr.length) return '[]';
-        if (arr.length===1) return "["+ (typeof arr[0] === "string" ||typeof arr[0] ==="number" ?  arr[0] : (Array.isArray(arr[0])) ? this.ArrayRecursive(arr[0]) :  "<!>")+"]";
+        if (arr.length===1) return "["+ (typeof arr[0] === "string" ||typeof arr[0] ==="number" ||typeof arr[0] ==="boolean" || !arr[0] ?  String(arr[0]) : (Array.isArray(arr[0])) ? this.ArrayRecursive(arr[0]) :  "<!>")+"]";
         return '['+  arr.reduce((acc, curr) => {
             return (
-                (typeof acc === "string" ||typeof acc ==="number" ?  acc : (Array.isArray(acc)) ? this.ArrayRecursive(acc) :  "<!>")
+                (typeof acc === "string" ||typeof acc ==="number"  ||typeof arr[0] ==="boolean" || !arr[0]  ?  String(acc): (Array.isArray(acc)) ? this.ArrayRecursive(acc) :  "<!>")
                 + ' , ' +
-                (typeof curr === "string" ||typeof curr ==="number" ?  curr : (Array.isArray(curr)) ? this.ArrayRecursive(curr) :  "<!>")
+                (typeof curr === "string" ||typeof curr ==="number"  ||typeof arr[0] ==="boolean"|| !arr[0]  ?  String(curr) : (Array.isArray(curr)) ? this.ArrayRecursive(curr) :  "<!>")
 
             )
         }) +']'
 
+    }
+     adj_list(showWhat?:string) {
+        let adjacencyList = 'adjacency list \n';
+        const manager = this.managerRef as GrapholioManager
+        const graph = manager.getCurrentGraph()
+        if (!graph) return
+        for (const node of graph.nodes()) {
+            const neighbors = graph.neighbors(node);
+            const weights = neighbors.map(neighbor => {
+                const edge = graph.getEdgeAttributes(node, neighbor);
+                return `${graph.getNodeAttribute(neighbor,showWhat||'id')} [${edge.weight}]`;
+            });
+
+            adjacencyList += `${graph.getNodeAttribute(node,showWhat||'id')} => ${weights.join(', ')}\n`;
+        }
+
+        return adjacencyList.trim();
     }
 
 
@@ -286,6 +302,9 @@ export class GrapholioCommandManager_refactor {
         const remove_node = this.remove_node.bind(this);
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
+        const adj_list = this.adj_list.bind(this);
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         const get_edge = this.get_edge.bind(this);
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
@@ -319,7 +338,7 @@ export class GrapholioCommandManager_refactor {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
 
-        { circle,rectangle,fetch,require,console,print,window, global, document, add_edge, add_node, get_nodes, get_node, get_edge, get_edges, clear, union, find, stack,remove_node,remove_edge}
+        { circle,rectangle,adj_list,fetch,require,console,print,window, global, document, add_edge, add_node, get_nodes, get_node, get_edge, get_edges, clear, union, find, stack,remove_node,remove_edge}
 
         try{
              await eval(jscode)

@@ -40,7 +40,6 @@ function CodeOperations() {
                 .then(response => response.json())
                 .then( async(data) => {
                      let gcm = (new GrapholioCommandManager_refactor(grapholioManager, setLog))
-                    console.log({data:data.data})
                     if (data.data) await gcm.eval(data.data)
                     else setLog((current) => [...current||[],{content:"# "+data.error,type:"error"}])
                     setRunning(false);
@@ -138,15 +137,15 @@ function CodeOperations() {
                                             <pre data-prefix="3" >
                                                <code
                                                    className={
-                                                       logItem.type === "normal" && (typeof logItem.content == "string" || typeof logItem.content == "number" )
+                                                       logItem.type === "normal" && (typeof logItem.content == "string" || typeof logItem.content == "boolean"|| typeof logItem.content == "number"|| !logItem.content )
                                                            ? "pl-1  text-emerald-500 break-words "
                                                            : logItem.type === "warning" ? "pl-1 bg-warning text-warning-content py-1  "
                                                            : "pl-1 bg-error text-error-content py-1  "
 
                                                    }>{
-                                                   (typeof logItem.content == "string" || typeof logItem.content == "number" )
-                                                   ?  index+ "> "+logItem.content
-                                                   :  index+ "> Print accepts: string, number, an array of strings or numbers, or an array of arrays containing strings, numbers, or other arrays "
+                                                   typeof logItem.content == "string" || typeof logItem.content == "boolean"|| typeof logItem.content == "number"|| !logItem.content
+                                                       ?  index+ "> "+String(logItem.content)
+                                                   :  index+ "> Print accepts: string, number, boolean, null, undefiend, or arrays from those types, or nested arrays from those types"
                                                }</code>
                                             </pre>
                                             }

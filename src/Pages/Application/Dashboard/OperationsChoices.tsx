@@ -41,7 +41,7 @@ export default function OperationsChoices () {
     if (operationDash ===  OperationDash.CODE) return <></>
 
     return (
-        <div className="w-full p-2 ">
+        <div className="w-full h-full p-2  overflow-auto tall:max-h-full ">
             <div id={resizeEventIdSaver.Flex} className="flex flex-wrap">
                 <GraphFunction
                     active={operationDash === OperationDash.NODES}
@@ -111,7 +111,7 @@ function GraphFunction({Icon, text,action,active}:IGraphFunction){
         <div
             id={resizeEventIdSaver.Operation}
             onClick={action}
-            className={` flex-auto w-28 group px-2 py-3 z-40
+            className={` flex-auto w-28 group px-2 py-3 z-40 
             ${active ? "text-accent":"text-primary"}
             cursor-pointer
              hover:text-white

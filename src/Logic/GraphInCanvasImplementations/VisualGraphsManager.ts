@@ -1,6 +1,6 @@
 import Konva from "konva";
 import {VisualGraph} from "./VisualGraph.ts"
-import {AutoAction, EdgeAutoAction, NodeAutoAction} from "../../Constants.ts";
+import { EdgeAutoAction, NodeAutoAction} from "../../Constants.ts";
 
 
 
@@ -16,13 +16,17 @@ export class VisualGraphsManager {
     private current : Konva.Layer |null = null;
     private visual_graphs : Map<string,VisualGraph> = new Map<string,VisualGraph>;
     init(container : HTMLDivElement){
-        return this.stage = new Konva.Stage({
+         this.stage = new Konva.Stage({
             container,
             width:  2*window.innerWidth,
             height: 1.5*window.innerHeight
         });
+        const layer = new Konva.Layer()
+        layer.setAttr("selectTool",true);
+        this.stage.add(layer)
+        return this.stage ;
     }
-    newGraph(visualGraphId:string = AutoAction+(VisualGraphsManager.id++).toString() , {returnId}:{returnId?:boolean}= {returnId:false}  ){
+    newGraph(visualGraphId:string , {returnId}:{returnId?:boolean}= {returnId:false}  ){
         if (this.stage == null) return false ;
         const layer = new Konva.Layer()
         layer.setAttr("id",visualGraphId)
@@ -178,7 +182,7 @@ export class VisualGraphsManager {
         }
     }*/
     import(graphId:string , layerData:string){
-        const id =  graphId || AutoAction+'/visual/'+(VisualGraphsManager.id++).toString()
+        const id =  graphId
         if (this.stage == null) return  ;
         const layer = Konva.Node.create(JSON.parse(layerData), 'Layer');
         layer.setAttr("id",id)

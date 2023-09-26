@@ -20,19 +20,24 @@ const ClickCollapse = (event:any) => {
             .currentTarget.parentElement.className = cname
             .replace("collapse-open", "collapse-close")
             .replace("border-none","border")
+
+            .replace("overflow-x-auto","overflow-x-hidden")
+
         others
             .forEach((other) => {
-                other.className = other.className.replace("hidden", 'special')
+                other.className = other.className.replace(" hidden ", ' special ')
             })
     } else if (cname.includes("collapse-close")) {
         event
             .currentTarget.parentElement.className = cname
             .replace("collapse-close", "collapse-open")
             .replace("border","border-none")
+            .replace("overflow-x-hidden","overflow-x-auto")
+
         others
             .forEach((other) => {
                 if (other !== event.currentTarget.parentElement)
-                    other.className = other.className.replace("special", 'hidden')
+                    other.className = other.className.replace(" special ", ' hidden ')
             })
     }
 }
@@ -60,7 +65,7 @@ function CollapseElement({child}:{child:any}) {
         id={"collapseId"}
         ref={ref}
          tabIndex={0}
-        className={`collapse  collapse-close collapse-arrow special border border-primary `}>
+        className={`collapse  collapse-close overflow-x-hidden  special  border border-primary w-full  scrollbar-thin scrollbar-thumb-primary  `}>
         <div onClick={ClickCollapse} className="collapse-title font-semibold cursor-pointer ">
             {(child.props as any).title || "Option"}
         </div>
@@ -74,7 +79,7 @@ export default function Accordion({children}:{children :ReactNode}) {
 
 
 
-    return <div className={"space-y-3"}>
+    return <div className={"space-y-3 "}>
         {
             Children.map(children,(child, index) => <CollapseElement key={index}  child={child}/>)
         }

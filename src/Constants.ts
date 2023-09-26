@@ -1,7 +1,7 @@
 import {Icontextual} from "./Pages/Application/BlackBoard/test.Contextual.tsx";
 
-export const AutoAction = "A";
-export const Separator = "_"
+export const AutoAction = "@";
+export const Separator = "/"
 export const BlackBoard_Id = AutoAction+"stage_v2.1"+Separator;
 export const NodeAutoAction = AutoAction+"n"+Separator;
 export const EdgeAutoAction = AutoAction+"e"+Separator;

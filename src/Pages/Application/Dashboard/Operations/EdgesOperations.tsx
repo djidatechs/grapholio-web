@@ -1,4 +1,4 @@
-import {Accoradations, Separator} from "../../../../Constants.ts";
+import {Accoradations} from "../../../../Constants.ts";
 import {useGrapholio} from "../../Context.tsx";
 import Accordion, {IAccorditionOptions} from "./Accordion.tsx";
 import {useEffect, useState} from "react";
@@ -36,7 +36,7 @@ function EdgeDetails ({title,defaultVisible,accordation}:IAccorditionOptions){
             <div className="form-control my-2 w-full">
                 <label className="input-group w-full">
                     <span>ID</span>
-                    <input type="text" value={edgeVal?.split(Separator)[1]} className="input input-bordered w-72 ml-auto mr-0" />
+                    <input type="text" value={edgeVal} className="input input-bordered w-72 ml-auto mr-0" />
                 </label>
             </div>
             <div className="form-control my-2 w-full">
@@ -63,7 +63,7 @@ function EdgeDetails ({title,defaultVisible,accordation}:IAccorditionOptions){
                            value={getPropableEdgeAttributes("text_size")} className="input input-bordered w-72 ml-auto mr-0" />
                 </label>
             </div>
-            <h2>To see other attributes that are not linked visually, you should use the script language , click here </h2>
+            <h2>To see other attributes that are not linked visually, you should use the script language </h2>
 
 
 
@@ -132,9 +132,9 @@ function InformationTable ({title,defaultVisible}:IAccorditionOptions) {
 function EdgesOperations() {
 
     return (
-        <div className={"p-2"}>
+        <div className={"p-2 overflow-auto"}>
            <Accordion>
-               <InformationTable title={"Information Table"} />
+               <InformationTable title={"Information Table"} accordation={Accoradations.INFO}  />
                <EdgeDetails title={"Selected Edge Details"}   accordation={Accoradations.DETAILS} />
            </Accordion>
         </div>

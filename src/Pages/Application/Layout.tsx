@@ -4,14 +4,15 @@ import BlackBoard from "./BlackBoard/BlackBoard.tsx";
 import GrapholioProvider, {useGrapholio} from "./Context.tsx";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import {ChangeEvent, useRef} from "react";
+import {ChangeEvent,  useRef} from "react";
 
 export default function AppWrapper () {
     return (
         <GrapholioProvider>
-            <div className={"bg-black overflow-hidden select-none max-h-screen hidden md:block"}>
+            <div className={"sm:hidden overflow-hidden absolute w-screen h-screen bg-black opacity-70 z-[999] text-xl font-bold"}><div className={"absolute w-full text-center top-1/2"}>Sorry :( this application is for wider screens</div></div>
+            <div className={"bg-black overflow-hidden select-none h-screen min-h-screen max-h-screen "}>
                 <Navbar/>
-                <div className="mt-[68px] max-h-[calc(100vh-68px)] ">
+                <div id={"LAYOUT_ID"} className="mt-[68px] max-h-[calc(100vh-68px)] ">
                     <div className="flex">
                         <Dashboard/>
                         <BlackBoard/>

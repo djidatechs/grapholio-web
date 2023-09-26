@@ -5,6 +5,11 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
+    extend:{
+      screens:{
+        'tall': { 'raw': '(min-height: 700px)' },
+      }
+    }
   },
   daisyui : {
     themes: ["forest"],

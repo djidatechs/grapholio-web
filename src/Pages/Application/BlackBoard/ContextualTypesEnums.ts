@@ -16,7 +16,6 @@ export enum VisualNode {
     REMOVE = NodeAutoAction + enumsMakerSeperator + "remove" ,
     RENAME = NodeAutoAction + enumsMakerSeperator + "rename" ,
     DETAILS = NodeAutoAction + enumsMakerSeperator + "details" ,
-    CODE = NodeAutoAction + enumsMakerSeperator + "script",
 }
 export enum VisualEdge {
     WEIGHT = EdgeAutoAction + enumsMakerSeperator + "weight",
@@ -24,7 +23,6 @@ export enum VisualEdge {
     REMOVE  = EdgeAutoAction + enumsMakerSeperator + "remove",
     DIRECTED = EdgeAutoAction + enumsMakerSeperator + "directed",
     DETAILS = EdgeAutoAction + enumsMakerSeperator + "details",
-    CODE = EdgeAutoAction + enumsMakerSeperator + "script",
 }
 export enum NodeFastControl {
     //CREATE_ONE= NodeFastControlId + enumsMakerSeperator + 'create one',
@@ -63,7 +61,6 @@ export const MenuClickEvent = (manager : GrapholioManager , act : ContextualEnum
 
         } break
         case VisualNode.RENAME : if (elementId){manager.updateNodeLabel(elementId)} break
-        case VisualNode.CODE : break
         case VisualNode.DETAILS : if (elementId) {
             manager.useOperations()?.setAccordation(current=>{
                 current.Accordation = Accoradations.DETAILS

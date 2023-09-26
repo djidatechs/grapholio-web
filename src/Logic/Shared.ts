@@ -11,7 +11,6 @@ type coords = {
     y: number
 }
 export const MathCalculation_Update2dPointsLink = (V2dp : Update2dPointsLink ,radius:number| {node1:number,node2:number} | undefined , S_arrowMiddle :coords|undefined )=>{
-    console.log("math result : " ,radius)
     const dx = V2dp.node1_pos.x - V2dp.node2_pos.x;
     const dy = V2dp.node1_pos.y - V2dp.node2_pos.y;
     const angle = Math.atan2(-dy, dx);
@@ -25,7 +24,6 @@ export const MathCalculation_Update2dPointsLink = (V2dp : Update2dPointsLink ,ra
         const dy2 = S_arrowMiddle.y - V2dp.node2_pos.y;
         angle2 = Math.atan2(-dy2, dx2);
     }
-    console.log((typeof radius === "object"));
     const useRadius1 : number = (typeof radius === "object") ? radius.node1 : (radius || 15)
     const arrowStart = {
         x: V2dp.node1_pos.x + -(useRadius1*1.3) * Math.cos(angle1 || angle),

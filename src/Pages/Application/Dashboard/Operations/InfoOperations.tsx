@@ -127,7 +127,7 @@ function Styling({ title, defaultVisible }: IAccorditionOptions) {
     };
 
     return (
-        <div className="w-full">
+        <div className="w-full overflow-x-auto p-2">
             <Checkbox label="Show Labels" onChange={(event : ChangeEvent<HTMLInputElement>)=>
                     manager.forEachVisualNode({toggleTextVisibility:event.target.checked})
             } />
@@ -178,7 +178,7 @@ function KnownGraphs ({title,defaultVisible}:IAccorditionOptions) {
             </div>
             <div className="w-full join  bg-slate-900  ">
                 <span className="w-7/12 join-item py-3 pl-3  ">Complete Bipartite Graph (Kn,m)</span>
-                <span className="w-3/12 join-item join py-3 flex items-center justify-center">
+                <span className="w-3/12 join-item join py-3 flex items-center justify-end pr-3 py-3">
                     <span className={"join-item"}>n,m=</span>
                     <input name={"Complete Bipartite Graph (Kn,m)n"}  type={"number"}  className={"join-item text-center border border-white rounded-xl w-6"}/>
                     <span className={"px-1"}>,</span>
@@ -212,7 +212,7 @@ function KnownGraphs ({title,defaultVisible}:IAccorditionOptions) {
 
 function InfoOperations() {
     return (
-        <div className="p-2 overflow-x-auto">
+        <div className="p-2 overflow-auto">
             <Accordion>
                 <InfoTable accordation={Accoradations.INFO} title={"Information  Table"} />
                 <KnownGraphs accordation={Accoradations.DETAILS} title={"Creat Common Networks"}/>
