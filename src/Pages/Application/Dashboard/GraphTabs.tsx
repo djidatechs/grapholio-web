@@ -24,6 +24,7 @@ function DropdownElement({label , action} : IDropdownElement) {
 export default function GraphTabs () {
     const {grapholioManager : manager , application,operations} = useGrapholio()
     const selfloopRef = useRef<HTMLInputElement>()
+    const currentNames = manager.getAllGraphsNames()
     const newGraph = (options : any[])=>{
         const combineOpt = {} ;
         options.map(op=> Object.assign(combineOpt, op));
@@ -46,7 +47,10 @@ export default function GraphTabs () {
                 </div>
                 <div className="flex-none">
                     <div className="dropdown dropdown-end ">
-                        <label onClick={()=>manager.removeGraph()} className="btn bg-black border-none text-3xl ">-</label>
+                        {
+
+                           currentNames.length ?  <label onClick={()=>manager.removeGraph()} className="btn bg-black border-none text-3xl ">-</label> : <></>
+                        }
                         <label tabIndex={0} className="btn bg-black border-none text-3xl ">+</label>
 
                         <ul tabIndex={0}
@@ -74,7 +78,7 @@ export default function GraphTabs () {
                 <div className="tabs tabs-boxed flex whitespace-nowrap pb-3">
                     <ul className="tabs-list">
                         {
-                            manager.getAllGraphsNames().map(({id,name})=>{
+                           currentNames.map(({id,name})=>{
                                 const active =  id === manager.selectedGraphId()
                                 return (
                                     <li

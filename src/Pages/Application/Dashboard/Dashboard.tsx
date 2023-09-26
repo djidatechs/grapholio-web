@@ -19,7 +19,7 @@ function Dashboard() {
                         <OperationsChoices/>
                         <Operations/>
                         </>
-                    ) : <></>
+                    ) : <p className={"text-center mt-24"}>Click + to add a new graph</p>
                 }
             </div>
         </MenuStructureComponent>

@@ -43,9 +43,9 @@ export type Operations = { // exported to use in the manager
 
 export enum OperationDash {
      NODES = "Nodes",
-     EDGES = "edges",
-    CODE = "code",
-    INFO = "info",
+     EDGES = "Edges",
+    CODE = "Script",
+    INFO = "Graph",
     NOOP = "please create a graph"
 
 }

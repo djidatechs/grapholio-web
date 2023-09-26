@@ -2,7 +2,7 @@ import {
     Accoradations,
     EdgeAutoAction,
     enumsMakerSeperator,
-    GraphFastControlId,
+    //GraphFastControlId,
     NodeAutoAction,
     NodeFastControlId,
     OperationDash
@@ -27,18 +27,22 @@ export enum VisualEdge {
     CODE = EdgeAutoAction + enumsMakerSeperator + "script",
 }
 export enum NodeFastControl {
-    CREATE_ONE= NodeFastControlId + enumsMakerSeperator + 'create one',
-    CREATE_TEN = NodeFastControlId + enumsMakerSeperator + 'crate ten',
-    DETAILS = NodeFastControlId + enumsMakerSeperator + "details",
+    //CREATE_ONE= NodeFastControlId + enumsMakerSeperator + 'create one',
+    //CREATE_TEN = NodeFastControlId + enumsMakerSeperator + 'crate ten',
+    //DETAILS = NodeFastControlId + enumsMakerSeperator + "details",
+    COMINGSOON = NodeFastControlId + enumsMakerSeperator + "Coming in the next versions",
+
 }
 export enum EdgeFastControl {
-    CREATE_ALL= NodeFastControlId + enumsMakerSeperator + 'create all',
-    REMOVE_ALL = NodeFastControlId + enumsMakerSeperator +  'remove all' ,
+    //CREATE_ALL= NodeFastControlId + enumsMakerSeperator + 'create all',
+    //REMOVE_ALL = NodeFastControlId + enumsMakerSeperator +  'remove all' ,
+    COMINGSOON = NodeFastControlId + enumsMakerSeperator + "Coming in the next versions",
 }
 export enum GraphFastControl {
-    MAKE_CONNEXE = GraphFastControlId + enumsMakerSeperator +  "make connexe ",
-    RANDOM_GRAPH = GraphFastControlId + enumsMakerSeperator +   "create random graph",
-    CUSTOM_GRAPH  = GraphFastControlId + enumsMakerSeperator +   "create custom graph"
+    //MAKE_CONNEXE = GraphFastControlId + enumsMakerSeperator +  "make connexe ",
+    //RANDOM_GRAPH = GraphFastControlId + enumsMakerSeperator +   "create random graph",
+    //CUSTOM_GRAPH  = GraphFastControlId + enumsMakerSeperator +   "create custom graph"
+    COMINGSOON = NodeFastControlId + enumsMakerSeperator + "Coming in the next versions",
 }
 export type ContextualElement = {
     title : ContextualEnums  ,

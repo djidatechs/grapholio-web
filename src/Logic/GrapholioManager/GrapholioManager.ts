@@ -207,7 +207,6 @@ export class GrapholioManager {
 
         else if (attr === "size" ) {
 
-            value = Math.min(Math.max(3, value ), 60)
             g?.setNodeAttribute(node,attr,value);
             const circle = this.blackboard.use()?.getNode(node)
             const text =this.blackboard.use()?.getNodeText(node)

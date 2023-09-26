@@ -1,8 +1,7 @@
 
 import {
-    BsArrowUpRightCircleFill, BsFillInfoCircleFill,
+    BsArrowUpRightCircleFill, BsFillInfoCircleFill, BsFillRecordCircleFill,
     BsFilterCircleFill,
-    BsPlusCircleFill
 } from "react-icons/bs"
 import {SVGAttributes, useEffect} from "react";
 import {OperationDash, resizeEventIdSaver} from "../../../Constants.ts";
@@ -12,7 +11,8 @@ interface IGraphFunction {
     Icon :IconType,
     text: string,
     info?: string,
-    action? : ()=>any
+    action? : ()=>any,
+    active? : boolean,
 
 }
 export default function OperationsChoices () {
@@ -44,7 +44,8 @@ export default function OperationsChoices () {
         <div className="w-full p-2 ">
             <div id={resizeEventIdSaver.Flex} className="flex flex-wrap">
                 <GraphFunction
-                    Icon={BsPlusCircleFill}
+                    active={operationDash === OperationDash.NODES}
+                    Icon={BsFillRecordCircleFill}
                     text={OperationDash.NODES}
                 action={
                     ()=>{
@@ -57,6 +58,7 @@ export default function OperationsChoices () {
                     }
                 }/>
                 <GraphFunction
+                    active={operationDash === OperationDash.EDGES}
                     Icon={BsArrowUpRightCircleFill}
                     text={OperationDash.EDGES}
                 action={
@@ -70,6 +72,7 @@ export default function OperationsChoices () {
                     }
                 }/>
                 <GraphFunction
+
                     Icon={BsFilterCircleFill}
                     text={OperationDash.CODE}
                 action={
@@ -83,6 +86,7 @@ export default function OperationsChoices () {
                     }
                 }/>
                 <GraphFunction
+                    active={operationDash === OperationDash.INFO}
                     Icon={BsFillInfoCircleFill}
                     text={OperationDash.INFO}
                 action={
@@ -102,20 +106,21 @@ export default function OperationsChoices () {
 }
 
 
-function GraphFunction({Icon, text,action}:IGraphFunction){
+function GraphFunction({Icon, text,action,active}:IGraphFunction){
     return (
         <div
             id={resizeEventIdSaver.Operation}
             onClick={action}
-            className=" flex-auto w-28 group px-2 py-3 z-40
+            className={` flex-auto w-28 group px-2 py-3 z-40
+            ${active ? "text-accent":"text-primary"}
             cursor-pointer
-            text-primary hover:text-white
+             hover:text-white
             text-center
             rounded-xl hover:bg-primary
-            transition duration-200">
+            transition duration-200`}>
                 <Icon className={"w-8 xl:w-10 h-8 xl:h-10 mx-auto"}/>
-            <h1 className="block group-hover:text-white transition duration-200
-            font-bold  text-slate-200 text-sm xl:text-base ">{text}</h1>
+            <h1 className={`block group-hover:text-white transition duration-200
+                font-bold  text-slate-200 text-sm xl:text-base `}>{text}</h1>
         </div>
     )
 

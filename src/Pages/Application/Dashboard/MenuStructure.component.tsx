@@ -83,7 +83,6 @@ export function MenuStructureComponent({children}: Created) {
         document.addEventListener('mouseup', async ()=> {
         document.addEventListener("click", ()=>controlButton.addEventListener("click", _handleClick ) );
 
-        controlButton.click()
         });
 
         return () => {

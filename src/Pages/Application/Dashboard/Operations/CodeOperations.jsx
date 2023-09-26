@@ -24,6 +24,7 @@ function CodeOperations() {
         const [log , setLog] = useState([])
         const [runnig , setRunning ] = useState(false);
 
+
         const editorWillUnmount = () => {
                 editor.current.display.wrapper.remove()
         }
@@ -82,7 +83,9 @@ function CodeOperations() {
                         onClick={RunGivosCode}
                         className={"flex-auto h-8 w-8  fill-primary hover:fill-secondary hover:scale-125 transition duration-200 cursor-pointer"}/>
                     }
-                    <BiSolidCopy className={"flex-auto h-7 w-7  fill-primary hover:fill-secondary hover:scale-125 transition duration-200 cursor-pointer"}/>
+                    <BiSolidCopy
+                        onClick={()=>navigator.clipboard.writeText(currentCode)}
+                        className={"flex-auto h-7 w-7  fill-primary hover:fill-secondary hover:scale-125 transition duration-200 cursor-pointer"}/>
                     <TbCircleLetterL
                         onClick={()=>{
                             const dis = logContainer.current.style.display

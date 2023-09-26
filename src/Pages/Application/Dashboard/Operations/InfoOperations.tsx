@@ -205,33 +205,6 @@ function KnownGraphs ({title,defaultVisible}:IAccorditionOptions) {
                     <BiPlay className="w-8 h-8 group-hover:text-slate-900 " />
                 </span>
             </div>
-            <div className="w-full join  bg-slate-900  ">
-                <span className="w-7/12 join-item py-3 pl-3  ">Tree (Tn,m)</span>
-                <span className="w-3/12 join-item join py-3 flex items-center justify-center">
-                    <span className={"join-item"}>n,m=</span>
-                    <input name={"Tree (Tn,m)n"} type={"number"}  className={"join-item text-center border border-white rounded-xl w-6"}/>
-                    <span className={"px-1"}>,</span>
-                    <input  name={"Tree (Tn,m)m"} type={"number"}  className={"join-item text-center border border-white rounded-xl w-6"}/>
-                </span>
-                <span
-                    onClick={()=>manager.addTreeGraph(
-                        parseInt((document.getElementsByName("Tree (Tn,m)n")[0] as unknown as HTMLInputElement)?.value),
-                        parseInt((document.getElementsByName("Tree (Tn,m)m")[0] as unknown as HTMLInputElement)?.value)
-                    )}
-                    className="w-2/12 join-item bg-slate-800 flex items-center justify-center group hover:bg-primary transition duration-300 cursor-pointer">
-                    <BiPlay className="w-8 h-8 group-hover:text-slate-900 " />
-                </span>
-            </div>
-            <div className="w-full join  bg-slate-900  ">
-                <span className="w-7/12 join-item py-3 pl-3  ">Path Graph (Pn)</span>
-                <span className="w-3/12 join-item join flex items-center justify-end pr-3 py-3">
-                    <span className={"join-item"}>n=</span>
-                    <input  type={"number"}  className={"join-item text-center border border-white rounded-xl w-10"}/>
-                </span>
-                <span className="w-2/12 join-item bg-slate-800 flex items-center justify-center group hover:bg-primary transition duration-300 cursor-pointer">
-                    <BiPlay className="w-8 h-8 group-hover:text-slate-900 " />
-                </span>
-            </div>
         </div>
     )
 }

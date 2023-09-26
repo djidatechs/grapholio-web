@@ -91,13 +91,15 @@ export class VisualGraph {
         return {Edge:Edge, weight:weight};
     }
     HighlightNode (nodeId : string , {turn} : {turn : string} ) {
+        const highlighter =  this.layer
+            .find("Circle")
+            .find((node:any)=>((node.attrs.for === nodeId) && (node.attrs.id === NodeAutoAction+"highlight")))
         if (turn == "off") {
-            const highlighter =  this.layer
-                .find("Circle")
-                .find((node:any)=>((node.attrs.for === nodeId) && (node.attrs.id === NodeAutoAction+"highlight")))
             highlighter?.destroy()
             return
         }
+
+        if (highlighter) return
 
         const circle = this.getNode(nodeId) as Konva.Circle
         if (circle == undefined ) return

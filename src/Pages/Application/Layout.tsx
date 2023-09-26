@@ -74,8 +74,8 @@ function Navbar () {
                             dlAnchorElem.click();
                         } }
                     >Export</span>
+                    <span className="text-white inline-block ml-4 font-bold cursor-pointer truncate">Documentation</span>
                     <span className="text-white inline-block ml-4 font-bold cursor-pointer truncate">Support</span>
-                    <span className="text-white inline-block ml-4 font-bold cursor-pointer truncate">Share</span>
                 </div>
             </div>
         </div>
