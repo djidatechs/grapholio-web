@@ -13,11 +13,9 @@ function EdgeDetails ({title,defaultVisible,accordation}:IAccorditionOptions){
     if (!defaultVisible) defaultVisible=false;
     if (!accordation) accordation=undefined
     useEffect(() => {
-        console.log(edgeVal)
         setEdge(operations.accordation.Item)
     }, [operations.accordation.Item]);
     const getPropableEdgeAttributes = (attr:string)=>{
-        console.log({attr})
         let T:any = ""
         try {
             T = manager.getCurrentGraph()?.getEdgeAttribute(edgeVal,attr)
@@ -61,8 +59,8 @@ function EdgeDetails ({title,defaultVisible,accordation}:IAccorditionOptions){
                 <label className="input-group w-full">
                     <span>Text Size</span>
                     <input type="number"
-                           onInput={(e)=>manager.updateEdgeAttr(edgeVal,"weightTextSize",e.currentTarget.value)}
-                           value={getPropableEdgeAttributes("weightTextSize")} className="input input-bordered w-72 ml-auto mr-0" />
+                           onInput={(e)=>manager.updateEdgeAttr(edgeVal,"text_size",e.currentTarget.value)}
+                           value={getPropableEdgeAttributes("text_size")} className="input input-bordered w-72 ml-auto mr-0" />
                 </label>
             </div>
             <h2>To see other attributes that are not linked visually, you should use the script language , click here </h2>
@@ -96,14 +94,13 @@ function InformationTable ({title,defaultVisible}:IAccorditionOptions) {
                     {
 
                         manager.getCurrentGraph()?.edges().map(edge=>{
-                            const id = edge.split(Separator)[1];
-                            const [_node1,_node2] = manager.getCurrentGraph()?.extremities(edge) || [];
-                            if (!_node1 || !_node2) return
+                            const id = edge
+                            const [node1,node2] = manager.getCurrentGraph()?.extremities(edge) || [];
+                            if (!node1 || !node2) return
 
-                            const node1Display = manager.getCurrentGraph()?.getNodeAttribute(_node1,"displayName")
-                            const node2Display = manager.getCurrentGraph()?.getNodeAttribute(_node2,"displayName")
-                            const node1 = _node1?.split(Separator)[1];
-                            const node2 = _node2?.split(Separator)[1];
+                            const node1Display = manager.getCurrentGraph()?.getNodeAttribute(node1,"label")
+                            const node2Display = manager.getCurrentGraph()?.getNodeAttribute(node2,"label")
+
                             const weight = manager.getCurrentGraph()?.getEdgeAttribute(edge,"weight");
                             const directed = manager.getCurrentGraph()?.isDirected(edge)
 
@@ -114,12 +111,12 @@ function InformationTable ({title,defaultVisible}:IAccorditionOptions) {
                                         onMouseLeave={()=>manager.HighlightEdge(edge,{turn:"off"})}
                                     >{id}</td>
                                     <td className={"font-bold cursor-pointer hover:bg-green-600"}
-                                        onMouseEnter={()=>manager.HighlightNode(_node1,{turn:"on"})}
-                                        onMouseLeave={()=>manager.HighlightNode(_node1,{turn:"off"})}
+                                        onMouseEnter={()=>manager.HighlightNode(node1,{turn:"on"})}
+                                        onMouseLeave={()=>manager.HighlightNode(node1,{turn:"off"})}
                                     >{node1Display} {(node1 != node1Display) && (" id("+node1+")")}</td>
                                     <td className={"font-bold cursor-pointer hover:bg-green-600"}
-                                        onMouseEnter={()=>manager.HighlightNode(_node2,{turn:"on"})}
-                                        onMouseLeave={()=>manager.HighlightNode(_node2,{turn:"off"})}
+                                        onMouseEnter={()=>manager.HighlightNode(node2,{turn:"on"})}
+                                        onMouseLeave={()=>manager.HighlightNode(node2,{turn:"off"})}
                                     >{node2Display} {(node2 != node2Display) && (" id("+node2+")")}</td>
                                     <td>{weight === undefined ? "-": weight}</td>
                                     <td>{directed ? "yes" : "no"}</td>

@@ -15,8 +15,6 @@ export type Icontextual = {
 
 function MenuElements({elementId,actions} : {elementId:string|undefined ,actions: ContextualEnums[]}) {
     const {grapholioManager : manager} = useGrapholio()
-    const m_actions = actions.entries()
-    console.log({m_actions})
     useEffect(() => {
         let isDragging = false
         const container = document.getElementById("container") as HTMLDivElement;
@@ -54,9 +52,7 @@ function MenuElements({elementId,actions} : {elementId:string|undefined ,actions
 }
 
 function TestContextual(props : Icontextual) {
-    useEffect(() => {
-        console.log({enums : props.enumerations})
-    }, [props.visible]);
+
     if (!props.x || !props.y || !props.enumerations ) return <></>
     if (!props.visible) return <></>
     return (

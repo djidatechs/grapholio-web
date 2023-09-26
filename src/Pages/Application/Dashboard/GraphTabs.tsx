@@ -29,7 +29,6 @@ export default function GraphTabs () {
         options.map(op=> Object.assign(combineOpt, op));
         if (selfloopRef.current?.checked)  Object.assign(combineOpt, AllowselfLoops)
         else  Object.assign(combineOpt, NoSelfLoops)
-        console.log({combineOpt})
         const id =  manager.newGraph(undefined,combineOpt);
 
         manager.switchTo(id);
@@ -40,17 +39,18 @@ export default function GraphTabs () {
     if (operations.operationDash ===  OperationDash.CODE) return <></>
 
     return application.appChange && (
-        <div className="border-primary ">
+        <div className="border-primary z-50 ">
             <div className="navbar ">
                 <div className="flex-1">
                     <a className=" normal-case text-xl">Graphs</a>
                 </div>
                 <div className="flex-none">
-                    <div className="dropdown dropdown-end">
+                    <div className="dropdown dropdown-end ">
+                        <label onClick={()=>manager.removeGraph()} className="btn bg-black border-none text-3xl ">-</label>
                         <label tabIndex={0} className="btn bg-black border-none text-3xl ">+</label>
 
                         <ul tabIndex={0}
-                            className="dropdown-content  z-[1] menu p-2 shadow bg-primary text-lg font-bold rounded-md  ">
+                            className="dropdown-content overflow-visible  z-50 menu p-2 shadow bg-primary text-lg font-bold rounded-md  ">
                             <li className={"w-full lex flex-col text-sm mb-2 "}>
                                 <label className="cursor-pointer label">
                                     <span className="label-text text-white">allow self loops</span>

@@ -5,13 +5,13 @@ import {
 } from "../GraphInCanvasImplementations/VisualGraphsManager.ts";
 import {
     AutoAction,
-    BlackBoardMenu, DefaultLabelText, DefaultNodeSize, DefaultWeightText,
+    BlackBoardMenu, circlePos, colorToHex, DefaultLabelText, DefaultNodeSize, DefaultWeightText,
     EdgeAutoAction,
     NodeAutoAction,
     OperationDash,
-    Operations
+    Operations, rectanglePos,
 } from "../../Constants.ts";
-import Graph from "graphology"
+import Graph from "../GraphTheoryImplementations/CustomGraphology.ts"
 import {Attributes, GraphOptions, SerializedGraph} from "graphology-types";
 import {
     EdgeVisualIdentity,
@@ -21,12 +21,14 @@ import {
 import {VisualEventsHandler} from "../GraphInCanvasImplementations/VisualEventsHandler.ts";
 import {CannotAddEdge, EdgeIdExist, ErrorMessage, NodeIdExist} from "./Messages.ts";
 import {ContextualEnumsTypes} from "../../Pages/Application/BlackBoard/ContextualTypesEnums.ts";
-import {generateCircleCoordinates, numberToAlphabet} from "../Shared.ts";
+import {generateCircleCoordinates, generateRectangleCoordinates, numberToAlphabet} from "../Shared.ts";
 import Konva from "konva";
 
 type Iimport = {
     graphology : SerializedGraph,
     canvas : string,
+    script: string,
+    extra : {node_id : number, edge_id : number}
 
 }
 type Iinit = {
@@ -39,12 +41,12 @@ type Iinit = {
 export class GrapholioManager {
 
     private static graphCount = 1;
-    private static nodeCount = 1 ;
-    private static edgeCount = 1 ;
+
     //private static edgeCount = 1 ;
     public blackboard = new VisualGraphsManager()
     private watch = new VisualEventsHandler()
     private graphSet:Map<string,Graph> | undefined = new Map<string,Graph>()
+    public scripts: Map<string,string> = new  Map<string,string>()
     private selected_graph_id : string | undefined ;
     private operations : Operations|undefined;
     private blackBoardMenu : BlackBoardMenu|undefined;
@@ -78,6 +80,29 @@ export class GrapholioManager {
         this.blackboard.newGraph(graphId);
         return graphId
     }
+    removeGraph (){
+        if (this.graphSet && this.graphSet.size > 0 && this.selected_graph_id) {
+            const idToRemove = this.selected_graph_id;
+            const iterator = this.graphSet.keys();
+            let prevId = iterator.next().value;
+            let nextId = iterator.next().value;
+            // Find the previous element
+
+            if (nextId === undefined) prevId = nextId
+            while ((nextId !== idToRemove) && (nextId != undefined) ) {
+                prevId = nextId;
+                nextId = iterator.next().value;
+            }
+            this.watch.unwatchGraph(this.blackboard.exposeLayer())
+            this.blackboard.deleteGraph()
+            this.graphSet.delete(idToRemove);
+            if (prevId !== undefined) {
+                this.switchTo(prevId)
+                 }
+        }
+        this.useOperations()?.SentUpdateRequest()
+    }
+
     getAllGraphsNames(){
         const array: any[] = [];
         this.graphSet?.forEach((v,k) => array.push({id : k , name : v.getAttribute("name")}))
@@ -91,27 +116,29 @@ export class GrapholioManager {
         this.selected_graph_id = id;
         this.blackboard.switchTo(id);
     }
+
     clear(){
         const g = this.getCurrentGraph()
         g?.clear();
+        this.watch.unwatchGraph(this.blackboard.exposeLayer());
         this.blackboard.clear();
+
     }
     clickNode (nodeId :string){
         this.watch.forceNodeClick(nodeId);
     }
     dblClickEdge(edgeId:string) {
-        console.log("track dbclick edge")
         this.watch.forceEdgeDbClick(edgeId)
     }
     addNode (attrs : Attributes) {
         const g = this.getCurrentGraph()
         if (!g) return
-        const count = GrapholioManager.nodeCount++
-        const id = NodeAutoAction+(count).toString();
-        if (!attrs.displayName ) attrs.displayName = count;
+
+        const id = NodeAutoAction+(++g.node_id).toString();
+        if (!attrs.label ) attrs.label = g.node_id.toString();
         if (!attrs.color) attrs.color =  getRandomHexColor()
         if (!attrs.size) attrs.size =  DefaultNodeSize()
-        if (!attrs.textSize) attrs.textSize = DefaultLabelText()
+        if (!attrs.text_size) attrs.text_size = DefaultLabelText()
         if (g.hasNode(id)) NodeIdExist()
         else g.addNode(id,attrs);
         const newNode = this.blackboard.use()?.addNode(this._getNodeVisualIdentity(id,attrs));
@@ -128,7 +155,7 @@ export class GrapholioManager {
                 this.removeEdgeById(edge)
             });
             const node = this.blackboard.use()?.getNode(nodeId)
-            this.watch.unwatchNode(node)
+            this.watch.unwatchNode(node as Konva.Circle)
             node?.getParent().destroy()
             g.dropNode(nodeId)
 
@@ -147,28 +174,32 @@ export class GrapholioManager {
         g?.setEdgeAttribute(id,attr,parseInt(value));
         user?.getEdgeWeight(id).setAttr("text", parseInt(value))
     }
-    else if (attr === "weightTextSize") {
+    else if (attr === "text_size") {
         g?.setEdgeAttribute(id,attr,parseInt(value));
         user?.getEdgeWeight(id).setAttr("fontSize", parseInt(value))
     }
     else if (attr === "color") {
+        value = colorToHex(value)
         g?.setEdgeAttribute(id,attr,value)
         user?.getEdgeById(id).setAttr("stroke", value)
     }
     else g?.setEdgeAttribute(id,attr,value);
     this.useOperations()?.SentUpdateRequest();
     }
+
+    
     updateNodeAttr (node :string ,attr : string , value : any) {
         const g = this.getCurrentGraph()
 
         //logic & visual
-        if (attr === "displayName") {
+        if (attr === "label") {
             value = value||''
             g?.setNodeAttribute(node,attr,value)
             this.blackboard.use()?.getNodeText(node)?.setAttr("text", value)
         }
 
         else if (attr === "color") {
+            value = colorToHex(value)
             g?.setNodeAttribute(node,attr,value)
             this.blackboard.use()?.getNode(node)?.setAttr("fill", value)
             this.blackboard.use()?.getNodeText(node)?.setAttr("fill", value)
@@ -207,7 +238,7 @@ export class GrapholioManager {
 
         }
 
-        else if (attr === "textSize" ) {
+        else if (attr === "text_size" ) {
             g?.setNodeAttribute(node,attr,parseInt(value));
             this.blackboard.use()?.getNodeText(node)?.setAttr("fontSize", parseInt(value))
         }
@@ -238,22 +269,23 @@ export class GrapholioManager {
         attrs.pointer = g.isUndirected(edgeId) ; //this is the toggle
         const source =g.source(edgeId)
         const target =g.target(edgeId)
-        console.log({source,target,attrs})
         this.removeEdgeById(edgeId);
         this.addEdge(source , target ,attrs )
 
     }
 
     addEdge (node1:string,node2:string,attrs : Attributes,showError:boolean=true){
+        console.log("add edge")
         const g = this.getCurrentGraph()
         if (!g) return
-        const id = EdgeAutoAction+(GrapholioManager.edgeCount++).toString();
+
+        const id = EdgeAutoAction+(++g.edge_id).toString();
+        console.log({id})
         if (g.hasEdge(id)) return EdgeIdExist();
         attrs.id = id
         if(! attrs.weight)  attrs.weight = 1 // todo : remove ? from EdgeVIsualIdentity and make the constant canvas variable weight text size
         if(!attrs.color) attrs.color = "#FFFFFF"
-        if( ! attrs?.weightTextSize)  attrs.weightTextSize = DefaultWeightText()
-        console.log({atttttttttt: attrs.color})
+        if( ! attrs?.text_size)  attrs.text_size = DefaultWeightText()
         try {
             this.DetailedEdgeAddingCases(g, attrs, id, node1, node2);
         }
@@ -267,15 +299,43 @@ export class GrapholioManager {
         return id;
     }
     addRandomEdge() {
-        function local_getRandomNode(nodes : string[]) {
+        /*function local_getRandomNode(nodes : string[]) {
         const randomIndex = Math.floor(Math.random() * nodes.length);
         return nodes[randomIndex];
-        }
+        }*/
         const g = this.getCurrentGraph()
         if (!g) return
-        const node1 = local_getRandomNode(g?.nodes())
-        const node2 = local_getRandomNode(g?.nodes())
-        this.addEdge(node1,node2,{ color: "#FFFFFF",  weight : 1},false);
+        //const node1 = local_getRandomNode(g?.nodes())
+       // const node2 = local_getRandomNode(g?.nodes())
+        const graph = this.getCurrentGraph()
+        if (!graph) return
+        const nodes = graph.nodes()
+        function shuffleArray(arr:string[]) {
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+            // Shuffle the nodes array
+        const shuffledNodes = shuffleArray(nodes);
+        for (let i = 0; i < shuffledNodes.length; i++) {
+            for (let j = i + 1; j < shuffledNodes.length; j++) {
+                if (!graph.hasEdge(shuffledNodes[i], shuffledNodes[j])) {
+                    return this.addEdge(shuffledNodes[i], shuffledNodes[j], { color: "#FFFFFF", weight: 1 }, false);
+                } else if (!graph.hasEdge(shuffledNodes[j], shuffledNodes[i])) {
+                    return this.addEdge(shuffledNodes[j], shuffledNodes[i], { color: "#FFFFFF", weight: 1 }, false);
+                }
+            }
+        }
+
+
+
+
+
+
+
     }
     private DetailedEdgeAddingCases(g:Graph, attrs: Attributes, id: string, node1: string, node2: string) {
         if (g?.type === "mixed") {
@@ -292,7 +352,6 @@ export class GrapholioManager {
     removeEdgeById(edgeId:string){
         const g = this.getCurrentGraph()
         if (!g) return
-        console.log(g.hasEdge(edgeId))
         g.dropEdge(edgeId);
         this.watch.unwatchEdge(this.blackboard.use()?.getEdgeById(edgeId));
         this.blackboard.use()?.removeEdgeById(edgeId);
@@ -336,15 +395,22 @@ export class GrapholioManager {
     getCurrentGraph (){
         return this.graphSet?.get(this.selected_graph_id||'$')
     }
+    graphCount(){
+
+    }
     import (json:string) {
         const loadedData : Iimport = JSON.parse(json);
-        let g = new Graph();
+        let g = new Graph(loadedData.graphology.options);
         const graphId = AutoAction+ (GrapholioManager.graphCount++).toString()
         g = g.import(loadedData.graphology)
+        g.node_id = loadedData.extra.node_id
+        g.edge_id = loadedData.extra.edge_id
         this.graphSet?.set(graphId,g)
         const layer = this.blackboard.import(graphId,loadedData.canvas)
         if (!layer) return
         this.watch.handleImportedGraph(layer)
+
+        this.write(loadedData.script,graphId)
         this.switchTo(graphId);
         this.useOperations()?.operateOn(OperationDash.INFO)
     }
@@ -352,15 +418,14 @@ export class GrapholioManager {
         const g = this.getCurrentGraph();
         if (!g) return
         const graphology = g.export();
-        console.log({graphology})
         const canvas = this.blackboard.export();
         if (!canvas) return
-        console.log({canvas})
         const exportation :Iimport = {
             graphology,
-            canvas
+            canvas,
+            script : this.graph_script(),
+            extra : {node_id : g.node_id , edge_id : g.edge_id}
         }
-        console.log(JSON.stringify(exportation))
         return {
             fileName: g.getAttribute("name"),
             result :JSON.stringify(exportation)
@@ -394,8 +459,8 @@ export class GrapholioManager {
     _getEdgeVisualIdentity(id:string,node1:string,node2:string,attrs:Attributes){
         const vis = attrs as EdgeVisualIdentity;
         vis.id = id;
-        vis.node1 = node1;
-        vis.node2 = node2;
+        vis.source = node1;
+        vis.target = node2;
         return vis;
     }
     async addCompleteGraph(n: number) {
@@ -410,7 +475,7 @@ export class GrapholioManager {
         const nodeIds = [];
         for (let i = 1; i <= n; i++) {
             const {x,y} = circleCoordinateGenerator.next().value
-            const nodeId = this.addNode({ x:x+100,y:y+50, displayName: numberToAlphabet(i) });
+            const nodeId = this.addNode({ x:x+100,y:y+50, label: numberToAlphabet(i) });
             if (nodeId) nodeIds.push(nodeId);
         }
 
@@ -424,6 +489,90 @@ export class GrapholioManager {
 
 
     }
+    applyCoordinatesGenerator(type:"circle"|"rectangle", args?: circlePos|rectanglePos) {
+        const nodes = Array.from(this.getCurrentGraph()?.nodes() || []);
+        const edges = Array.from(this.getCurrentGraph()?.edges() || []);
+
+        if (!nodes.length) return;
+
+        const generator = (type === "circle")
+            ? generateCircleCoordinates(nodes.length , args as circlePos )
+            : generateRectangleCoordinates(nodes.length , args as rectanglePos )
+
+        nodes.map(async (node) => {
+            const group = this.blackboard.use()?.getNode(node)?.getParent() as unknown as Konva.Group;
+            group.fire('dragstart', {
+                type: 'dragstart',
+                target: group
+            });
+
+            this.blackboard.use()?.getNode(node)?.getParent()?.position(generator.next().value);
+
+            group.fire('dragmove', {
+                type: 'dragmove',
+                target: group
+            });
+
+            // Simulate dragend event
+            group.fire('dragend', {
+                type: 'dragend',
+                target: group
+            });
+
+            this.blackboard.exposeLayer()?.draw();
+        });
+
+        edges.map(async (e) => {
+            const edge = this.blackboard.use()?.getEdgeById(e);
+
+            if (edge) {
+                const node1 = this.blackboard.use()?.getNode(edge.getAttr("source")) as Konva.Circle;
+                const node2 = this.blackboard.use()?.getNode(edge.getAttr("target")) as Konva.Circle;
+                this.watch._updatePoints(node1, node2, edge);
+                this.blackboard.exposeLayer()?.draw();
+            }
+        });
+    }
+
+
+
+
+    /*makeCircleCords(args?:circlePos){
+        const n = this.getCurrentGraph()?.nodes().length
+
+        if (!n ) return
+
+        const circleCoordinateGenerator = generateCircleCoordinates(n,args);
+        this.getCurrentGraph()?.nodes().map(async (node)=>{
+            const group =  this.blackboard.use()?.getNode(node)?.getParent() as unknown as Konva.Group
+            group.fire('dragstart', {
+                type: 'dragstart',
+                target: group
+            });
+            this.blackboard.use()?.getNode(node)?.getParent()?.position(circleCoordinateGenerator.next().value)
+            group.fire('dragmove', {
+                type: 'dragmove',
+                target: group
+            });
+
+            // Simulate dragend event
+            group.fire('dragend', {
+                type: 'dragend',
+                target: group
+            });
+            this.blackboard.exposeLayer()?.draw()
+        })
+        this.getCurrentGraph()?.edges().map(async e=>{
+            const edge = this.blackboard.use()?.getEdgeById(e)
+            if (edge) {
+                const node1 = this.blackboard.use()?.getNode(edge.getAttr("source")) as Konva.Circle
+                const node2 = this.blackboard.use()?.getNode(edge.getAttr("target")) as Konva.Circle
+                this.watch._updatePoints(node1,node2,edge)
+                this.blackboard.exposeLayer()?.draw()
+            }
+        })
+
+    }*/
 
     async addCompleteBipartiteGraph(n: number, m: number) {
         this.clear();
@@ -445,7 +594,7 @@ export class GrapholioManager {
             const nodeId = this.addNode({
                 x: startX_A,
                 y: i * 100, // Adjust the vertical spacing as needed
-                displayName: `A${i}`,
+                label: `A${i}`,
             });
             if (nodeId) nodeIdsA.push(nodeId);
         }
@@ -455,7 +604,7 @@ export class GrapholioManager {
             const nodeId = this.addNode({
                 x: startX_B,
                 y: i * 100, // Adjust the vertical spacing as needed
-                displayName: `B${i}`,
+                label: `B${i}`,
             });
             if (nodeId) nodeIdsB.push(nodeId);
         }
@@ -493,7 +642,7 @@ export class GrapholioManager {
             const nodeId = this.addNode({
                 x,
                 y,
-                displayName: `Node${i + 1}`,
+                label: `Node${i + 1}`,
             });
 
             if (nodeId) nodeIds.push(nodeId);
@@ -520,7 +669,7 @@ export class GrapholioManager {
         const rootNodeId = this.addNode({
             x: 100,
             y: 100,
-            displayName: `Node1 (Root)`,
+            label: `Node1 (Root)`,
         });
         if (rootNodeId) nodeIds.push(rootNodeId);
 
@@ -547,7 +696,7 @@ export class GrapholioManager {
             const nodeId = this.addNode({
                 x,
                 y,
-                displayName: `Node${i}`,
+                label: `Node${i}`,
             });
 
             if (nodeId) {
@@ -560,6 +709,13 @@ export class GrapholioManager {
 
             await new Promise((resolve) => setTimeout(resolve, 0));
         }
+    }
+    write(code:string,graph?:string){
+        if (graph) this.scripts.set(graph, code )
+        if (this.selected_graph_id)  this.scripts.set(this.selected_graph_id, code )
+    }
+    graph_script(){
+         return this.scripts.get(this.selected_graph_id||'') || '//code here'
     }
 
     onNodeSizeChange (){

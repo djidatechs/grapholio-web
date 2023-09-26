@@ -61,8 +61,8 @@ function kruskal(graph) {
     });
 
     sortedEdges.forEach(edge => {
-        let source = get_node({id:edge.node1});
-        let target = get_node({id:edge.node2});
+        let source = get_node({id:edge.source});
+        let target = get_node({id:edge.target});
 
         if (find(parent, source) !== find(parent, target)) {
             result.push(edge);

@@ -17,9 +17,7 @@ export function MenuStructureComponent({children}: Created) {
         value : boolean,
     }
 
-    useEffect(() => {
-        console.info("MENU RERENDERED")
-    }, []);
+
 
 
     useEffect(() => {
@@ -36,16 +34,13 @@ export function MenuStructureComponent({children}: Created) {
 
         const handleClick = (isResizing:referenceHolder) => ()=>{
             if (isResizing.value || !contentRef?.current || !controllerRef.current) return
-            console.log({isResizing})
             contentRef.current.style.display = contentRef.current.style.display === "none" ? "block" : "none" ;
             if (contentRef.current.style.display=="none") {
-                console.log("isNone")
                 if (containerRef?.current?.style) containerRef.current.style.minWidth = "0%"
                 if (containerRef?.current?.style) containerRef.current.style.width = "0%"
                 controllerRef.current.innerHTML = "&gt;";
                 controllerRef.current.className = styleInHide
             } else {
-                console.log("isBlock")
                 if (containerRef?.current?.style) containerRef.current.style.width = naturalDashboardWidth
                 if (containerRef?.current?.style) containerRef.current.style.minWidth = naturalDashboardWidth
                 controllerRef.current.innerHTML = "&lt;";
@@ -56,7 +51,6 @@ export function MenuStructureComponent({children}: Created) {
             _v.value = result
             const controlButton = controllerRef.current
             if (!controlButton) return
-            console.log("I am here to make it absolute")
             controlButton.style.visibility = "visible"
             if (result) controlButton?.removeEventListener("click",_handleClick )
 
@@ -80,7 +74,6 @@ export function MenuStructureComponent({children}: Created) {
         const _handleResizeTrue = ()=> handleResize(isResizing, true)
         const _handleResizeFalse = ()=>   handleResize(isResizing,false);
         const _handleClick = handleClick(isResizing);
-        console.log('getting here')
         const _handleMouseMove = (e:any)=> handleMouseMove (fullwidth, isResizing , resizableDiv , e)
         controlButton.addEventListener('mousedown', _handleResizeTrue);
         document.addEventListener('mousemove', _handleMouseMove);
@@ -105,7 +98,7 @@ export function MenuStructureComponent({children}: Created) {
 
 
     return (
-        <div id={resizeEventIdSaver.Container} className={`relative z-50 text-white h-screen `} ref={containerRef}>
+        <div id={resizeEventIdSaver.Container} className={`relative z-40 text-white h-screen w-[33%] `} ref={containerRef}>
             <div ref={controllerRef}/>
             <div ref={contentRef} className={`w-full border-r-2  h-full border-green-600 text-white p-2 scrollbar-thin  scrollbar-thumb-green-600 overflow-y-auto `}>
                 {children}

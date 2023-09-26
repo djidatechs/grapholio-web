@@ -1,7 +1,7 @@
 import {useGrapholio} from "../../Context.tsx";
 import {BsCircleFill} from "react-icons/bs";
 import Accordion, {IAccorditionOptions} from "./Accordion.tsx";
-import {Accoradations, Separator} from "../../../../Constants.ts";
+import {Accoradations} from "../../../../Constants.ts";
 import {useEffect, useState} from "react";
 //import {useEffect} from "react";
 
@@ -13,11 +13,9 @@ export function NodeDetails ({title,defaultVisible,accordation}:IAccorditionOpti
     if (!defaultVisible) defaultVisible=false;
     if (!accordation) accordation=undefined
     useEffect(() => {
-        console.log("NODE DATAILS RERENDERED")
         setNode(operations.accordation.Item)
     }, [operations.accordation.Item]);
     const getPropableNodeAttributes = (attr:string)=>{
-        console.log({attr})
         let T:any = ""
         try {
          T = manager.getCurrentGraph()?.getNodeAttribute(nodeVal,attr)
@@ -48,15 +46,15 @@ export function NodeDetails ({title,defaultVisible,accordation}:IAccorditionOpti
             <div className="form-control my-2 w-full">
                 <label className="input-group w-full">
                     <span>ID</span>
-                    <input type="text" value={nodeVal?.split(Separator)[1]} className="input input-bordered w-72 ml-auto mr-0" />
+                    <input type="text" value={nodeVal} className="input input-bordered w-72 ml-auto mr-0" />
                 </label>
             </div>
             <div className="form-control my-2 w-full">
                 <label className="input-group w-full">
                     <span>Label</span>
                     <input type="text"
-                           onInput={(e)=>manager.updateNodeAttr(nodeVal,"displayName",e.currentTarget.value)}
-                           value={getPropableNodeAttributes("displayName")} className="input input-bordered w-72 ml-auto mr-0" />
+                           onInput={(e)=>manager.updateNodeAttr(nodeVal,"label",e.currentTarget.value)}
+                           value={getPropableNodeAttributes("label")} className="input input-bordered w-72 ml-auto mr-0" />
                 </label>
             </div>
             <div className="form-control my-2 w-full">
@@ -79,8 +77,8 @@ export function NodeDetails ({title,defaultVisible,accordation}:IAccorditionOpti
                 <label className="input-group w-full">
                     <span>Text Size</span>
                     <input type="number"
-                           onInput={(e)=>manager.updateNodeAttr(nodeVal,"textSize",e.currentTarget.value)}
-                           value={getPropableNodeAttributes("textSize")} className="input input-bordered w-72 ml-auto mr-0" />
+                           onInput={(e)=>manager.updateNodeAttr(nodeVal,"text_size",e.currentTarget.value)}
+                           value={getPropableNodeAttributes("text_size")} className="input input-bordered w-72 ml-auto mr-0" />
                 </label>
             </div>
             <h2>To see other attributes that are not linked visually, you should use the script language , click here </h2>
@@ -96,9 +94,7 @@ function InformationTable ({title,defaultVisible,accordation}:IAccorditionOption
     if (!defaultVisible) defaultVisible=false;
     if (!accordation) accordation=undefined
     const {grapholioManager:manager,operations} = useGrapholio()
-    useEffect(() => {
-        console.info("node InformationTable RERENDERED")
-    }, []);
+
     return operations.RequestValue &&(
         <div className="max-h-[300px] overflow-x-auto ">
             <table className="table bg-neutral-800  table-pin-rows">
@@ -116,8 +112,7 @@ function InformationTable ({title,defaultVisible,accordation}:IAccorditionOption
                 {
 
                     manager.getCurrentGraph()?.nodes().map(node=>{
-                        const nodeId = node.split(Separator)[1]
-                        const display = manager.getCurrentGraph()?.getNodeAttribute(node,"displayName");
+                        const display = manager.getCurrentGraph()?.getNodeAttribute(node,"label");
                         const degree = manager.getCurrentGraph()?.degree(node);
                         const color = manager.getCurrentGraph()?.getNodeAttribute(node,"color");
 
@@ -126,12 +121,12 @@ function InformationTable ({title,defaultVisible,accordation}:IAccorditionOption
                                 <td className={"font-bold cursor-pointer hover:bg-green-600"}
                                     onMouseEnter={()=>manager.HighlightNode(node,{turn:"on"})}
                                     onMouseLeave={()=>manager.HighlightNode(node,{turn:"off"})}
-                                >{nodeId}</td>
+                                >{node}</td>
                                 {//<td></td>
                                      }
                                 <td><input
                                     type={"text"}
-                                    onInput={(e)=>manager.updateNodeAttr(node,"displayName",e.currentTarget.value)}
+                                    onInput={(e)=>manager.updateNodeAttr(node,"label",e.currentTarget.value)}
                                     className={"w-full border-none p-0 m-0"} value={display.toString()}/>
                                 </td>
 
@@ -147,9 +142,7 @@ function InformationTable ({title,defaultVisible,accordation}:IAccorditionOption
     )
 }
 function NodesOperations() {
-    useEffect(() => {
-        console.info("NODE OPERATIONS RERENDERED")
-    }, []);
+
     return (
         <div className="p-2 overflow-x-auto">
           <Accordion>

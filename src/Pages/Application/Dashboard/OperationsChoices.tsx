@@ -20,14 +20,11 @@ export default function OperationsChoices () {
     const ResizeAdjustements = ()=>{
         const parentContainer = document.getElementById(resizeEventIdSaver.Container)
         const items = document.querySelectorAll("#"+resizeEventIdSaver.Operation+" > h1")
-        console.log({items})
 
         const resizeObserver = new ResizeObserver((evt) => {
                 const {width} = evt[0].contentRect ;
-                console.log(width)
                 if (width > 125)
                     items.forEach(item => {
-                        console.log({class : item.className })
                         item.className = item.className.replace("hidden", "block")
                     });
                 else
@@ -49,7 +46,6 @@ export default function OperationsChoices () {
                 <GraphFunction
                     Icon={BsPlusCircleFill}
                     text={OperationDash.NODES}
-                    info="placeholder"
                 action={
                     ()=>{
                         operateOn(OperationDash.NODES)
@@ -63,7 +59,6 @@ export default function OperationsChoices () {
                 <GraphFunction
                     Icon={BsArrowUpRightCircleFill}
                     text={OperationDash.EDGES}
-                    info="placeholder"
                 action={
                     ()=>{
                         operateOn(OperationDash.EDGES)
@@ -77,7 +72,6 @@ export default function OperationsChoices () {
                 <GraphFunction
                     Icon={BsFilterCircleFill}
                     text={OperationDash.CODE}
-                    info="placeholder"
                 action={
                     ()=>{
                         operateOn(OperationDash.CODE)
@@ -91,7 +85,6 @@ export default function OperationsChoices () {
                 <GraphFunction
                     Icon={BsFillInfoCircleFill}
                     text={OperationDash.INFO}
-                    info={"placeholder"}
                 action={
                     ()=>{
                         operateOn(OperationDash.INFO)
@@ -109,14 +102,12 @@ export default function OperationsChoices () {
 }
 
 
-function GraphFunction({Icon, text,info,action}:IGraphFunction){
+function GraphFunction({Icon, text,action}:IGraphFunction){
     return (
         <div
             id={resizeEventIdSaver.Operation}
-            data-tip={info}
             onClick={action}
-            className=" flex-auto w-28 group px-2 py-3
-            tooltip tooltip-right
+            className=" flex-auto w-28 group px-2 py-3 z-40
             cursor-pointer
             text-primary hover:text-white
             text-center

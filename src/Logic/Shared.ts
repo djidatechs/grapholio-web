@@ -1,3 +1,5 @@
+import {circlePos, rectanglePos} from "../Constants.ts";
+
 type Update2dPointsLink  = {
     node1_pos : coords,
     node2_pos :coords,
@@ -52,15 +54,16 @@ export function parseHtml(htmlString:string){
     return parser.parseFromString(htmlString, 'text/html').body.firstChild;
 }
 
-interface Point {
+export interface Point {
     x: number;
     y: number;
 }
 
-export function* generateCircleCoordinates(N_of_elements: number): Generator<Point> {
-    const centerX = 300; // Center X-coordinate of the circle
-    const centerY = 300; // Center Y-coordinate of the circle
-    const radius = 250; // Radius of the circle
+export function* generateCircleCoordinates(N_of_elements: number,args?: circlePos): Generator<Point> {
+
+    const centerX = args?.center?.x || 300; // Center X-coordinate of the circle
+    const centerY = args?.center?.y || 300; // Center Y-coordinate of the circle
+    const radius = args?.radius ||250; // Radius of the circle
 
     for (let i = 0; i < N_of_elements; i++) {
         const angle = (i / N_of_elements) * 2 * Math.PI;
@@ -69,6 +72,43 @@ export function* generateCircleCoordinates(N_of_elements: number): Generator<Poi
         yield { x, y };
     }
 }
+
+export function* generateRectangleCoordinates(N_of_elements: number, args?: rectanglePos): Generator<Point> {
+
+    const x = args?.topLeft?.x || 100;
+    const y = args?.topLeft?.y || 100;
+    const width = args?.width || 400;
+    const height = args?.height || 500;
+
+    const perimeter = 2 * (width + height);
+
+    for (let i = 0; i < N_of_elements; i++) {
+        const t = (i / N_of_elements) * perimeter;
+        let relativeX, relativeY;
+
+        if (t < width) {
+            relativeX = t;
+            relativeY = 0;
+        } else if (t < width + height) {
+            relativeX = width;
+            relativeY = t - width;
+        } else if (t < 2 * width + height) {
+            relativeX = width - (t - width - height);
+            relativeY = height;
+        } else {
+            relativeX = 0;
+            relativeY = height - (t - 2 * width - height);
+        }
+
+        const absoluteX = x + relativeX;
+        const absoluteY = y + relativeY;
+
+        yield { x: absoluteX, y: absoluteY };
+    }
+}
+
+
+
 
 
 export function numberToAlphabet(n: number): string {

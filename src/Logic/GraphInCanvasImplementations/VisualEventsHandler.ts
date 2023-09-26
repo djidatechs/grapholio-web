@@ -32,21 +32,16 @@ export class VisualEventsHandler {
         })
     }
     handleImportedGraph(layer : Konva.Layer) {
-        console.clear()
-        console.log({layer});
         layer.find("Group").map((group)=>{
-            console.log({group});
             if (! group.attrs.id.includes(NodeAutoAction) || ! group.hasChildren() ) return
             const circle = (group as Konva.Group).find("Circle").find(circle=>circle.attrs.id.includes(NodeAutoAction))
             const text = (group as Konva.Group).find("Text").find(text=>text.attrs.id.includes(NodeAutoAction))
-            console.log({circle,text});
             if (circle) {
                 this.handleNode((circle as Konva.Circle))
                 if (text) this.handleNodeText((circle as Konva.Circle),(text as Konva.Text))
             }
         })
         layer.find("Arrow").map(arrow=>{
-            console.log({arrow})
             if (! arrow.attrs.id.includes(EdgeAutoAction)  ) return
             this.handleEdge((arrow as Konva.Arrow))
         })
@@ -147,7 +142,6 @@ export class VisualEventsHandler {
     }
     handleEdge(arrow : Konva.Arrow | undefined  ){
         if (arrow === undefined) return
-        console.log("please see here")
         this._edgeMovement(arrow);
         arrow.on("mouseenter",()=> this._edgeMouseEnter(arrow))
         arrow.on("mouseleave",()=> this._edgeMouseLeave(arrow))
@@ -191,9 +185,7 @@ export class VisualEventsHandler {
     }
     forceEdgeDbClick(edgeId:string ){
         const arrow =  this.managerRef?.blackboard.use()?.getEdgeById(edgeId) as Konva.Arrow | undefined
-        console.log("track dbclick edge arrow halt")
         if (arrow === undefined) return
-        console.log("track dbclick edge arrow success")
         this._edgeDoubleClick(arrow)
         this._MenuDown(arrow)
     }
@@ -280,18 +272,17 @@ export class VisualEventsHandler {
         })
     }
     _edgeMouseEnter(arrow:Konva.Arrow){
-        this._moveToTop(arrow)
+        arrow.moveToBottom()
         arrow.attrs.orinigalColor = arrow.stroke();
         arrow.stroke("yellow");
     }
     _edgeMouseLeave(arrow:Konva.Arrow){
-        this._moveToTop(arrow)
+        arrow.moveToBottom()
         arrow.stroke(arrow.attrs.orinigalColor ||"white")
 
     }
     _edgeDoubleClick(arrow : Konva.Arrow ){
-        this._moveToTop(arrow)
-        console.log("DBCLICK")
+        arrow.moveToBottom()
 
         this._curveArrow(arrow);
 
@@ -333,20 +324,18 @@ export class VisualEventsHandler {
     }
 
     _edgeRightClick(arrow : Konva.Arrow ){
-        this._moveToTop(arrow)
+        arrow.moveToBottom()
         const cursorPosition = arrow.getStage()?.getPointerPosition() || {x:0,y:0};
         this._MenuUp(arrow , cursorPosition , VisualEdge);
 
     }
 
     _edgeContextual(arrow : Konva.Arrow ){
-        this._moveToTop(arrow)
+        arrow.moveToBottom()
     }
 
     _stageClick(stage : Konva.Stage){
-        console.log(stage)
-
-
+        return stage
     }
 
     _edgeMovement(Arrow : Konva.Arrow) {
@@ -367,7 +356,12 @@ export class VisualEventsHandler {
         weight.off();
 
     }
-    unwatchNode(node:Konva.Node|undefined){
+    unwatchGraph(layer:Konva.Layer| null){
+        if (!layer) return
+        layer.find("Arrow").map(arrow  =>this.unwatchEdge(arrow  as Konva.Arrow ))
+        layer.find("Circle").map(circle=>this.unwatchNode(circle as Konva.Circle))
+    }
+    unwatchNode(node:Konva.Circle|undefined){
         if (!node) return
         const label = node.getLayer()?.find("Text").find(text=>text.attrs.id === node.attrs.id) as Konva.Text
         node.getParent()?.off()
@@ -378,21 +372,23 @@ export class VisualEventsHandler {
     }
     _updatePoints(node1:Konva.Circle,node2:Konva.Circle,edge:Konva.Arrow){
         try {
+            const HLisOn = this.managerRef?.blackboard.use()?.HighlightEdge(edge.getAttr("id") as string )?.isOn()
+            if (HLisOn) this.managerRef?.blackboard.use()?.HighlightEdge(edge.getAttr("id") as string , {turn:"off"})
             const node1_pos = node1.getAbsolutePosition()
             const node2_pos = node2.getAbsolutePosition();
+            const scale = node1?.getStage()?.scale() || {x: 1, y: 1}
             const radius = {
-                node1 : node1?.radius(),
-                node2 : node2?.radius(),
+                node1 : node1?.radius() * scale.x,
+                node2 : node2?.radius() * scale.x
             }
-            console.log(radius)
             const weight = edge.getLayer()?.find("Text").find(text => text.attrs.id === edge.attrs.id) as Konva.Text
 
             if (node1_pos == null || node2_pos == null ||!radius.node1 || !radius.node2) return;
 
-            const scale = node1?.getStage()?.scale() || {x: 1, y: 1}
+
 
             const points = edge.points();
-            const originalDistance = Math.sqrt(Math.pow(points[points.length - 2] - points[0], 2) + Math.pow(points[points.length - 1] - points[1], 2));
+            //const originalDistance = Math.sqrt(Math.pow(points[points.length - 2] - points[0], 2) + Math.pow(points[points.length - 1] - points[1], 2));
 
             if (points.length === 6) {
                 const S_arrowMiddle = {
@@ -406,24 +402,27 @@ export class VisualEventsHandler {
                 arrowEnd.x /= scale.x
                 arrowEnd.y /= scale.y
 
-                const newDistance = Math.sqrt(Math.pow(arrowEnd.x - arrowStart.x, 2) + Math.pow(arrowEnd.y - arrowStart.y, 2));
+                /*const newDistance = Math.sqrt(Math.pow(arrowEnd.x - arrowStart.x, 2) + Math.pow(arrowEnd.y - arrowStart.y, 2));
                 const ratio = newDistance / originalDistance;
                 const middlePoints = {
                     x: S_arrowMiddle.x + ((arrowEnd.x) - points[points.length - 2]) * ratio,
                     y: S_arrowMiddle.y + ((arrowEnd.y) - points[points.length - 1]) * ratio,
-                }
+
+                }*/
 
                 edge.setAttr("points", [
                     arrowStart.x,
                     arrowStart.y,
-                    middlePoints.x,
-                    middlePoints.y,
+                    //middlePoints.x,
+                    //middlePoints.y,
+                    S_arrowMiddle.x,
+                    S_arrowMiddle.y,
                     arrowEnd.x,
                     arrowEnd.y,
                 ])
 
-                weight.setAttr("x", middlePoints.x)
-                weight.setAttr("y", middlePoints.y - 20)
+                weight.setAttr("x", S_arrowMiddle.x)
+                weight.setAttr("y", S_arrowMiddle.y - 20)
 
             } else {
                 const {arrowStart, arrowMiddle, arrowEnd} = MathCalculation_Update2dPointsLink({node1_pos, node2_pos}, radius, undefined)
@@ -437,6 +436,8 @@ export class VisualEventsHandler {
                 weight.setAttr("y", (arrowMiddle.y / scale.x) - 20)
             }
             weight.moveToTop()
+
+            if (HLisOn)this.managerRef?.blackboard.use()?.HighlightEdge(edge.getAttr("id") as string , {turn:"on"})
 
 
             return null
@@ -502,7 +503,7 @@ export class VisualEventsHandler {
         if (For === "label") {
             textarea.addEventListener('keydown', function (e) {
                 if (e.code === "Enter") {
-                    manager?.updateNodeAttr(textNode.attrs.id, "displayName", textarea.value)
+                    manager?.updateNodeAttr(textNode.attrs.id, "label", textarea.value)
                     textNode.offsetX(textNode.width() / 2)
                     textNode.offsetY(textNode.height() / 2)
 

@@ -27,11 +27,6 @@ function Operations () {
     const opRef = useRef<HTMLDivElement>(null)
     const {operationDash} = useGrapholio().operations
     useEffect(() => {
-        console.info("Operation RERENDERED")
-    }, []);
-    useEffect(() => {
-        console.clear()
-        console.log("run operation dash detect")
         if (opRef.current){
             const elementTop = opRef.current.getBoundingClientRect().top;
             const distanceToBottom = window.innerHeight - elementTop;

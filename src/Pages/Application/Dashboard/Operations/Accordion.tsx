@@ -41,7 +41,6 @@ function CollapseElement({child}:{child:any}) {
     const {operations} = useGrapholio();
     const ref = useRef<HTMLDivElement>(null)
     useEffect(() => {
-        console.log("collapseElemnt RERENDED")
         if (child.props.defaultVisible ||  (operations.accordation.Accordation && (operations.accordation.Accordation === child.props.accordation)   )){
             const collapseElem = ref.current
             if (collapseElem?.className?.includes("collapse-close")){
@@ -72,9 +71,7 @@ function CollapseElement({child}:{child:any}) {
 }
 
 export default function Accordion({children}:{children :ReactNode}) {
-    useEffect(() => {
-        console.info("Accordion RERENDERED")
-    }, []);
+
 
 
     return <div className={"space-y-3"}>

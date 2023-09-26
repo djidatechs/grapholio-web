@@ -134,11 +134,11 @@ function Styling({ title, defaultVisible }: IAccorditionOptions) {
             <Checkbox label="Show Edges Weights" onChange={(event : ChangeEvent<HTMLInputElement>)=>
                 manager.forEachVisualEdge({toggleWeightTextVisibility:event.target.checked})
             } />
+            <InputField label="Nodes Sizes" defaultValue={DefaultNodeSize()} id={"inputNodeSize"}/>
+            <InputField label="Nodes Labels Size " defaultValue={DefaultLabelText()}  id={"inputLabelText"} />
+            <InputField label="Edges Widths" defaultValue={DefaultEdgeStrokeWidth()} id={"inputEgeWidth"} />
+            <InputField label="Edges Weights  Size" defaultValue={DefaultWeightText()} id={"inputWeightText"}/>
 
-            <InputField label="Node Label Text Size" defaultValue={DefaultLabelText()}  id={"inputLabelText"} />
-            <InputField label="Edge Weight Text Size" defaultValue={DefaultWeightText()} id={"inputWeightText"}/>
-            <InputField label="Nodes Size" defaultValue={DefaultNodeSize()} id={"inputNodeSize"}/>
-            <InputField label="Edge Stroke Width" defaultValue={DefaultEdgeStrokeWidth()} id={"inputEgeWidth"} />
 
             <div className="join w-full my-3">
                 <button

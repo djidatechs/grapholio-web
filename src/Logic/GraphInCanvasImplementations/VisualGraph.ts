@@ -8,22 +8,22 @@ import {
 
 export type NodeVisualIdentity = {
     id:string
-    displayName:string,
+    label:string,
     x:number,
     y:number,
     color : string,
     size : number,
-    textSize : number
+    text_size : number
 
 }
 export type EdgeVisualIdentity = {
     id :string,
-    node1 : string,
-    node2 : string,
+    source : string,
+    target : string,
     pointer : boolean ,
     color : string,
     weight? : number,
-    weightTextSize? : number,
+    text_size? : number,
 }
 type coords = {
     x: number ,
@@ -44,7 +44,7 @@ export class VisualGraph {
       const group = this._NodeGroup(node.id,node.x,node.y);
       const circle = this._Node(node.id,node.color,node.size);
       group.add(circle)
-      const text = this._nodeText(node.id , node.displayName,node.color,node.textSize , circle);
+      const text = this._nodeText(node.id , node.label,node.color,node.text_size , circle);
       group.add(text)
 
       this.layer.add(group)
@@ -67,21 +67,20 @@ export class VisualGraph {
 
     addEdge(edge : EdgeVisualIdentity) :  {Edge:any, weight:any}{
         const circles = this.layer.find("Circle");
-        const node1_ = circles?.find((circle) => circle.attrs.id === edge.node1) as Konva.Circle
-        const node2_ = circles?.find((circle) => circle.attrs.id === edge.node2) as Konva.Circle
+        const node1_ = circles?.find((circle) => circle.attrs.id === edge.source) as Konva.Circle
+        const node2_ = circles?.find((circle) => circle.attrs.id === edge.target) as Konva.Circle
         const node1_pos = node1_?.getAbsolutePosition();
         const node2_pos = node2_?.getAbsolutePosition();
         const radius = {
             node1 : node1_?.radius() ,
             node2 : node2_?.radius() ,
         }
-        console.log({radius})
         if (node1_pos == null || node2_pos == null ||!radius.node1 || !radius.node2) return  {Edge:undefined, weight:undefined}
         const {arrowStart,arrowMiddle,arrowEnd} = MathCalculation_Update2dPointsLink({node1_pos,node2_pos},radius,undefined)
         const Edge = this._Arrow(edge,arrowStart,arrowMiddle,arrowEnd)
 
-        Edge.setAttr("node1",edge.node1)
-        Edge.setAttr("node2",edge.node2)
+        Edge.setAttr("node1",edge.source)
+        Edge.setAttr("node2",edge.target)
         this.layer.add(Edge)
 
         const weight = this._WeightText(edge,Edge)
@@ -101,9 +100,7 @@ export class VisualGraph {
         }
 
         const circle = this.getNode(nodeId) as Konva.Circle
-        console.log({circle})
         if (circle == undefined ) return
-        console.log("creating highlighter circle")
         const Highlighter = new Konva.Circle({
             id : NodeAutoAction+"highlight",
             for : nodeId,
@@ -113,35 +110,37 @@ export class VisualGraph {
             fill: 'yellow', // Replace with your desired highlight color
             opacity : 0.5
         });
-        console.log(Highlighter)
         circle.getParent().add(Highlighter)
         Highlighter.moveToBottom()
         this.layer.draw()
     }
-    HighlightEdge (edgeId : string , {turn} : {turn : string} ) {
-        if (turn == "off") {
-            const highlighter =  this.layer
-                .find("Line")
-                .find((node:any)=>((node.attrs.for === edgeId) && (node.attrs.id === EdgeAutoAction+"highlight")))
+    HighlightEdge (edgeId : string , t? : {turn : string} ) {
+        const highlighter =  this.layer
+            .find("Line")
+            .find((node:any)=>((node.attrs.for === edgeId) && (node.attrs.id === EdgeAutoAction+"highlight")))
+
+        if (t?.turn == "off") {
             highlighter?.destroy()
-            return
         }
+        if ( t?.turn == "on") {
+            const arrow = this.getEdgeById(edgeId) as Konva.Arrow
+            if (arrow == undefined) return
+            const highlighterLine = new Konva.Line();
+            highlighterLine.points(arrow.points())
+            highlighterLine.attrs.id = EdgeAutoAction + "highlight"
+            highlighterLine.attrs.for = edgeId
+            highlighterLine.attrs.pointer = false;
+            highlighterLine.stroke("yellow")
+            highlighterLine.strokeWidth(arrow.strokeWidth() * 3)
+            highlighterLine.tension(0.5)
 
-        const arrow = this.getEdgeById(edgeId) as Konva.Arrow
-        if (arrow == undefined ) return
-        const highlighterLine = new Konva.Line();
-        highlighterLine.points(arrow.points())
-        highlighterLine.attrs.id = EdgeAutoAction+"highlight"
-        highlighterLine.attrs.for = edgeId
-        highlighterLine.attrs.pointer = false;
-        highlighterLine.stroke("yellow")
-        highlighterLine.strokeWidth(arrow.strokeWidth()*3)
-        highlighterLine.tension(0.5)
-
-        console.log(highlighterLine)
-        this.layer.add(highlighterLine)
-        highlighterLine.moveToTop()
-        this.layer.draw()
+            this.layer.add(highlighterLine)
+            highlighterLine.moveToTop()
+            this.layer.draw()
+        }
+        return (
+            {isOn: () => (highlighter !== undefined)}
+        )
     }
     removeEdgeById(edgeId : string){
         const edge = this.getEdgeById(edgeId)
@@ -155,6 +154,7 @@ export class VisualGraph {
     getEdgeById (edge: string) {
         return  this.layer.find("Arrow").find((arrow) => arrow.attrs.id == edge) as Konva.Arrow
     }
+
     getEdgeWeight(id: string) {
         return  this.layer.find("Text").find((arrow) => arrow.attrs.id == id) as Konva.Text
     }
@@ -205,8 +205,8 @@ export class VisualGraph {
         const scale = this.layer?.getStage()?.scale() || {x:1,y:1}
         return  new Konva.Arrow({
             id: edge.id,
-            node1 : edge.node1,
-            node2 : edge.node2,
+            node1 : edge.source,
+            node2 : edge.target,
             tension: 0.5,
             points:[
                 arrowStart.x / scale.x,
@@ -238,10 +238,12 @@ export class VisualGraph {
             id:edge.id,
             text:""+(edge.weight||1).toString()+"",
             fill:'yellow' ,
+            stroke:"yellow",
+            strokeWidth: 0.5,
             x: middlePoints.x ,
             y: middlePoints.y-20 ,
 
-            fontSize:edge.weightTextSize,
+            fontSize:edge.text_size,
 
 
         })
@@ -259,12 +261,14 @@ export class VisualGraph {
 
 
 export function getRandomHexColor(): string {
-    const letters = "0123456789ABCDEF";
-    let color = "#";
+    const minBrightness = 50// Adjust this value to control the minimum brightness
 
-    for (let i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
-    }
+    const getRandomComponent = () => Math.floor(Math.random() * (256 - minBrightness) + minBrightness);
 
-    return color;
+    const red = getRandomComponent().toString(16).padStart(2, '0');
+    const green = getRandomComponent().toString(16).padStart(2, '0');
+    const blue = getRandomComponent().toString(16).padStart(2, '0');
+
+    return `#${red}${green}${blue}`;
 }
+

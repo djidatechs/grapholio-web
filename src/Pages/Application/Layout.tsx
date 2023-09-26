@@ -9,16 +9,17 @@ import {ChangeEvent, useRef} from "react";
 export default function AppWrapper () {
     return (
         <GrapholioProvider>
-            <div className={"bg-black overflow-hidden select-none max-h-screen"}>
+            <div className={"bg-black overflow-hidden select-none max-h-screen hidden md:block"}>
                 <Navbar/>
                 <div className="mt-[68px] max-h-[calc(100vh-68px)] ">
                     <div className="flex">
                         <Dashboard/>
                         <BlackBoard/>
-                        <ToastContainer/>
                     </div>
                 </div>
             </div>
+            <ToastContainer/>
+
         </GrapholioProvider>
     )
 }

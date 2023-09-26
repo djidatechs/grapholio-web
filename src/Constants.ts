@@ -1,15 +1,15 @@
 import {Icontextual} from "./Pages/Application/BlackBoard/test.Contextual.tsx";
 
-export const AutoAction = "__grapholio__auto__action__";
-export const Separator = "/"
+export const AutoAction = "A";
+export const Separator = "_"
 export const BlackBoard_Id = AutoAction+"stage_v2.1"+Separator;
-export const NodeAutoAction = AutoAction+"node_v2.1"+Separator;
-export const EdgeAutoAction = AutoAction+"edge_v2.1"+Separator;
-export const GraphAutoAction = AutoAction+"graph_v2.1"+Separator;
+export const NodeAutoAction = AutoAction+"n"+Separator;
+export const EdgeAutoAction = AutoAction+"e"+Separator;
+export const GraphAutoAction = AutoAction+"g"+Separator;
 export const naturalDashboardWidth = "33%";
 export const CodeDashboardWidth = "50%";
 export const MovingArrow_Id = EdgeAutoAction+"MovingArrow"
-export const ContextualDivId = AutoAction+"contextual_v2.1"+Separator
+export const ContextualDivId = AutoAction+"contextual"+Separator
 export const NodeFastControlId = NodeAutoAction + "NodeFastControlId"
 export const EdgeFastControlId = NodeAutoAction + "NodeFastControlId"
 export const GraphFastControlId = NodeAutoAction + "NodeFastControlId"
@@ -85,6 +85,85 @@ export enum DashboardNodes {
 
 export const DefaultLabelText=()=> parseInt(localStorage.getItem(AutoAction + Separator + "DefaultLabelText") ?? '25');
 
-export const DefaultWeightText=()=>   parseInt(localStorage.getItem(AutoAction+Separator+"DefaultWeightText") ?? "20")
+export const DefaultWeightText=()=>   parseInt(localStorage.getItem(AutoAction+Separator+"DefaultWeightText") ?? "23")
 export const DefaultNodeSize=()=>   parseInt(localStorage.getItem(AutoAction+Separator+"DefaultNodeSize") ?? "30")
 export const DefaultEdgeStrokeWidth=()=>   parseInt(localStorage.getItem(AutoAction+Separator+"DefaultEdgeStrokeWidth") ?? "03")
+
+
+
+
+export const allowed_nodes = ["Program",
+    "FunctionDeclaration",
+    "FunctionExpression",
+    "VariableDeclaration",
+    "ExpressionStatement",
+    "BlockStatement",
+    "IfStatement",
+    "SwitchStatement",
+    "WhileStatement",
+    "DoWhileStatement",
+    "ForStatement",
+    "ForInStatement",
+    "ForOfStatement",
+    "CommentLine",
+    "CommentBlock",
+    "ReturnStatement",
+    "BreakStatement",
+    "ContinueStatement",
+    "EmptyStatement",
+    "VariableDeclarator",
+    "AssignmentExpression",
+    "BinaryExpression",
+    "UnaryExpression",
+    "UpdateExpression",
+    "LogicalExpression",
+    "ConditionalExpression",
+    "CallExpression",
+    "NewExpression",
+    "MemberExpression",
+    "Identifier",
+    "Literal",
+    "ArrayExpression",
+    "ObjectExpression",
+    "Property",
+    "FunctionDeclaration",
+    "ArrowFunctionExpression"]
+
+
+
+export function colorToHex(colorName:string) {
+    const colors  = {
+        black: '#000000',
+        white: '#FFFFFF',
+        red: '#FF0000',
+        green: '#00FF00',
+        blue: '#0000FF',
+        yellow: '#FFFF00',
+        cyan: '#00FFFF',
+        magenta: '#FF00FF',
+        silver: '#C0C0C0',
+        gray: '#808080',
+        maroon: '#800000',
+        olive: '#808000',
+        purple: '#800080',
+        teal: '#008080',
+        navy: '#000080',
+        lime: '#00FF00'
+    };
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    return colors[colorName.toLowerCase()] || colorName;
+}
+
+
+export type circlePos = {
+    center? : {x?:number,y?:number},
+    radius : number,
+}
+export  type rectanglePos = {
+    topLeft?: {x?:number,y?:number} // Top left corner coordinates of the rectangle
+    width?: number; // Width of the rectangle
+    height?: number; // Height of the rectangle
+}
+

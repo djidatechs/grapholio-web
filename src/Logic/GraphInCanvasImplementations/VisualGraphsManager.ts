@@ -31,6 +31,11 @@ export class VisualGraphsManager {
         if (returnId) return visualGraphId
         return this
     }
+    exposeLayer (){return this.current}
+    deleteGraph() {
+        if (this.stage == null) return false ;
+        this.current?.destroy();
+    }
     switchTo(visualGraphId : string , options : {createIfDoesNotExist : boolean} = {createIfDoesNotExist:false}) : VisualGraph|undefined{
         if (this.stage == null) return undefined ;
         if (this.current !== null)  this.current.hide()
@@ -86,7 +91,6 @@ export class VisualGraphsManager {
         if (!this.stage) return
         this.current?.find("Text").map(textNode => {
             const text= textNode as Konva.Text
-            newsize = Math.min(Math.max(20,newsize),40)
             if (text.attrs.id.startsWith(NodeAutoAction) ) text.fontSize(newsize)
         })
         this.current?.draw()
@@ -95,7 +99,6 @@ export class VisualGraphsManager {
         if (!this.stage) return
         this.current?.find("Circle").map(circleNode => {
             const circle= circleNode as Konva.Circle
-            newsize = Math.min(Math.max(20,newsize),60)
             if (circle.attrs.id.startsWith(NodeAutoAction) ) {
                 circle.width(newsize)
                 circle.height(newsize)
