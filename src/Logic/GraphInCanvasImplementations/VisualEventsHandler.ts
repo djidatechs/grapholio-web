@@ -28,7 +28,7 @@ export class VisualEventsHandler {
             event.evt.preventDefault()
         } )
         stage.on("dblclick",()=>{
-            console.log("stage db click")
+
             this.isCurving = false;
             stage.off('mousemove',this.stage_mousemove_ref);
         })
@@ -175,7 +175,7 @@ export class VisualEventsHandler {
     }
     handleEdgeWeightText (text :Konva.Text ) {
         if (!text) return
-        console.log("we are heere")
+
         text.on("dblclick",()=> {
             if (!this.isCurving ) {
                 this._edgeWeightDoubleClick(text)
@@ -366,7 +366,7 @@ export class VisualEventsHandler {
 
     }
     _edgeDoubleClick(arrow : Konva.Arrow ){
-        console.log("edge db click")
+
         this._curveArrow(arrow);
         arrow.moveToBottom()
 
@@ -543,7 +543,7 @@ export class VisualEventsHandler {
         arrow.destroy()
         arrow.getLayer()?.draw();
         arrow.getStage()?.off("mousemove", this.movingArrowUpdate(circle,arrow))
-        console.log("proof ? ")
+
         circle.getStage()?.off("click", ()=>this._MovingArrowDown(circle, arrow) )
     }
 

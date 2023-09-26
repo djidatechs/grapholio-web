@@ -27,7 +27,6 @@ export function MenuStructureComponent({children}: Created) {
     }
 
     const handleClick = () =>{
-        console.log("I am here")
         if ( !contentRef?.current || !controllerRef.current) return
         contentRef.current.style.display = contentRef.current.style.display === "none" ? "block" : "none" ;
         if (contentRef.current.style.display=="none") {
@@ -72,7 +71,6 @@ export function MenuStructureComponent({children}: Created) {
         containerRef.current.style.minWidth = naturalDashboardWidth
         const controlButton = controllerRef.current
         if ( controlButton === null) return
-        console.log("fuck")
         controlButton.addEventListener('mousedown', _handleResizeTrue);
         document.addEventListener('mouseup', _handleResizeFalse );
         controlButton.addEventListener("click", handleClick );
