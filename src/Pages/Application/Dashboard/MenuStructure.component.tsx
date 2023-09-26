@@ -78,12 +78,12 @@ export function MenuStructureComponent({children}: Created) {
         controlButton.addEventListener('mousedown', _handleResizeTrue);
         document.addEventListener('mousemove', _handleMouseMove);
         document.addEventListener('mouseup', _handleResizeFalse );
-        controlButton.addEventListener("click", _handleClick );
+        controlButton.addEventListener("click", ()=>_handleClick );
 
         document.addEventListener('mouseup', async ()=> {
-            setTimeout(function () {
-                document.addEventListener("click", ()=>controlButton.addEventListener("click", _handleClick ) );
-            }, 0); // 1000 milliseconds = 1 second
+        document.addEventListener("click", ()=>controlButton.addEventListener("click", _handleClick ) );
+
+        controlButton.click()
         });
 
         return () => {
