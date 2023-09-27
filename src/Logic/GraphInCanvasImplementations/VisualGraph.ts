@@ -77,6 +77,8 @@ export class VisualGraph {
         }
         if (node1_pos == null || node2_pos == null ||!radius.node1 || !radius.node2) return  {Edge:undefined, weight:undefined}
         const {arrowStart,arrowMiddle,arrowEnd} = MathCalculation_Update2dPointsLink({node1_pos,node2_pos},radius,undefined)
+        if(!edge.color ) edge.color = "#FFFFFF"
+
         const Edge = this._Arrow(edge,arrowStart,arrowMiddle,arrowEnd)
 
         Edge.setAttr("node1",edge.source)
@@ -236,14 +238,20 @@ export class VisualGraph {
             x: points[2],
             y: points[3],
         }
+        const  dx = V2dp.node2_pos.x - V2dp.node1_pos.x;
+        const  dy = V2dp.node2_pos.y - V2dp.node1_pos.y;
+        const  angle = Math.atan2(dy, dx);
+        const  px = middlePoints.x + 20 * Math.sin(angle);
+        const  py = middlePoints.y - 20 * Math.cos(angle);
+
         const text:Konva.Text  = new Konva.Text({
             id:edge.id,
             text:""+(edge.weight||1).toString()+"",
             fill:'yellow' ,
             stroke:"yellow",
             strokeWidth: 0.5,
-            x: middlePoints.x ,
-            y: middlePoints.y-20 ,
+            x: px ,
+            y: py,
 
             fontSize:edge.text_size,
 

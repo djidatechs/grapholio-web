@@ -477,6 +477,7 @@ export class VisualEventsHandler {
             const points = edge.points();
             //const originalDistance = Math.sqrt(Math.pow(points[points.length - 2] - points[0], 2) + Math.pow(points[points.length - 1] - points[1], 2));
 
+
             if (points.length === 6) {
                 const S_arrowMiddle = {
                     x: points[2],
@@ -507,9 +508,15 @@ export class VisualEventsHandler {
                     arrowEnd.x,
                     arrowEnd.y,
                 ])
+                const dx = arrowEnd.x - arrowStart.x;
+                const dy = arrowEnd.y - arrowStart.y;
+                const angle = Math.atan2(dy, dx);
+                const px = S_arrowMiddle.x + 20 * Math.sin(angle);
+                const py = S_arrowMiddle.y - 20 * Math.cos(angle);
 
-                weight.setAttr("x", S_arrowMiddle.x)
-                weight.setAttr("y", S_arrowMiddle.y - 20)
+
+                weight.setAttr("x", px)
+                weight.setAttr("y", py)
 
             } else {
                 const {arrowStart, arrowMiddle, arrowEnd} = MathCalculation_Update2dPointsLink({node1_pos, node2_pos}, radius, undefined)
@@ -519,8 +526,13 @@ export class VisualEventsHandler {
                     arrowEnd.x / scale.x,
                     arrowEnd.y / scale.y,
                 ])
-                weight.setAttr("x", arrowMiddle.x / scale.x)
-                weight.setAttr("y", (arrowMiddle.y / scale.x) - 20)
+                const dx = arrowEnd.x - arrowStart.x;
+                const dy = arrowEnd.y - arrowStart.y;
+                const angle = Math.atan2(dy, dx);
+                const px = arrowMiddle.x + (20 *scale.x) * Math.sin(angle);
+                const py = arrowMiddle.y - (20 *scale.x) * Math.cos(angle);
+                weight.setAttr("x", px / scale.x)
+                weight.setAttr("y", py / scale.x)
             }
             weight.moveToTop()
 

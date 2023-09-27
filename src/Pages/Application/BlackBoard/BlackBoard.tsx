@@ -1,10 +1,11 @@
-import { BlackBoard_Id, OperationDash} from "../../../Constants.ts";
-import {useEffect} from "react";
+import { BlackBoard_Id} from "../../../Constants.ts";
+import {useEffect, useRef} from "react";
 import {useGrapholio} from "../Context.tsx";
 import TestContextual from "./test.Contextual.tsx";
-import {EdgeFastControl, GraphFastControl, NodeFastControl} from "./ContextualTypesEnums.ts";
+import {EdgeFastControl,  NodeFastControl} from "./ContextualTypesEnums.ts";
+import {BiSolidColorFill} from "react-icons/bi";
 
-function FastControl() {
+function FastControl({parent}:{parent:any}) {
     const {grapholioManager : manager} = useGrapholio() ;
     return (
         <div className="z-40 absolute text-black font-bold select-none">
@@ -24,12 +25,6 @@ function FastControl() {
                 }}
                 className="py-1 mr-2 px-3 bg-green-600  cursor-pointer hover:bg-green-900 transition duration-300 ease-out">Node</span>
             <span
-                onContextMenu={(event)=>manager.handleFastControl(event, GraphFastControl)}
-                onClick={()=> {
-                    manager.useOperations()?.operateOn(OperationDash.INFO);
-                }}
-                className="py-1 mr-2 px-3 bg-green-600  cursor-pointer hover:bg-green-900 transition duration-300 ease-out">Graph</span>
-            <span
                 onClick={()=> {
                     manager.zoomMinus()
                 }}
@@ -39,11 +34,22 @@ function FastControl() {
                     manager.zoomPlus()
                 }}
                 className="py-1 px-3 bg-green-600  cursor-pointer hover:bg-green-900 transition duration-300 ease-out">+</span>
+
+            <span
+                onClick={()=> {
+                    const newstate = manager.themeToggle()
+                    if (newstate && parent.current?.style) parent.current.style.backgroundColor = "white"
+                    if (!newstate && parent.current?.style) parent.current.style.backgroundColor = ""
+                }}
+                className="py-1 px-3 m-2 bg-green-600  cursor-pointer hover:bg-green-900 transition duration-300 ease-out">
+                <BiSolidColorFill className={"inline h-5 w-5"}/>
+            </span>
         </div>
         );
 }
 
 function BlackBoard() {
+    const ref = useRef<HTMLDivElement>(null)
     const {grapholioManager : manager,operations,blackBoardMenu} = useGrapholio() ;
 
     useEffect(() => {
@@ -56,11 +62,11 @@ function BlackBoard() {
 
     }, []);
     return (
-        <div className="p-4 -z-1 text-white w-full h-full overflow-hidden" style={{position: "relative"}}>
+        <div ref={ref} className="p-4 -z-1 text-white w-full h-full overflow-hidden" style={{position: "relative"}}>
             <div className="overflow-auto  scrollbar-thin  scrollbar-thumb-green-600 "
                  style={{height: 'calc(100vh - 100px)'}}>
                 <div>
-                    <FastControl/>
+                    <FastControl parent={ref}/>
                     <div id={BlackBoard_Id}/>
                     <TestContextual {...blackBoardMenu.props}/>
                 </div>

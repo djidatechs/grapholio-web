@@ -23,6 +23,16 @@ export class VisualGraphsManager {
         });
         const layer = new Konva.Layer()
         layer.setAttr("selectTool",true);
+
+        const backgroundRect = new Konva.Rect({
+            width: this.stage.width(),
+            height: this.stage.height(),
+            fill: '#FFFFFF',
+            visible:false,
+        })
+        backgroundRect.setAttr("theme",true)
+        layer.add(backgroundRect)
+
         this.stage.add(layer)
         return this.stage ;
     }
@@ -194,6 +204,30 @@ export class VisualGraphsManager {
         return this.current?.toJSON()
     }
 
+    themeToggle(){
+        console.log("hello")
+        console.log("world")
+        console.log(this.stage)
+        const rect = this.stage?.find("Rect").find(rec=>rec.getAttr("theme") === true)
+        console.log({rect})
+        const newstate = rect?.isVisible() !== undefined && !rect.isVisible()
+        if (this.current){
+            const text = this.current.find("Text").find(text=>text.attrs.id.startsWith(EdgeAutoAction))
+            if (text && newstate) {
+                (text as Konva.Text).attrs.fill = "red";
+
+                (text as Konva.Text).stroke("red")
+            }
+            if (text && !newstate) {
+                (text as Konva.Text).attrs.fill = "yellow";
+
+                (text as Konva.Text).stroke("yellow")
+            }
+        }
+        rect?.visible(newstate)
+        return newstate
+
+    }
 
 
 

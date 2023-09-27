@@ -283,7 +283,6 @@ export class GrapholioManager {
         if (g.hasEdge(id)) return EdgeIdExist();
         attrs.id = id
         if(! attrs.weight)  attrs.weight = 1
-        if(!attrs.color) attrs.color = "#FFFFFF"
         if( ! attrs?.text_size)  attrs.text_size = DefaultWeightText()
         try {
             this.DetailedEdgeAddingCases(g, attrs, id, node1, node2);
@@ -322,9 +321,9 @@ export class GrapholioManager {
         for (let i = 0; i < shuffledNodes.length; i++) {
             for (let j = i + 1; j < shuffledNodes.length; j++) {
                 if (!graph.hasEdge(shuffledNodes[i], shuffledNodes[j])) {
-                    return this.addEdge(shuffledNodes[i], shuffledNodes[j], { color: "#FFFFFF", weight: 1 }, false);
+                    return this.addEdge(shuffledNodes[i], shuffledNodes[j], { weight: 1 }, false);
                 } else if (!graph.hasEdge(shuffledNodes[j], shuffledNodes[i])) {
-                    return this.addEdge(shuffledNodes[j], shuffledNodes[i], { color: "#FFFFFF", weight: 1 }, false);
+                    return this.addEdge(shuffledNodes[j], shuffledNodes[i], { weight: 1 }, false);
                 }
             }
         }
@@ -714,6 +713,9 @@ export class GrapholioManager {
     }
     graph_script(){
          return this.scripts.get(this.selected_graph_id||'') || '//code here'
+    }
+    themeToggle(){
+        return this.blackboard.themeToggle()
     }
 
     onNodeSizeChange (){

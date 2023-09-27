@@ -12,7 +12,7 @@ export default function AppWrapper () {
             <div className={"sm:hidden overflow-hidden absolute w-screen h-screen bg-black opacity-70 z-[999] text-xl font-bold"}><div className={"absolute w-full text-center top-1/2"}>Sorry :( this application is for wider screens</div></div>
             <div className={"bg-black overflow-hidden select-none h-screen min-h-screen max-h-screen "}>
                 <Navbar/>
-                <div id={"LAYOUT_ID"} className="mt-[68px] max-h-[calc(100vh-68px)] ">
+                <div id={"LAYOUT_ID"} className="mt-[65px] max-h-[calc(100vh-68px)] ">
                     <div className="flex">
                         <Dashboard/>
                         <BlackBoard/>
@@ -75,6 +75,7 @@ function Navbar () {
                             dlAnchorElem.click();
                         } }
                     >Export</span>
+                    <span className="text-white inline-block ml-4 font-bold cursor-pointer truncate">Download as Image</span>
                     <span className="text-white inline-block ml-4 font-bold cursor-pointer truncate">Documentation</span>
                     <span className="text-white inline-block ml-4 font-bold cursor-pointer truncate">Support</span>
                 </div>
