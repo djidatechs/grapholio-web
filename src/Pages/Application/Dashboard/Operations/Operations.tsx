@@ -3,10 +3,13 @@ import {OperationDash} from "../../../../Constants.ts";
 import NodesOperations from "./NodesOperations.tsx";
 import InfoOperations from "./InfoOperations.tsx";
 import EdgesOperations from "./EdgesOperations.tsx";
+
+import {lazy, Suspense, useEffect, useRef} from "react";
+import Loading from "../../../Loading.tsx";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import CodeOperations from "./CodeOperations.jsx";
-import {useEffect, useRef} from "react";
+const CodeOperations = lazy(() => import("./CodeOperations.jsx"));
+
 
 function _Operations() {
     const {operationDash,RequestValue} = useGrapholio().operations
@@ -16,7 +19,11 @@ function _Operations() {
         case  OperationDash.INFO : return <InfoOperations/>
         case  OperationDash.NODES : return <NodesOperations/>
         case  OperationDash.EDGES : return <EdgesOperations/>
-        case  OperationDash.CODE : return <CodeOperations/>
+        case  OperationDash.CODE : return (
+            <Suspense fallback={<Loading/>}>
+            <CodeOperations/>
+            </Suspense>
+        )
         default : return <></>
     }
     return <></>

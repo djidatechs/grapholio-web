@@ -18,7 +18,7 @@ type IDropdownElement = {
 
 }
 function DropdownElement({label , action} : IDropdownElement) {
-    return <li onClick={action}><a className={"hover:bg-black"}>{label}</a></li>;
+    return <li onClick={action}><a className={"hover:bg-black w-56"}>{label}</a></li>;
 }
 
 export default function GraphTabs () {
@@ -62,12 +62,12 @@ export default function GraphTabs () {
                                 </label>
                             </li>
                             <>
-                            <DropdownElement label="DirectedGraph" action={()=>newGraph([Directed,NoMultiGraph])}/>
-                            <DropdownElement label="UndirectedGraph" action={()=>newGraph([UnDirected,NoMultiGraph])}/>
-                            <DropdownElement label="MixedGraph" action={()=>newGraph([Mixed,NoMultiGraph])}/>
-                            <DropdownElement label="MultiDirectedGraph" action={()=>newGraph([Directed,MultiGraph])}/>
-                            <DropdownElement label="MultiUndirectedGraph" action={()=>newGraph([UnDirected,MultiGraph])}/>
-                            <DropdownElement label="MultiMixedGraph" action={()=>newGraph([Mixed,MultiGraph])}/>
+                            <DropdownElement label="Directed Graph" action={()=>newGraph([Directed,NoMultiGraph])}/>
+                            <DropdownElement label="Undirected Graph" action={()=>newGraph([UnDirected,NoMultiGraph])}/>
+                            <DropdownElement label="Mixed Graph" action={()=>newGraph([Mixed,NoMultiGraph])}/>
+                            <DropdownElement label="Multi Directed Graph" action={()=>newGraph([Directed,MultiGraph])}/>
+                            <DropdownElement label="Multi Undirected Graph" action={()=>newGraph([UnDirected,MultiGraph])}/>
+                            <DropdownElement label="Multi Mixed Graph" action={()=>newGraph([Mixed,MultiGraph])}/>
                             </>
                         </ul>
                     </div>

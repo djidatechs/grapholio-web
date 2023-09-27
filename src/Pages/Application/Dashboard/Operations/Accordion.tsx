@@ -62,6 +62,7 @@ function CollapseElement({child}:{child:any}) {
     if ( ! isValidElement(child)) return <></>
 
     return <div
+        key={child.key}
         id={"collapseId"}
         ref={ref}
          tabIndex={0}

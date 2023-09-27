@@ -1,7 +1,7 @@
 import {Accoradations} from "../../../../Constants.ts";
 import {useGrapholio} from "../../Context.tsx";
 import Accordion, {IAccorditionOptions} from "./Accordion.tsx";
-import {useEffect, useState} from "react";
+import {memo, useEffect, useState} from "react";
 
 
 
@@ -30,20 +30,20 @@ function EdgeDetails ({title,defaultVisible,accordation}:IAccorditionOptions){
 
 
 
-    return <div>
+    return <div key={title}>
         <div className={"space-y-5"}>
             <h1>Edge Properties</h1>
             <div className="form-control my-2 w-full">
                 <label className="input-group w-full">
                     <span>ID</span>
-                    <input type="text" value={edgeVal} className="input input-bordered w-72 ml-auto mr-0" />
+                    <input type="text" value={edgeVal} readOnly className="input input-bordered w-72 ml-auto mr-0" />
                 </label>
             </div>
             <div className="form-control my-2 w-full">
                 <label className="input-group w-full">
                     <span>Color</span>
                     <input type="color"
-                           onInput={(e)=>manager.updateEdgeAttr(edgeVal,"color",e.currentTarget.value)}
+                           onChange={(e)=>manager.updateEdgeAttr(edgeVal,"color",e.currentTarget.value)}
                            value={getPropableEdgeAttributes("color")} className="input input-ghost   p-0  w-72 ml-auto mr-0" />
                 </label>
             </div>
@@ -51,7 +51,7 @@ function EdgeDetails ({title,defaultVisible,accordation}:IAccorditionOptions){
                 <label className="input-group w-full">
                     <span>Weight</span>
                     <input type="number"
-                           onInput={(e)=>manager.updateEdgeAttr(edgeVal,"weight",e.currentTarget.value)}
+                           onChange={(e)=>manager.updateEdgeAttr(edgeVal,"weight",e.currentTarget.value)}
                            value={getPropableEdgeAttributes("weight")} className="input input-bordered w-72 ml-auto mr-0" />
                 </label>
             </div>
@@ -59,7 +59,7 @@ function EdgeDetails ({title,defaultVisible,accordation}:IAccorditionOptions){
                 <label className="input-group w-full">
                     <span>Text Size</span>
                     <input type="number"
-                           onInput={(e)=>manager.updateEdgeAttr(edgeVal,"text_size",e.currentTarget.value)}
+                           onChange={(e)=>manager.updateEdgeAttr(edgeVal,"text_size",e.currentTarget.value)}
                            value={getPropableEdgeAttributes("text_size")} className="input input-bordered w-72 ml-auto mr-0" />
                 </label>
             </div>
@@ -70,31 +70,31 @@ function EdgeDetails ({title,defaultVisible,accordation}:IAccorditionOptions){
         </div>
     </div>
 }
+const MemoEdgeLine = memo(EdgeLine)
+
 function InformationTable ({title,defaultVisible}:IAccorditionOptions) {
     const {grapholioManager:manager} = useGrapholio()
     if (!title) title="Option";
     if (!defaultVisible) defaultVisible=false;
-    useEffect(() => {
-    }, []);
+
     return (
-            <div className="max-h-[300px] overflow-x-auto ">
+            <div key={title} className="max-h-[300px] overflow-x-auto ">
                 <table className="table bg-neutral-800  table-pin-rows">
                     <thead>
-                    <tr>
-                        <td>Edge Id</td>
-                        <td>node1</td>
-                        <td>node2</td>
-                        <td>weight</td>
-                        <td>Directed</td>
+                    <tr key={"edgeidentif"}>
+                        <td key={"Edge Id"}>Edge Id</td>
+                        <td key={"node1"}>node1</td>
+                        <td key={"node2"}>node2</td>
+                        <td key={"weight"}>weight</td>
+                        <td key={"Directed"}>Directed</td>
 
                     </tr>
                     </thead>
-                    <tbody>
+                    <tbody key={"tbody edge"}>
 
                     {
 
-                        manager.getCurrentGraph()?.edges().map(edge=>{
-                            const id = edge
+                        manager.getCurrentGraph()?.edges().map((edge)=>{
                             const [node1,node2] = manager.getCurrentGraph()?.extremities(edge) || [];
                             if (!node1 || !node2) return
 
@@ -104,30 +104,38 @@ function InformationTable ({title,defaultVisible}:IAccorditionOptions) {
                             const weight = manager.getCurrentGraph()?.getEdgeAttribute(edge,"weight");
                             const directed = manager.getCurrentGraph()?.isDirected(edge)
 
-                            return (
-                                <tr key={edge}>
-                                    <td className={"font-bold cursor-pointer hover:bg-green-600"}
-                                        onMouseEnter={()=>manager.HighlightEdge(edge,{turn:"on"})}
-                                        onMouseLeave={()=>manager.HighlightEdge(edge,{turn:"off"})}
-                                    >{id}</td>
-                                    <td className={"font-bold cursor-pointer hover:bg-green-600"}
-                                        onMouseEnter={()=>manager.HighlightNode(node1,{turn:"on"})}
-                                        onMouseLeave={()=>manager.HighlightNode(node1,{turn:"off"})}
-                                    >{node1Display} {(node1 != node1Display) && (" id("+node1+")")}</td>
-                                    <td className={"font-bold cursor-pointer hover:bg-green-600"}
-                                        onMouseEnter={()=>manager.HighlightNode(node2,{turn:"on"})}
-                                        onMouseLeave={()=>manager.HighlightNode(node2,{turn:"off"})}
-                                    >{node2Display} {(node2 != node2Display) && (" id("+node2+")")}</td>
-                                    <td>{weight === undefined ? "-": weight}</td>
-                                    <td>{directed ? "yes" : "no"}</td>
-                                </tr>
-                            )
+                            return <MemoEdgeLine key={edge} edge={edge} node1={node1} node2={node2}
+                                             node1Display={node1Display} node2Display={node2Display}
+                                             weight={weight} directed={Boolean(directed)}/>
                         })
                     }
                     </tbody>
                 </table>
             </div>
     );
+}
+
+
+function EdgeLine ({edge,node1,node2,node1Display,node2Display,weight,directed}:{edge:string,node1:string,node2:string,node1Display:string,node2Display:string,weight:string,directed:boolean}){
+    const {grapholioManager : manager} = useGrapholio()
+    return (
+        <tr key={edge}>
+            <td className={"font-bold cursor-pointer hover:bg-green-600"}
+                onMouseEnter={()=>manager.HighlightEdge(edge,{turn:"on"})}
+                onMouseLeave={()=>manager.HighlightEdge(edge,{turn:"off"})}
+            >{edge}</td>
+            <td className={"font-bold cursor-pointer hover:bg-green-600"}
+                onMouseEnter={()=>manager.HighlightNode(node1,{turn:"on"})}
+                onMouseLeave={()=>manager.HighlightNode(node1,{turn:"off"})}
+            >{node1Display} {(node1 != node1Display) && (" id("+node1+")")}</td>
+            <td className={"font-bold cursor-pointer hover:bg-green-600"}
+                onMouseEnter={()=>manager.HighlightNode(node2,{turn:"on"})}
+                onMouseLeave={()=>manager.HighlightNode(node2,{turn:"off"})}
+            >{node2Display} {(node2 != node2Display) && (" id("+node2+")")}</td>
+            <td>{weight === undefined ? "-": weight}</td>
+            <td>{directed ? "yes" : "no"}</td>
+        </tr>
+    )
 }
 function EdgesOperations() {
 

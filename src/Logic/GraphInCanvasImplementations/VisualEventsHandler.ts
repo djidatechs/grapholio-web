@@ -185,6 +185,7 @@ export class VisualEventsHandler {
         })
 
     }
+
     _nodeDragBound(group : Konva.Group){
         group.dragBoundFunc((pos)=> {
             const stage = group.getStage()

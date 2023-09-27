@@ -2,7 +2,7 @@ import {useGrapholio} from "../../Context.tsx";
 import {BsCircleFill} from "react-icons/bs";
 import Accordion, {IAccorditionOptions} from "./Accordion.tsx";
 import {Accoradations} from "../../../../Constants.ts";
-import {useEffect, useState} from "react";
+import {memo, useEffect, useState} from "react";
 //import {useEffect} from "react";
 
 export function NodeDetails ({title,defaultVisible,accordation}:IAccorditionOptions){
@@ -46,14 +46,14 @@ export function NodeDetails ({title,defaultVisible,accordation}:IAccorditionOpti
             <div className="form-control my-2 w-full">
                 <label className="input-group w-full">
                     <span>ID</span>
-                    <input type="text" value={nodeVal} className="input input-bordered w-72 ml-auto mr-0" />
+                    <input type="text" value={nodeVal} readOnly className="input input-bordered w-72 ml-auto mr-0" />
                 </label>
             </div>
             <div className="form-control my-2 w-full">
                 <label className="input-group w-full">
                     <span>Label</span>
                     <input type="text"
-                           onInput={(e)=>manager.updateNodeAttr(nodeVal,"label",e.currentTarget.value)}
+                           onChange={(e)=>manager.updateNodeAttr(nodeVal,"label",e.currentTarget.value)}
                            value={getPropableNodeAttributes("label")} className="input input-bordered w-72 ml-auto mr-0" />
                 </label>
             </div>
@@ -61,7 +61,7 @@ export function NodeDetails ({title,defaultVisible,accordation}:IAccorditionOpti
                 <label className="input-group w-full">
                     <span>Color</span>
                     <input type="color"
-                           onInput={(e)=>manager.updateNodeAttr(nodeVal,"color",e.currentTarget.value)}
+                           onChange={(e)=>manager.updateNodeAttr(nodeVal,"color",e.currentTarget.value)}
                            value={getPropableNodeAttributes("color")} className="input input-ghost   p-0  w-72 ml-auto mr-0" />
                 </label>
             </div>
@@ -69,7 +69,7 @@ export function NodeDetails ({title,defaultVisible,accordation}:IAccorditionOpti
                 <label className="input-group w-full">
                     <span>Size</span>
                     <input type="number"
-                           onInput={(e)=>manager.updateNodeAttr(nodeVal,"size",e.currentTarget.value)}
+                           onChange={(e)=>manager.updateNodeAttr(nodeVal,"size",e.currentTarget.value)}
                            value={getPropableNodeAttributes("size")} className="input input-bordered w-72 ml-auto mr-0" />
                 </label>
             </div>
@@ -77,7 +77,7 @@ export function NodeDetails ({title,defaultVisible,accordation}:IAccorditionOpti
                 <label className="input-group w-full">
                     <span>Text Size</span>
                     <input type="number"
-                           onInput={(e)=>manager.updateNodeAttr(nodeVal,"text_size",e.currentTarget.value)}
+                           onChange={(e)=>manager.updateNodeAttr(nodeVal,"text_size",e.currentTarget.value)}
                            value={getPropableNodeAttributes("text_size")} className="input input-bordered w-72 ml-auto mr-0" />
                 </label>
             </div>
@@ -88,12 +88,15 @@ export function NodeDetails ({title,defaultVisible,accordation}:IAccorditionOpti
         </div>
     </div>
 }
+
+const MemoNodeLine = memo(NodeLine)
 function InformationTable ({title,defaultVisible,accordation}:IAccorditionOptions){
 
     if (!title) title="Option";
     if (!defaultVisible) defaultVisible=false;
     if (!accordation) accordation=undefined
     const {grapholioManager:manager,operations} = useGrapholio()
+
 
     return operations.RequestValue &&(
         <div className="max-h-[300px] overflow-x-auto ">
@@ -110,35 +113,39 @@ function InformationTable ({title,defaultVisible,accordation}:IAccorditionOption
                 <tbody>
 
                 {
-
                     manager.getCurrentGraph()?.nodes().map(node=>{
                         const display = manager.getCurrentGraph()?.getNodeAttribute(node,"label");
-                        const degree = manager.getCurrentGraph()?.degree(node);
+                        const degree = manager.getCurrentGraph()?.degree(node) || 0;
                         const color = manager.getCurrentGraph()?.getNodeAttribute(node,"color");
-
-                        return (
-                            <tr key={node}>
-                                <td className={"font-bold cursor-pointer hover:bg-green-600"}
-                                    onMouseEnter={()=>manager.HighlightNode(node,{turn:"on"})}
-                                    onMouseLeave={()=>manager.HighlightNode(node,{turn:"off"})}
-                                >{node}</td>
-                                {//<td></td>
-                                     }
-                                <td><input
-                                    type={"text"}
-                                    onInput={(e)=>manager.updateNodeAttr(node,"label",e.currentTarget.value)}
-                                    className={"w-full border-none p-0 m-0"} value={display.toString()}/>
-                                </td>
-
-                                <td>{degree || 0}</td>
-                                <td><BsCircleFill style={{color:color}} className={"w-5 h-5"} /></td>
-                            </tr>
-                        )
+                        return  <MemoNodeLine key={node} node={node} color={color} degree={degree} display={display}/>
                     })
                 }
                 </tbody>
             </table>
         </div>
+    )
+}
+
+function NodeLine ({node,degree,color,display}:{node:string,degree:number,color:string,display:string}){
+    const {grapholioManager:manager} = useGrapholio()
+
+    return (
+        <tr key={node}>
+            <td className={"font-bold cursor-pointer hover:bg-green-600"}
+                onMouseEnter={()=>manager.HighlightNode(node,{turn:"on"})}
+                onMouseLeave={()=>manager.HighlightNode(node,{turn:"off"})}
+            >{node}</td>
+            {//<td></td>
+            }
+            <td><input
+                type={"text"}
+                onChange={(e)=>manager.updateNodeAttr(node,"label",e.currentTarget.value)}
+                className={"w-full border-none p-0 m-0"} value={display.toString()}/>
+            </td>
+
+            <td>{degree || 0}</td>
+            <td><BsCircleFill style={{color:color}} className={"w-5 h-5"} /></td>
+        </tr>
     )
 }
 function NodesOperations() {

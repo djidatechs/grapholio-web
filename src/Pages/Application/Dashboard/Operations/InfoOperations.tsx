@@ -31,7 +31,7 @@ function InfoTable({title,defaultVisible}:IAccorditionOptions) {
             <td>Name</td>
             <td className={"py-0 m-0"}>
                 <input
-                    onInput={(e)=> {
+                    onChange={(e)=> {
                         manager.getCurrentGraph()?.setAttribute("name", e.currentTarget.value)
                         application.apply();
                     }}

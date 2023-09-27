@@ -125,6 +125,8 @@ export class GrapholioManager {
         g?.clear();
         this.watch.unwatchGraph(this.blackboard.exposeLayer());
         this.blackboard.clear();
+        this.useOperations()?.SentUpdateRequest();
+
 
     }
     clickNode (nodeId :string){
@@ -717,9 +719,8 @@ export class GrapholioManager {
     themeToggle(){
         return this.blackboard.themeToggle()
     }
-
-    onNodeSizeChange (){
-
+    saveImage (){
+        return this.blackboard.saveImage();
     }
 
 }

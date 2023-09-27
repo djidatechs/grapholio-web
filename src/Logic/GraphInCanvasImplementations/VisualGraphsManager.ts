@@ -209,24 +209,38 @@ export class VisualGraphsManager {
         console.log("world")
         console.log(this.stage)
         const rect = this.stage?.find("Rect").find(rec=>rec.getAttr("theme") === true)
-        console.log({rect})
         const newstate = rect?.isVisible() !== undefined && !rect.isVisible()
         if (this.current){
-            const text = this.current.find("Text").find(text=>text.attrs.id.startsWith(EdgeAutoAction))
-            if (text && newstate) {
+            this.current.find("Text").map(text=> {
+                if (!text.attrs.id.startsWith(EdgeAutoAction)) return
+            if  (newstate) {
                 (text as Konva.Text).attrs.fill = "red";
-
                 (text as Konva.Text).stroke("red")
             }
-            if (text && !newstate) {
+            if (!newstate) {
                 (text as Konva.Text).attrs.fill = "yellow";
-
                 (text as Konva.Text).stroke("yellow")
             }
-        }
+
+        })
         rect?.visible(newstate)
         return newstate
 
+    }}
+
+    saveImage(){
+        const irect = this.current?.getClientRect()
+        console.log(irect)
+        if (!irect || !irect.width || !irect.height) return
+        const gr = new Konva.Group({irect})
+        const g = this.current?.children?.map(c=>c.clone() as Konva.Group |Konva.Shape)
+        if (g?.length)  g.map(c=>gr.add(c))
+        this.current?.add(gr);
+        gr.draw()
+        const data = gr.toDataURL({ pixelRatio: 3 })
+        gr.destroy()
+
+        return  data
     }
 
 

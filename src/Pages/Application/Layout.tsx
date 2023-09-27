@@ -4,7 +4,7 @@ import BlackBoard from "./BlackBoard/BlackBoard.tsx";
 import GrapholioProvider, {useGrapholio} from "./Context.tsx";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import {ChangeEvent,  useRef} from "react";
+import {ChangeEvent, useRef} from "react";
 
 export default function AppWrapper () {
     return (
@@ -13,10 +13,7 @@ export default function AppWrapper () {
             <div className={"bg-black overflow-hidden select-none h-screen min-h-screen max-h-screen "}>
                 <Navbar/>
                 <div id={"LAYOUT_ID"} className="mt-[65px] max-h-[calc(100vh-68px)] ">
-                    <div className="flex">
-                        <Dashboard/>
-                        <BlackBoard/>
-                    </div>
+                   <Boards/>
                 </div>
             </div>
             <ToastContainer/>
@@ -25,6 +22,15 @@ export default function AppWrapper () {
     )
 }
 
+function Boards () {
+
+    return (
+        <div className="flex">
+            <Dashboard/>
+            <BlackBoard/>
+        </div>
+    )
+}
 
 
 
@@ -32,6 +38,16 @@ export default function AppWrapper () {
 function Navbar () {
     const inputRef = useRef<HTMLInputElement>(null)
     const {grapholioManager:manager,application} = useGrapholio()
+
+    function downloadURI(uri:string, name:string) {
+        var link : HTMLAnchorElement|undefined = document.createElement('a');
+        link.download = name;
+        link.href = uri;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        link = undefined
+    }
 
     const handleChange = (e:ChangeEvent<HTMLInputElement>) => {
         if (e?.target?.files === null ) return;
@@ -75,7 +91,14 @@ function Navbar () {
                             dlAnchorElem.click();
                         } }
                     >Export</span>
-                    <span className="text-white inline-block ml-4 font-bold cursor-pointer truncate">Download as Image</span>
+                    <span
+                        onClick={()=> {
+                            const saveuri=  manager.saveImage()
+                            const name = manager.getCurrentGraph()?.getAttribute("name")
+                            if (saveuri && typeof name === "string")
+                                downloadURI(saveuri, name )
+                        }}
+                        className="text-white inline-block ml-4 font-bold cursor-pointer truncate">Download as Image</span>
                     <span className="text-white inline-block ml-4 font-bold cursor-pointer truncate">Documentation</span>
                     <span className="text-white inline-block ml-4 font-bold cursor-pointer truncate">Support</span>
                 </div>

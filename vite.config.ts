@@ -6,5 +6,24 @@ export default defineConfig({
   plugins: [react()],
   optimizeDeps: {
     include: ['react-codemirror2', 'codemirror'],
+  },
+  build: {
+    rollupOptions: {
+      plugins: [
+        {
+          name: 'retain-modules',
+          transform(code, id) {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            if (id.includes('src/Logic/GraphlolioScriptLanguage/GCMrefactor.ts')) {
+              return {
+                code,
+                moduleSideEffects: 'no-treeshake', // Prevent treeshaking
+              };
+            }
+          },
+        },
+      ],
+    }
   }
 })
