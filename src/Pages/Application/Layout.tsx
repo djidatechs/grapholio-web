@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import {ChangeEvent, useRef} from "react";
 
 export default function AppWrapper () {
+
     return (
         <GrapholioProvider>
             <div className={"sm:hidden overflow-hidden absolute w-screen h-screen bg-black opacity-70 z-[999] text-xl font-bold"}><div className={"absolute w-full text-center top-1/2"}>Sorry :( this application is for wider screens</div></div>

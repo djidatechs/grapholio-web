@@ -63,6 +63,14 @@ function CodeOperations() {
             const  page_h = pageContainer.current?.clientHeight ;
             logContainer.current.style.height = (page_h - log_h -30) +"px"
 
+            fetch("https://grapholio-web-api.onrender.com/compiler", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({text: "//nothing"})
+            }).then(() => console.log("Givos ... "))
+
         },[])
 
 
