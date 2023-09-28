@@ -59,9 +59,13 @@ function CodeOperations() {
         }, []);
 
         useEffect(()=>{
+            container.current.style.height =  "44%"
+
             const  log_h = logContainer.current?.offsetTop ;
             const  page_h = pageContainer.current?.clientHeight ;
             logContainer.current.style.height = (page_h - log_h -30) +"px"
+
+
 
             fetch("https://grapholio-web-api.onrender.com/compiler", {
                 method: 'POST',
@@ -109,7 +113,7 @@ function CodeOperations() {
                         className={"flex-auto h-7 w-7  text-primary hover:text-secondary hover:scale-105 transition duration-200 cursor-pointer"}/>
                 </div>
                 <div className="divider ">Code</div>
-                <div ref={container} className={" w-full h-[44%]"}>
+                <div ref={container} className={" w-full h-[44%] bg-[#282a36]"}>
 
                     <CodeMirror
                         className={" text-[16px] overflow-hidden p-0"}
