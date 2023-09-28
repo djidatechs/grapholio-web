@@ -19,10 +19,7 @@ function _Operations() {
         case  OperationDash.INFO : return <InfoOperations/>
         case  OperationDash.NODES : return <NodesOperations/>
         case  OperationDash.EDGES : return <EdgesOperations/>
-        case  OperationDash.CODE : return (
-            <Suspense fallback={<Loading/>}>
-            <CodeOperations/>
-            </Suspense>
+        case  OperationDash.CODE : return (<Suspense fallback={<Loading/>}><CodeOperations/></Suspense>
         )
         default : return <></>
     }

@@ -32,6 +32,7 @@ export class VisualGraphsManager {
         })
         backgroundRect.setAttr("theme",true)
         layer.add(backgroundRect)
+        backgroundRect.moveToBottom()
 
         this.stage.add(layer)
         return this.stage ;

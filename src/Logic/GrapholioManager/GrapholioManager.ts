@@ -18,7 +18,7 @@ import {
     NodeVisualIdentity
 } from "../GraphInCanvasImplementations/VisualGraph.ts";
 import {VisualEventsHandler} from "../GraphInCanvasImplementations/VisualEventsHandler.ts";
-import {CannotAddEdge, EdgeIdExist, ErrorMessage, NodeIdExist} from "./Messages.ts";
+import {CannotAddEdge, EdgeIdExist, ErrorMessage, NodeIdExist, ToastInfoWithAction} from "./Messages.ts";
 import {ContextualEnumsTypes} from "../../Pages/Application/BlackBoard/ContextualTypesEnums.ts";
 import {generateCircleCoordinates, generateRectangleCoordinates, numberToAlphabet} from "../Shared.ts";
 import Konva from "konva";
@@ -63,7 +63,7 @@ export class GrapholioManager {
         return this.operations
     }
 
-    handleFastControl(event: React.MouseEvent<HTMLSpanElement>, Enumeration: ContextualEnumsTypes) {
+    handleFastControl(event: any , Enumeration: ContextualEnumsTypes) {
         this.watch.handleFastControl(event,Enumeration)
     }
     useBlackBoardMenu () {
@@ -717,7 +717,21 @@ export class GrapholioManager {
          return this.scripts.get(this.selected_graph_id||'') || '//code here'
     }
     themeToggle(){
-        return this.blackboard.themeToggle()
+        const state =  this.blackboard.themeToggle()
+        if (state) ToastInfoWithAction(
+            "Click Here To Change All Edges Colors To Black",
+            ()=>this.getCurrentGraph()?.edges()?.map(
+                edge=>this.updateEdgeAttr(edge,"color","#000000")
+                )
+        )
+
+        else ToastInfoWithAction(
+            "Click Here To Change All Edges Colors To White",
+            ()=>this.getCurrentGraph()?.edges()?.map(
+                edge=>this.updateEdgeAttr(edge,"color","#FFFFFF")
+            )
+        )
+        return state
     }
     saveImage (){
         return this.blackboard.saveImage();

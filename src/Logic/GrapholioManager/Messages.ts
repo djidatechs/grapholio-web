@@ -35,3 +35,18 @@ function ToastMessageSuccess  (message : string) {
         type:"success",
     })
 }
+export function ToastInfoWithAction(message:string , action? : ()=>any){
+    toast(message, {
+        onClick:  action,
+        position: "bottom-right",
+        autoClose: 6000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "dark",
+        type:"warning",
+
+    })
+}

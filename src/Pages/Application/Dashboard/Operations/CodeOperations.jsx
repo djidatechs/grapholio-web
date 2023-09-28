@@ -79,36 +79,37 @@ function CodeOperations() {
                 <div className="flex flex-wrap align-bottom " >
                     <IoMdArrowRoundBack
                         onClick={()=>operations.operateOn(OperationDash.INFO)}
-                        className={"flex-auto h-8 w-8  fill-primary hover:fill-secondary hover:scale-125 transition duration-200 cursor-pointer"}/>
+                        className={"flex-auto h-8 w-8  fill-primary hover:fill-secondary hover:scale-105 transition duration-200 cursor-pointer"}/>
                     {
                         !runnig ?
                         <BsPlayFill
                         onClick={RunGivosCode}
-                        className={"flex-auto h-8 w-8  fill-primary hover:fill-secondary hover:scale-125 transition duration-200 cursor-pointer"}/>
+                        className={"flex-auto h-8 w-8  fill-primary hover:fill-secondary hover:scale-105 transition duration-200 cursor-pointer"}/>
                         :
                         <BsPauseBtnFill
                         onClick={RunGivosCode}
-                        className={"flex-auto h-8 w-8  fill-primary hover:fill-secondary hover:scale-125 transition duration-200 cursor-pointer"}/>
+                        className={"flex-auto h-8 w-8  fill-primary hover:fill-secondary hover:scale-105 transition duration-200 cursor-pointer"}/>
                     }
                     <BiSolidCopy
                         onClick={()=>navigator.clipboard.writeText(currentCode)}
-                        className={"flex-auto h-7 w-7  fill-primary hover:fill-secondary hover:scale-125 transition duration-200 cursor-pointer"}/>
+                        className={"flex-auto h-7 w-7  fill-primary hover:fill-secondary hover:scale-105 transition duration-200 cursor-pointer"}/>
                     <TbCircleLetterL
                         onClick={()=>{
                             const dis = logContainer.current.style.display
                             container.current.style.height = (dis === "block" ||dis === "") ? "83%" : "44%"
                             const  oh = container.current?.clientHeight ;
                             if (oh && wrapper.current?.ref?.style )  wrapper.current.ref.style.height = oh+"px" ;
+                            if (oh && editor.current?.ref?.style )  editor.current.ref.style.height = oh+"px" ;
                             logContainer.current.style.display = (dis === "block" ||dis === "") ? "none" : "block"
 
 
 
 
                         }}
-                        className={"flex-auto h-7 w-7  text-primary hover:text-secondary hover:scale-125 transition duration-200 cursor-pointer"}/>
+                        className={"flex-auto h-7 w-7  text-primary hover:text-secondary hover:scale-105 transition duration-200 cursor-pointer"}/>
                 </div>
                 <div className="divider ">Code</div>
-                <div ref={container} className={" w-full h-[44%]  overflow-auto scrollbar-thin scrollbar-thumnb-primary bg-[#282a36]"}>
+                <div ref={container} className={" w-full h-[44%]"}>
 
                     <CodeMirror
                         className={" text-[16px] overflow-hidden p-0"}
@@ -140,9 +141,9 @@ function CodeOperations() {
                                 log.map((logItem,index) => {
 
                                     return (
-                                        <>
-                                            {
-                                            <pre data-prefix="3" >
+
+
+                                            <pre key={"pxk"+index} data-prefix="3" >
                                                <code
                                                    className={
                                                        logItem.type === "normal" && (typeof logItem.content == "string" || typeof logItem.content == "boolean"|| typeof logItem.content == "number"|| !logItem.content )
@@ -156,8 +157,8 @@ function CodeOperations() {
                                                    :  index+ "> Print accepts: string, number, boolean, null, undefiend, or arrays from those types, or nested arrays from those types"
                                                }</code>
                                             </pre>
-                                            }
-                                         </>
+
+
 
                                     )
                                 })

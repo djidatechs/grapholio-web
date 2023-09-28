@@ -271,7 +271,7 @@ export class VisualGraph {
 
 
 export function getRandomHexColor(): string {
-    const minBrightness = 50// Adjust this value to control the minimum brightness
+    const minBrightness = 10// Adjust this value to control the minimum brightness
 
     const getRandomComponent = () => Math.floor(Math.random() * (256 - minBrightness) + minBrightness);
 
