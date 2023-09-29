@@ -1,6 +1,6 @@
 import {GCMType} from "./GCMType.ts";
 import {GrapholioManager} from "../GrapholioManager/GrapholioManager.ts";
-const natural_props = ["manager","highlight","neighbors"]
+const natural_props = ["manager","highlight","in_neighbors","out_neighbors","degree","neighbors"]
 const natural_functions:string[] = ["properties"]
 export class Node extends GCMType {
 
@@ -18,7 +18,7 @@ export class Node extends GCMType {
         return this.manager.getCurrentGraph()?.getNodeAttribute(this.properties["id"], property)
     }
     setProperty(_target: any, property: string, value: any): boolean {
-        if (natural_functions.includes(property) || natural_props.includes(property) || property === "id" ) throw new Error(property+ " is not defined or is not reasignable")
+        if (natural_functions.includes(property) || natural_props.includes(property) || property === "id" ) throw new Error(property+ " is read only")
         const id = this.properties["id"] as string
         this.manager.updateNodeAttr(id, property,value);
         return true;
@@ -29,6 +29,18 @@ export class Node extends GCMType {
         if (!nghs) return []
         return nghs.map(id =>  new Node(id, this.manager).getProxy());
     }
+    in_neighbors() : Node[]{
+        const useNode1 = this.properties["id"] as string
+        const nghs =  this.manager.getCurrentGraph()?.inNeighbors(useNode1);
+        if (!nghs) return []
+        return nghs.map(id =>  new Node(id, this.manager).getProxy());
+    }
+    out_neighbors() : Node[]{
+        const useNode1 = this.properties["id"] as string
+        const nghs =  this.manager.getCurrentGraph()?.outNeighbors(useNode1);
+        if (!nghs) return []
+        return nghs.map(id =>  new Node(id, this.manager).getProxy());
+    }
     highlight(){
         const id = this.properties["id"] as string
         return {
@@ -36,5 +48,13 @@ export class Node extends GCMType {
             on: ()=>this.manager.HighlightNode(id,{turn:"on"} ),
             off: ()=>this.manager.HighlightNode(id,{turn:"off"} ),
         }
+    }
+    degree(){
+        const id = this.properties["id"] as string
+        return ({
+            in : this.manager?.getCurrentGraph()?.inDegree(id) ,
+            out : this.manager?.getCurrentGraph()?.outDegree(id),
+            all : this.manager?.getCurrentGraph()?.degree(id) ,
+        })
     }
 }

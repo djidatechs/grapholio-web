@@ -76,6 +76,7 @@ export default function NodesScripts (){
                             <code >A.text_size = 40         // setting the size of the label</code>
                         </pre>
             </div>
+
             <h3 className={"text-xl  pt-20 font-bold"}>get_node( attributes : object ) : Node | undefined </h3>
             <p>Your can use this function without arguments, it will give you the first match</p>
             <div className="mockup-code">
@@ -95,6 +96,37 @@ export default function NodesScripts (){
                         <code>print (A.color === true && a.label === "A")   // true </code>
                     </pre>
 
+            </div>
+
+            <h3 className={"text-xl  pt-20 font-bold"}>Here are some other useful predefined  attributes</h3>
+            <div className="mockup-code space-y-1">
+                        <pre data-prefix=">">
+                             <code>{"let A = add_node({...})"}</code>
+                        </pre>
+                <pre data-prefix=" ">
+                            <code >a = A.degree.all               // return the degree of the node (in+out if graph is directed or mixed)  </code>
+                        </pre>
+                <pre data-prefix=" ">
+                            <code >a = A.degree.in                // return the in degree of the node (0 for undirected edges)  </code>
+                        </pre>
+                <pre data-prefix=" ">
+                            <code >a = A.degree.out               // return the out degree of the node (0 for undirected edges)  </code>
+                        </pre>
+                <pre data-prefix=" ">
+                            <code >a = A.neighbors                // return the neighbors (array of nodes)  </code>
+                        </pre>
+                <pre data-prefix=" ">
+                            <code >a = A.in_neighbors             // return the in neighbors (array of nodes) | doesnt count nodes connected by undirected edges  </code>
+                        </pre>
+                <pre data-prefix=" ">
+                            <code >a = A.out_neighbors            // return the out neighbors (array of nodes) | doesnt count nodes connected by undirected edges  </code>
+                        </pre>
+                <pre data-prefix=" ">
+                            <code >a = A.highlight.on()           // heighligting the node  </code>
+                        </pre>
+                <pre data-prefix=" ">
+                            <code >a = A.highlight.off()          //remove heighligting   </code>
+                        </pre>
             </div>
 
             <h3 className={"text-xl  pt-20 font-bold"}>get_nodes( attributes : object ) : Node[] </h3>

@@ -105,6 +105,31 @@ export default function EdgesScripts (){
                 </pre>
             </div>
 
+            <h3 className={"text-xl  pt-20 font-bold"}>Here are some other useful predefined  attributes</h3>
+            <div className="mockup-code space-y-1">
+                        <pre data-prefix=">">
+                             <code>{"let A = add_edge(...,...,{...})"}</code>
+                        </pre>
+                <pre data-prefix=" ">
+                            <code >a = A.extremities            // return the [ source id , target id ]  </code>
+                        </pre>
+                <pre data-prefix=" ">
+                            <code >a = A.source                // return the id of the source node (first node in undirected edge)  </code>
+                        </pre>
+                <pre data-prefix=" ">
+                            <code >a = A.target               // return the id of the target node (second node in undirected edge)  </code>
+                        </pre>
+                <pre data-prefix=" ">
+                            <code >a = A.is_directed          // return a true if the edge is directed, else false  </code>
+                        </pre>
+                <pre data-prefix=" ">
+                            <code >a = A.highlight.on()       // heighligting the edge  </code>
+                        </pre>
+                <pre data-prefix=" ">
+                            <code >a = A.highlight.off()      //remove heighligting   </code>
+                        </pre>
+            </div>
+
             <h3 className={"text-xl pt-20 font-bold"}>get_edges( attributes : object ) : Edge[] </h3>
             <h3 className={"text-xl font-bold"}>get_edges( n1 : Edge | string | true ,  n2 : Edge | string | true  ) : Edge | undefined </h3>
             <p>Your can use this function without arguments, it will give you all the edges of the graph</p>
