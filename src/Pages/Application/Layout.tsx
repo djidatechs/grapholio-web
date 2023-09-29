@@ -1,4 +1,4 @@
-import {Link, useNavigate} from "react-router-dom";
+import {Link} from "react-router-dom";
 import Dashboard from "./Dashboard/Dashboard.tsx";
 import BlackBoard from "./BlackBoard/BlackBoard.tsx";
 import GrapholioProvider, {useGrapholio} from "./Context.tsx";
@@ -39,7 +39,6 @@ function Boards () {
 function Navbar () {
     const inputRef = useRef<HTMLInputElement>(null)
     const {grapholioManager:manager,application} = useGrapholio()
-    const navigate = useNavigate()
 
     function downloadURI(uri:string, name:string) {
         var link : HTMLAnchorElement|undefined = document.createElement('a');
