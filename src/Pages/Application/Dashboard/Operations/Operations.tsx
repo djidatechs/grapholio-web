@@ -1,11 +1,12 @@
+import {lazy, Suspense, useEffect, useRef} from "react";
 import {useGrapholio} from "../../Context.tsx";
 import {OperationDash} from "../../../../Constants.ts";
-import NodesOperations from "./NodesOperations.tsx";
-import InfoOperations from "./InfoOperations.tsx";
-import EdgesOperations from "./EdgesOperations.tsx";
-
-import {lazy, Suspense, useEffect, useRef} from "react";
 import Loading from "../../../Loading.tsx";
+
+const NodesOperations = lazy ( () =>import ("./NodesOperations.tsx"));
+const InfoOperations = lazy ( () =>import ("./InfoOperations.tsx"));
+const EdgesOperations = lazy ( () =>import ("./EdgesOperations.tsx"));
+
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 const CodeOperations = lazy(() => import("./CodeOperations.jsx"));

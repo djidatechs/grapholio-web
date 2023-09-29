@@ -1,10 +1,10 @@
 import {Link} from "react-router-dom";
-import Dashboard from "./Dashboard/Dashboard.tsx";
-import BlackBoard from "./BlackBoard/BlackBoard.tsx";
 import GrapholioProvider, {useGrapholio} from "./Context.tsx";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import {ChangeEvent, useRef} from "react";
+import {ChangeEvent, lazy, Suspense, useRef} from "react";
+import Loading from "../Loading.tsx";
+const Boards = lazy ( () =>import ("./Boards.tsx"));
 
 export default function AppWrapper () {
 
@@ -22,7 +22,9 @@ export default function AppWrapper () {
             <div className={"bg-black overflow-hidden select-none h-screen min-h-screen max-h-screen "}>
                 <Navbar/>
                 <div id={"LAYOUT_ID"} className="  mt-10 lg:mt-12 xl:mt-[50px] 2xl:mt-16 max-h-[calc(100vh-40px)] lg:max-h-[calc(100vh-48px)] xl:max-h-[calc(100vh-50px)] 2xl:max-h-[calc(100vh-64px)] ">
+                    <Suspense  fallback={<Loading/>}>
                    <Boards/>
+                    </Suspense>
                 </div>
             </div>
             <ToastContainer/>
@@ -31,15 +33,7 @@ export default function AppWrapper () {
     )
 }
 
-function Boards () {
 
-    return (
-        <div className="flex">
-            <Dashboard/>
-            <BlackBoard/>
-        </div>
-    )
-}
 
 
 
