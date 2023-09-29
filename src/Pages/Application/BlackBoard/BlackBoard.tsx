@@ -8,7 +8,8 @@ import {BiSolidColorFill} from "react-icons/bi";
 function FastControl({parent}:{parent:any}) {
     const {grapholioManager : manager} = useGrapholio() ;
     return (
-        <div className="z-40 absolute text-black font-bold select-none">
+        <div className="z-40 absolute text-black font-bold select-none text-xs lg:text-sm xl:text-base   ">
+            <div className={"flex"}>
             <span
                 onClick={()=> {
                     manager.clear()
@@ -33,7 +34,7 @@ function FastControl({parent}:{parent:any}) {
                 onClick={()=> {
                     manager.zoomPlus()
                 }}
-                className="py-1 px-3 bg-green-600  cursor-pointer hover:bg-green-900 transition duration-300 ease-out">+</span>
+                className="py-1 px-3 bg-green-600 mr-2  cursor-pointer hover:bg-green-900 transition duration-300 ease-out">+</span>
 
             <span
                 onClick={()=> {
@@ -41,9 +42,10 @@ function FastControl({parent}:{parent:any}) {
                     if (newstate && parent.current?.style) parent.current.style.backgroundColor = "white"
                     if (!newstate && parent.current?.style) parent.current.style.backgroundColor = ""
                 }}
-                className="py-1 px-3 m-2 bg-green-600  cursor-pointer hover:bg-green-900 transition duration-300 ease-out">
+                className="py-1 px-3  bg-green-600  cursor-pointer hover:bg-green-900 transition duration-300 ease-out">
                 <BiSolidColorFill className={"inline h-5 w-5"}/>
             </span>
+            </div>
         </div>
         );
 }

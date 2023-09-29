@@ -66,7 +66,7 @@ function CollapseElement({child}:{child:any}) {
         id={"collapseId"}
         ref={ref}
          tabIndex={0}
-        className={`collapse  collapse-close overflow-x-hidden  special  border border-primary w-full  scrollbar-thin scrollbar-thumb-primary  `}>
+        className={`collapse   collapse-close overflow-x-hidden  special  border border-primary w-full   scrollbar-thin scrollbar-thumb-primary`}>
         <div onClick={ClickCollapse} className="collapse-title font-semibold cursor-pointer ">
             {(child.props as any).title || "Option"}
         </div>

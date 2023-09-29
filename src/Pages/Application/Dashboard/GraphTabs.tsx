@@ -40,10 +40,10 @@ export default function GraphTabs () {
     if (operations.operationDash ===  OperationDash.CODE) return <></>
 
     return application.appChange && (
-        <div className="border-primary z-50 ">
+        <div className="border-primary z-50 text-sm lg:text-sm xl:text-base ">
             <div className="navbar ">
                 <div className="flex-1">
-                    <a className=" normal-case text-lg xl:text-xl">Graphs</a>
+                    <a className=" normal-case ">Graphs</a>
                 </div>
                 <div className="flex-none">
                     <div className="dropdown dropdown-end ">
@@ -89,7 +89,7 @@ export default function GraphTabs () {
                                         }}
                                         id={id}
                                         key={id}
-                                        className={` font-bold tab ${active ? 'tab-active':''}`}>
+                                        className={` font-bold tab tillLg:tab-sm  ${active ? 'tab-active':''}`}>
                                         {name}
                                     </li>
                                 )})

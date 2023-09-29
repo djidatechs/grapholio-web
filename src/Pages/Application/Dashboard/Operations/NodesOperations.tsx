@@ -43,42 +43,42 @@ export function NodeDetails ({title,defaultVisible,accordation}:IAccorditionOpti
     return <div>
         <div className={"space-y-5"}>
             <h1>Node Properties</h1>
-            <div className="form-control my-2 w-full">
-                <label className="input-group w-full">
-                    <span>ID</span>
-                    <input type="text" value={nodeVal} readOnly className="input input-bordered w-72 ml-auto mr-0" />
+            <div className="  my-2 w-full">
+                <label className="input-group tillLg:input-group-sm  w-full">
+                    <span className={"lg:w-24"}>ID</span>
+                    <input type="text" value={nodeVal} readOnly className="input tillLg:input-sm  input-bordered min-w-[30px] w-full ml-auto mr-0" />
                 </label>
             </div>
-            <div className="form-control my-2 w-full">
-                <label className="input-group w-full">
-                    <span>Label</span>
+            <div className=" my-2 w-full">
+                <label className="input-group tillLg:input-group-sm  w-full">
+                    <span className={"lg:w-24"}>Label</span>
                     <input type="text"
                            onChange={(e)=>manager.updateNodeAttr(nodeVal,"label",e.currentTarget.value)}
-                           value={getPropableNodeAttributes("label")} className="input input-bordered w-72 ml-auto mr-0" />
+                           value={getPropableNodeAttributes("label")} className="input tillLg:input-sm  input-bordered min-w-[30px] w-full ml-auto mr-0" />
                 </label>
             </div>
-            <div className="form-control my-2 w-full">
-                <label className="input-group w-full">
-                    <span>Color</span>
+            <div className=" my-2 w-full">
+                <label className="input-group tillLg:input-group-sm  w-full">
+                    <span className={"lg:w-24"}>Color</span>
                     <input type="color"
                            onChange={(e)=>manager.updateNodeAttr(nodeVal,"color",e.currentTarget.value)}
-                           value={getPropableNodeAttributes("color")} className="input input-ghost   p-0  w-72 ml-auto mr-0" />
+                           value={getPropableNodeAttributes("color")} className="input tillLg:input-sm  input-ghost   p-0  min-w-[30px] w-full ml-auto mr-0" />
                 </label>
             </div>
-            <div className="form-control my-2 w-full">
-                <label className="input-group w-full">
-                    <span>Size</span>
+            <div className=" my-2 w-full">
+                <label className="input-group tillLg:input-group-sm  w-full">
+                    <span className={"lg:w-24"}>Size</span>
                     <input type="number"
                            onChange={(e)=>manager.updateNodeAttr(nodeVal,"size",e.currentTarget.value)}
-                           value={getPropableNodeAttributes("size")} className="input input-bordered w-72 ml-auto mr-0" />
+                           value={getPropableNodeAttributes("size")} className="input tillLg:input-sm  input-bordered min-w-[30px] w-full ml-auto mr-0" />
                 </label>
             </div>
-            <div className="form-control my-2 w-full">
-                <label className="input-group w-full">
-                    <span>Text Size</span>
+            <div className=" my-2 w-full">
+                <label className="input-group tillLg:input-group-sm  w-full">
+                    <span className={"lg:w-24"}>Text Size</span>
                     <input type="number"
                            onChange={(e)=>manager.updateNodeAttr(nodeVal,"text_size",e.currentTarget.value)}
-                           value={getPropableNodeAttributes("text_size")} className="input input-bordered w-72 ml-auto mr-0" />
+                           value={getPropableNodeAttributes("text_size")} className="input tillLg:input-sm  input-bordered min-w-[30px] w-full ml-auto mr-0" />
                 </label>
             </div>
             <h2>To see other attributes that are not linked visually, you should use the script language </h2>
@@ -100,7 +100,7 @@ function InformationTable ({title,defaultVisible,accordation}:IAccorditionOption
 
     return operations.RequestValue &&(
         <div className="max-h-[300px] overflow-x-auto ">
-            <table className="table bg-neutral-800  table-pin-rows">
+            <table className="table bg-neutral-800  table-pin-rows table-xs lg:table-sm">
                 <thead>
                 <tr>
                     <td>Node Id</td>

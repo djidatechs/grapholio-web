@@ -34,33 +34,33 @@ function EdgeDetails ({title,defaultVisible,accordation}:IAccorditionOptions){
         <div className={"space-y-5"}>
             <h1>Edge Properties</h1>
             <div className="form-control my-2 w-full">
-                <label className="input-group w-full">
-                    <span>ID</span>
-                    <input type="text" value={edgeVal} readOnly className="input input-bordered w-72 ml-auto mr-0" />
+                <label className="input-group tillLg:input-group-sm w-full">
+                    <span className={"lg:w-24"}>ID</span>
+                    <input type="text" value={edgeVal} readOnly className="input tillLg:input-sm input-bordered min-w-[30px] w-full ml-auto mr-0" />
                 </label>
             </div>
             <div className="form-control my-2 w-full">
-                <label className="input-group w-full">
-                    <span>Color</span>
+                <label className="input-group tillLg:input-group-sm w-full">
+                    <span className={"lg:w-24"}>Color</span>
                     <input type="color"
                            onChange={(e)=>manager.updateEdgeAttr(edgeVal,"color",e.currentTarget.value)}
-                           value={getPropableEdgeAttributes("color")} className="input input-ghost   p-0  w-72 ml-auto mr-0" />
+                           value={getPropableEdgeAttributes("color")} className="input tillLg:input-sm input-ghost   p-0  min-w-[30px] w-full ml-auto mr-0" />
                 </label>
             </div>
             <div className="form-control my-2 w-full">
-                <label className="input-group w-full">
-                    <span>Weight</span>
+                <label className="input-group tillLg:input-group-sm w-full">
+                    <span className={"lg:w-24"}>Weight</span>
                     <input type="number"
                            onChange={(e)=>manager.updateEdgeAttr(edgeVal,"weight",e.currentTarget.value)}
-                           value={getPropableEdgeAttributes("weight")} className="input input-bordered w-72 ml-auto mr-0" />
+                           value={getPropableEdgeAttributes("weight")} className="input tillLg:input-sm input-bordered min-w-[30px] w-full ml-auto mr-0" />
                 </label>
             </div>
             <div className="form-control my-2 w-full">
-                <label className="input-group w-full">
-                    <span>Text Size</span>
+                <label className="input-group tillLg:input-group-sm w-full">
+                    <span className={"lg:w-24"}>Text Size</span>
                     <input type="number"
                            onChange={(e)=>manager.updateEdgeAttr(edgeVal,"text_size",e.currentTarget.value)}
-                           value={getPropableEdgeAttributes("text_size")} className="input input-bordered w-72 ml-auto mr-0" />
+                           value={getPropableEdgeAttributes("text_size")} className="input tillLg:input-sm input-bordered min-w-[30px] w-full ml-auto mr-0" />
                 </label>
             </div>
             <h2>To see other attributes that are not linked visually, you should use the script language </h2>
@@ -79,7 +79,7 @@ function InformationTable ({title,defaultVisible}:IAccorditionOptions) {
 
     return (
             <div key={title} className="max-h-[300px] overflow-x-auto ">
-                <table className="table bg-neutral-800  table-pin-rows">
+                <table className="table bg-neutral-800  table-pin-rows table-xs lg:table-sm">
                     <thead>
                     <tr key={"edgeidentif"}>
                         <td key={"Edge Id"}>Edge Id</td>

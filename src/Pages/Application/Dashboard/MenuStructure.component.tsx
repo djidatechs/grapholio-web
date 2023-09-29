@@ -88,7 +88,7 @@ export function MenuStructureComponent({children}: Created) {
     return (
         <div id={resizeEventIdSaver.Container} className={`relative z-40 text-white  w-[33%] `} ref={containerRef}>
             <div ref={controllerRef}/>
-            <div ref={contentRef} className={`w-full border-r-2  h-full border-green-600 text-white p-2 scrollbar-thin  scrollbar-thumb-green-600 overflow-auto `}>
+            <div ref={contentRef} className={`w-full border-r-2  h-full border-green-600 text-white p-2 scrollbar-thin  scrollbar-thumb-green-600 overflow-auto text-xs lg:text-sm xl:text-base `}>
                 {children}
             </div>
         </div>

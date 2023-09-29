@@ -111,16 +111,16 @@ function GraphFunction({Icon, text,action,active}:IGraphFunction){
         <div
             id={resizeEventIdSaver.Operation}
             onClick={action}
-            className={` flex-auto w-28 group px-2 py-3 z-40 
+            className={` flex-auto w-18 lg:w-20 2xl:w-28 group px-2 py-1 lg:py-2 xl:py-3 z-40 
             ${active ? "text-accent":"text-primary"}
             cursor-pointer
              hover:text-white
             text-center
             rounded-xl hover:bg-primary
             transition duration-200`}>
-                <Icon className={"w-8 xl:w-10 h-8 xl:h-10 mx-auto"}/>
+                <Icon className={"w-5 lg:w-7 xl:w-10  h-5 lg:h-7 xl:h-10 mx-auto"}/>
             <h1 className={`block group-hover:text-white transition duration-200
-                font-bold  text-slate-200 text-sm xl:text-base `}>{text}</h1>
+                font-bold  text-slate-200 text-xs lg:text-sm xl:text-base `}>{text}</h1>
         </div>
     )
 

@@ -18,7 +18,7 @@ function InfoTable({title,defaultVisible}:IAccorditionOptions) {
     const {grapholioManager : manager,application} = useGrapholio()
     if (!title) title="Option";
     if (!defaultVisible) defaultVisible=false;
-    return <table title={title} className="table bg-neutral-800  table-pin-cols">
+    return <table title={title} className="table bg-neutral-800  table-pin-cols table-xs lg:table-sm">
         <thead>
         <tr>
             <td>Specification</td>
@@ -79,7 +79,7 @@ function InputField({ label, defaultValue , id } : any) {
             <label className="label">
                 <span className="label-text">{label}</span>
             </label>
-            <input  id={id} defaultValue={defaultValue} type="number" min="0" placeholder={label} className="input input-bordered w-full"  />
+            <input  id={id} defaultValue={defaultValue} type="number" min="0" placeholder={label} className="input tillLg:input-sm input-bordered w-full"  />
         </div>
     );
 }
@@ -140,7 +140,7 @@ function Styling({ title, defaultVisible }: IAccorditionOptions) {
             <InputField label="Edges Weights  Size" defaultValue={DefaultWeightText()} id={"inputWeightText"}/>
 
 
-            <div className="join w-full my-3">
+            <div className="join w-full my-3 ">
                 <button
                     onClick={() => handleSave("Settings Saved In Your Machine",true)}
                     className="btn btn-primary w-1/2 join-item text-white"
@@ -165,10 +165,10 @@ function KnownGraphs ({title,defaultVisible}:IAccorditionOptions) {
     return(
         <div className={"w-full font-semibold space-y-4"}>
             <div className="w-full join  bg-slate-900  ">
-                <span className="w-7/12 join-item py-3 pl-3  ">Complete Graph (Kn)</span>
+                <span className="w-7/12 join-item py-3 pl-3 text-xs lg:text-sm xl:text-base   ">Complete Graph (Kn)</span>
                 <span className="w-3/12 join-item join flex items-center justify-end pr-3 py-3">
                     <span className={"join-item"}>n=</span>
-                    <input name={"Complete Graph (Kn)"} type={"number"}  className={"join-item text-center border border-white rounded-xl w-10"}/>
+                    <input name={"Complete Graph (Kn)"} type={"number"}  className={"join-item text-center border border-white h-full rounded-xl w-10"}/>
                 </span>
                 <span
                     onClick={()=> manager.addCompleteGraph(parseInt((document.getElementsByName("Complete Graph (Kn)")[0] as unknown as HTMLInputElement)?.value))}
@@ -177,12 +177,12 @@ function KnownGraphs ({title,defaultVisible}:IAccorditionOptions) {
                 </span>
             </div>
             <div className="w-full join  bg-slate-900  ">
-                <span className="w-7/12 join-item py-3 pl-3  ">Complete Bipartite Graph (Kn,m)</span>
+                <span className="w-7/12 join-item py-3 pl-3 text-xs lg:text-sm xl:text-base  ">Complete Bipartite <br/> Graph (Kn,m)</span>
                 <span className="w-3/12 join-item join py-3 flex items-center justify-end pr-3 py-3">
                     <span className={"join-item"}>n,m=</span>
-                    <input name={"Complete Bipartite Graph (Kn,m)n"}  type={"number"}  className={"join-item text-center border border-white rounded-xl w-6"}/>
+                    <input name={"Complete Bipartite Graph (Kn,m)n"}  type={"number"}  className={"join-item text-center border border-white h-full rounded-xl w-6"}/>
                     <span className={"px-1"}>,</span>
-                    <input name={"Complete Bipartite Graph (Kn,m)m"}  type={"number"}  className={"join-item text-center border border-white rounded-xl w-6"}/>
+                    <input name={"Complete Bipartite Graph (Kn,m)m"}  type={"number"}  className={"join-item text-center border border-white h-full rounded-xl w-6"}/>
                 </span>
                 <span
                     onClick={()=>manager.addCompleteBipartiteGraph(
@@ -194,10 +194,10 @@ function KnownGraphs ({title,defaultVisible}:IAccorditionOptions) {
                 </span>
             </div>
             <div className="w-full join  bg-slate-900  ">
-                <span className="w-7/12 join-item py-3 pl-3  ">Cycle Graph (Cn)</span>
+                <span className="w-7/12 join-item py-3 pl-3 text-xs lg:text-sm xl:text-base  ">Cycle Graph (Cn)</span>
                 <span className="w-3/12 join-item join flex items-center justify-end pr-3 py-3">
                     <span className={"join-item"}>n=</span>
-                    <input name={'Cycle Graph (Cn)'}  type={"number"}  className={"join-item text-center border border-white rounded-xl w-10"}/>
+                    <input name={'Cycle Graph (Cn)'}  type={"number"}  className={"join-item text-center border border-white h-full rounded-xl w-10"}/>
                 </span>
                 <span
                     onClick={()=> manager.addCycleGraph(parseInt((document.getElementsByName("Cycle Graph (Cn)")[0] as unknown as HTMLInputElement)?.value))}

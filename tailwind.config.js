@@ -8,7 +8,7 @@ export default {
     extend:{
       screens:{
         'tall': { 'raw': '(min-height: 700px)' },
-        'revmd': {'max': '1023px'},
+        'tillLg': {'max': '1023px'},
       }
     }
   },
