@@ -2,7 +2,7 @@ import { GrapholioManager } from "../GrapholioManager/GrapholioManager";
 import { Attributes } from "graphology-types";
 import { Node } from "./Node.ts";
 import { Edge } from "./Edge.ts";
-import { Stack } from "./DataTypes.ts";
+import {Queue, Stack} from "./DataTypes.ts";
 import Graph from "graphology";
 import {circlePos, rectanglePos} from "../../Constants.ts";
 
@@ -196,6 +196,9 @@ export class GrapholioCommandManager_refactor {
     stack() {
         return new Stack<any>();
     }
+    queue() {
+        return new Queue<any>();
+    }
     union(parent:any, rank:any, node1:any, node2:any) {
         const root1 = this.find(parent, node1);
         const root2 = this.find(parent, node2);
@@ -317,6 +320,9 @@ export class GrapholioCommandManager_refactor {
         const stack = this.stack.bind(this);
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
+        const queue = this.queue.bind(this);
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         const add_edge = this.add_edge.bind(this);
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
@@ -329,16 +335,16 @@ export class GrapholioCommandManager_refactor {
         const circle = this.circle.bind(this);
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        const union = this.union.bind(this);
+        //const union = this.union.bind(this);
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        const find = this.find.bind(this);
+        //const find = this.find.bind(this);
         const print = this.print.bind(this);
 
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
 
-        { circle,rectangle,adj_list,fetch,require,console,print,window, global, document, add_edge, add_node, get_nodes, get_node, get_edge, get_edges, clear, union, find, stack,remove_node,remove_edge}
+        { queue,circle,rectangle,adj_list,fetch,require,console,print,window, global, document, add_edge, add_node, get_nodes, get_node, get_edge, get_edges, clear, stack,remove_node,remove_edge}
 
         try{
              await eval(jscode)

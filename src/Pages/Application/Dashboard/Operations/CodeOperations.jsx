@@ -100,7 +100,7 @@ function CodeOperations() {
                     <TbCircleLetterL
                         onClick={()=>{
                             const dis = logContainer.current.style.display
-                            container.current.style.height = (dis === "block" ||dis === "") ? "83%" : "44%"
+                            container.current.style.height = (dis === "block" ||dis === "") ? "82%" : "44%"
                             const  oh = container.current?.clientHeight ;
                             if (oh && wrapper.current?.ref?.style )  wrapper.current.ref.style.height = oh+"px" ;
                             if (oh && editor.current?.ref?.style )  editor.current.ref.style.height = oh+"px" ;
