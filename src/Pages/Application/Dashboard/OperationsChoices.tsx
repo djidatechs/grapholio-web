@@ -41,7 +41,7 @@ export default function OperationsChoices () {
     if (operationDash ===  OperationDash.CODE) return <></>
 
     return (
-        <div className="w-full h-full p-2  overflow-auto tall:max-h-full ">
+        <div className="w-full h-full p-2 text-sm  overflow-auto tall:max-h-full ">
             <div id={resizeEventIdSaver.Flex} className="flex flex-wrap">
                 <GraphFunction
                     active={operationDash === OperationDash.NODES}

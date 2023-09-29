@@ -43,7 +43,7 @@ export default function GraphTabs () {
         <div className="border-primary z-50 ">
             <div className="navbar ">
                 <div className="flex-1">
-                    <a className=" normal-case text-xl">Graphs</a>
+                    <a className=" normal-case text-lg xl:text-xl">Graphs</a>
                 </div>
                 <div className="flex-none">
                     <div className="dropdown dropdown-end ">
@@ -54,7 +54,7 @@ export default function GraphTabs () {
                         <label tabIndex={0} className="btn bg-black border-none text-3xl ">+</label>
 
                         <ul tabIndex={0}
-                            className="dropdown-content overflow-visible  z-50 menu p-2 shadow bg-primary text-lg font-bold rounded-md  ">
+                            className="dropdown-content overflow-visible  z-50 menu p-2 shadow bg-primary xl:text-lg font-bold rounded-md  ">
                             <li className={"w-full lex flex-col text-sm mb-2 "}>
                                 <label className="cursor-pointer label">
                                     <span className="label-text text-white">allow self loops</span>
