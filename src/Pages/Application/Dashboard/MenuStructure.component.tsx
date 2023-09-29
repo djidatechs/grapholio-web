@@ -9,8 +9,8 @@ export function MenuStructureComponent({children}: Created) {
     const controllerRef = useRef<HTMLDivElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
     const contentRef = useRef<HTMLDivElement>(null);
-    const styleInShow = "absolute z-50  -right-4 top-1/2 p-2 r rounded-xl bg-green-600 font-extrabold hover:bg-green-700 cursor-pointer"
-    const styleInHide =  'absolute z-50  -right-7 top-1/2 p-2  rounded-none rounded-r-xl bg-green-600 font-extrabold hover:bg-green-700 cursor-pointer'
+    const styleInShow = "absolute text-sm lg:text-sm 2xl:text-base z-50  -right-4 top-1/2  p-2 2xl:p-2 r rounded-xl bg-green-600 font-extrabold hover:bg-green-700 cursor-pointer"
+    const styleInHide =  'absolute text-sm lg:text-sm 2xl:text-base z-50  -right-7 top-1/2  p-2 2xl:p-2  rounded-none rounded-r-xl bg-green-600 font-extrabold hover:bg-green-700 cursor-pointer'
 
     const handleMouseMove = ( e:any) =>  {
         if (controllerRef.current?.innerHTML === "&gt;") return
@@ -87,7 +87,7 @@ export function MenuStructureComponent({children}: Created) {
 
     return (
         <div id={resizeEventIdSaver.Container} className={`relative z-40 text-white  w-[33%] `} ref={containerRef}>
-            <div ref={controllerRef}/>
+            <div ref={controllerRef} />
             <div ref={contentRef} className={`w-full border-r-2  h-full border-green-600 text-white p-2 scrollbar-thin  scrollbar-thumb-green-600 overflow-auto text-xs lg:text-sm xl:text-base `}>
                 {children}
             </div>

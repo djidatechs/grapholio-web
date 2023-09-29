@@ -10,10 +10,18 @@ export default function AppWrapper () {
 
     return (
         <GrapholioProvider>
-            <div className={"sm:hidden overflow-hidden absolute w-screen h-screen bg-black opacity-70 z-[999] text-lg xl:text-xl font-bold"}><div className={"absolute w-full text-center top-1/2"}>Sorry :( this application is for wider screens</div></div>
+            <div className={"sm:hidden overflow-hidden absolute w-screen h-screen bg-black opacity-70 z-[999] text-lg xl:text-xl font-bold"}><div className={"absolute w-full text-center top-1/2"}>
+                <p>Sorry :( this application is for wider screens</p><br/>
+                <p className={"rounded-xl  p-1 cursor-pointer  "}
+                    onClick={(e)=> {
+                    if (e.currentTarget.parentElement?.parentElement)
+                    e.currentTarget.parentElement.parentElement.style.display = "none"
+                }}>Click here to use it anyway</p>
+
+            </div></div>
             <div className={"bg-black overflow-hidden select-none h-screen min-h-screen max-h-screen "}>
                 <Navbar/>
-                <div id={"LAYOUT_ID"} className="  mt-10 lg:mt-12 xl:mt-16 max-h-[calc(100vh-40px)] lg:max-h-[calc(100vh-48px)] xl:max-h-[calc(100vh-64px)] ">
+                <div id={"LAYOUT_ID"} className="  mt-10 lg:mt-12 xl:mt-[50px] 2xl:mt-16 max-h-[calc(100vh-40px)] lg:max-h-[calc(100vh-48px)] xl:max-h-[calc(100vh-50px)] 2xl:max-h-[calc(100vh-64px)] ">
                    <Boards/>
                 </div>
             </div>
@@ -67,15 +75,15 @@ function Navbar () {
     };
     return (
         <><input type="file" ref={inputRef} onChange={handleChange} className={"appearance-none hidden  "} />
-        <div className="fixed text-sm lg:text-lg w-full drop-shadow-md  top-0 left-0 right-0 h-10 lg:h-12 xl:h-16 bg-green-600 z-50 transition-all ease duration-150 flex">
-            <div className="flex items-center space-x-5 h-full w-full px-10 sm:px-20">
-                <Link className="flex items-center" to="/application">
+        <div className="fixed text-xs md:text-sm lg:text-base 2xl:text-lg w-full drop-shadow-md  top-0 left-0 right-0 h-10 lg:h-12 xl:h-[50px] 2xl:h-16 bg-green-600 z-50 transition-all ease duration-150 flex">
+            <div className="flex items-center space-x-5 h-full w-full px-10 md:px-20">
+                <Link className="hidden md:flex items-center" to="/application">
                     <span className="text-white inline-block ml-3 font-bold truncate">Grapholio</span>
                 </Link>
-                <div className=" flex justify-end items-center flex-1">
+                <div className=" flex justify-start md:justify-end md:items-center flex-1">
 
                     <span
-                        className='text-white inline-block ml-4 font-bold cursor-pointer truncate'
+                        className='text-white inline-block md:ml-4 font-bold cursor-pointer truncate'
                         onClick={()=>inputRef.current?.click()}>Import
                     </span>
 

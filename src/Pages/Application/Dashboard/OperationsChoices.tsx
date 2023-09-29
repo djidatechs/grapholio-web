@@ -118,9 +118,9 @@ function GraphFunction({Icon, text,action,active}:IGraphFunction){
             text-center
             rounded-xl hover:bg-primary
             transition duration-200`}>
-                <Icon className={"w-5 lg:w-7 xl:w-10  h-5 lg:h-7 xl:h-10 mx-auto"}/>
+                <Icon className={"w-5 lg:w-7 xl:w-8 2xl:w-10  h-5 lg:h-7 xl:h-8 2xl:h-10 mx-auto"}/>
             <h1 className={`block group-hover:text-white transition duration-200
-                font-bold  text-slate-200 text-xs lg:text-sm xl:text-base `}>{text}</h1>
+                font-bold  text-slate-200 text-xs lg:text-sm 2xl:text-base `}>{text}</h1>
         </div>
     )
 

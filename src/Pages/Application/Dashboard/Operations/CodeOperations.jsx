@@ -30,7 +30,7 @@ function CodeOperations() {
         }
         const RunGivosCode= ()=> {
             setRunning(true);
-            fetch("https://grapholio-web-api.onrender.com/compiler", {
+            fetch("http://localhost:3000/compiler", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

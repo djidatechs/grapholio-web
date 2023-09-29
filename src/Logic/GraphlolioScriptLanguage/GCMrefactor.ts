@@ -344,10 +344,10 @@ export class GrapholioCommandManager_refactor {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
 
-        { queue,circle,rectangle,adj_list,fetch,require,console,print,window, global, document, add_edge, add_node, get_nodes, get_node, get_edge, get_edges, clear, stack,remove_node,remove_edge}
+        { fetch,queue,circle,rectangle,adj_list,fetch,require,console,print,window, global, document, add_edge, add_node, get_nodes, get_node, get_edge, get_edges, clear, stack,remove_node,remove_edge}
 
         try{
-             await eval(jscode)
+             await eval(`${jscode}`)
         }
         catch (e){ this.setLog((current:any) => [...current||[],{content:"# "+e?.toString(),type:"error"}]) }
     }

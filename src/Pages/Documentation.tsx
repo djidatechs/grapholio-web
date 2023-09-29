@@ -1,15 +1,9 @@
 import Sidebar from "./Documentation/SideBar.tsx";
 import {Outlet} from "react-router-dom";
 import Loading from "./Loading.tsx";
-import {Suspense, useEffect} from "react";
+import {Suspense} from "react";
 
 function Documentation() {
-    useEffect(() => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const elemValue = urlParams.get("elem");
-        if (elemValue) document.getElementById(elemValue)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, []);
-
 
     return (
         <div className={"p-relative"}>
@@ -19,9 +13,9 @@ function Documentation() {
                 <div className={"block lg:flex drawer"}>
                     <input id="my-drawer" type="checkbox" className="hidden drawer-toggle"/>
                     <Sidebar />
-                    <div className={"lg:pl-10  w-full  lg:w-9/12 "}>
+                    <div className={"w-full px-12  lg:w-9/12 "}>
                         <Suspense fallback={<Loading/>}>
-                            <label htmlFor="my-drawer" className=" lg:hidden sticky top-2 my-2 border-2 border-base-100 z-40 btn btn-primary drawer-button rounded-md w-full">open menu</label>
+                            <label htmlFor="my-drawer" className=" lg:hidden sticky top-0 border-2 border-base-100 z-40 btn btn-primary drawer-button rounded-md w-full">open menu</label>
                             <Outlet />
                         </Suspense>
                     </div>

@@ -1,5 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
+
 import image from "../../assets/pdz.png"
 import avatar from "../../assets/mashroom.jpg"
 export default function Introduction (){
