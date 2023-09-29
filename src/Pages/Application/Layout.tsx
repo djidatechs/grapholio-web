@@ -102,7 +102,7 @@ function Navbar () {
                         }}
                         className="text-white inline-block ml-4 font-bold cursor-pointer truncate">Download as Image</span>
                     <span
-                        onClick={()=>navigate("/documentation")}
+                        onClick={()=>window.open("/documentation", '_blank')}
                         className="text-white inline-block ml-4 font-bold cursor-pointer truncate">Documentation</span>
                     <span className="text-white inline-block ml-4 font-bold cursor-pointer truncate">Support</span>
                 </div>
