@@ -30,7 +30,7 @@ function CodeOperations() {
         }
         const RunGivosCode= ()=> {
             setRunning(true);
-            fetch("http://localhost:3000/compiler", {
+            fetch("https://grapholio-web-api.onrender.com/compiler", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -83,16 +83,16 @@ function CodeOperations() {
                 <div className="flex flex-wrap align-bottom " >
                     <IoMdArrowRoundBack
                         onClick={()=>operations.operateOn(OperationDash.INFO)}
-                        className={"flex-auto h-8 w-8  fill-primary hover:fill-secondary hover:scale-105 transition duration-200 cursor-pointer"}/>
+                        className={"flex-auto h-5 lg:h-8 w-5 lg:w-8  fill-primary hover:fill-secondary hover:scale-105 transition duration-200 cursor-pointer"}/>
                     {
                         !runnig ?
                         <BsPlayFill
                         onClick={RunGivosCode}
-                        className={"flex-auto h-8 w-8  fill-primary hover:fill-secondary hover:scale-105 transition duration-200 cursor-pointer"}/>
+                        className={"flex-auto h-5 lg:h-8 w-5 lg:w-8  fill-primary hover:fill-secondary hover:scale-105 transition duration-200 cursor-pointer"}/>
                         :
                         <BsPauseBtnFill
                         onClick={RunGivosCode}
-                        className={"flex-auto h-8 w-8  fill-primary hover:fill-secondary hover:scale-105 transition duration-200 cursor-pointer"}/>
+                        className={"flex-auto h-5 lg:h-8 w-5 lg:w-8  fill-primary hover:fill-secondary hover:scale-105 transition duration-200 cursor-pointer"}/>
                     }
                     <BiSolidCopy
                         onClick={()=>navigator.clipboard.writeText(currentCode)}
