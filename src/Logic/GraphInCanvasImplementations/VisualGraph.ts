@@ -75,15 +75,19 @@ export class VisualGraph {
             node1 : node1_?.radius() ,
             node2 : node2_?.radius() ,
         }
+        const rect = this.layer.getStage()?.find("Rect").find(rec=>rec.getAttr("theme") === true)
+        const state = rect?.isVisible() !== undefined && rect.isVisible()
         if (node1_pos == null || node2_pos == null ||!radius.node1 || !radius.node2) return  {Edge:undefined, weight:undefined}
         const {arrowStart,arrowMiddle,arrowEnd} = MathCalculation_Update2dPointsLink({node1_pos,node2_pos},radius,undefined)
-        if(!edge.color ) edge.color = "#FFFFFF"
+        if(!edge.color ) edge.color = state ? "#000000"  : "#FFFFFF"
 
         const Edge = this._Arrow(edge,arrowStart,arrowMiddle,arrowEnd)
 
         Edge.setAttr("node1",edge.source)
         Edge.setAttr("node2",edge.target)
         this.layer.add(Edge)
+
+        edge.color = state ? "red"  : "yellow"
 
         const weight = this._WeightText(edge,Edge)
         this.layer.add(weight)
@@ -247,8 +251,8 @@ export class VisualGraph {
         const text:Konva.Text  = new Konva.Text({
             id:edge.id,
             text:""+(edge.weight||1).toString()+"",
-            fill:'yellow' ,
-            stroke:"yellow",
+            fill:edge.color ,
+            stroke:edge.color,
             strokeWidth: 0.5,
             x: px ,
             y: py,

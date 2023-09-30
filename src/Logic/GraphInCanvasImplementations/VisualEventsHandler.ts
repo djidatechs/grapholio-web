@@ -298,8 +298,8 @@ export class VisualEventsHandler {
                 points: [0, 0, 0, 0],
                 pointerLength: 10,
                 pointerWidth: 10,
-                fill: 'yellow',
-                stroke: 'yellow',
+                fill: '#ff8000',
+                stroke: '#ff8000',
                 strokeWidth: 2,
                 visible: false,
             });
