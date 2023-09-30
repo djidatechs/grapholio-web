@@ -22,7 +22,7 @@ export default function AppWrapper () {
             <div className={"bg-black overflow-hidden select-none h-screen min-h-screen max-h-screen "}>
                 <Navbar/>
                 <div id={"LAYOUT_ID"} className="  mt-10 lg:mt-12 xl:mt-[50px] 2xl:mt-16 max-h-[calc(100vh-40px)] lg:max-h-[calc(100vh-48px)] xl:max-h-[calc(100vh-50px)] 2xl:max-h-[calc(100vh-64px)] ">
-                    <Suspense  fallback={<Loading/>}>
+                    <Suspense  fallback={<Loading height={"h-screen"}/>}>
                    <Boards/>
                     </Suspense>
                 </div>

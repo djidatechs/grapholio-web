@@ -18,7 +18,7 @@ const Layout = lazy(() => import("./Pages/Application/Layout.tsx"));
 
 function App()   {
         return (
-       <Suspense fallback={<Loading/>}>
+       <Suspense fallback={<Loading  height={"h-screen"} />}>
            <Routes>
 
               <Route    path={"/"} element={<Landing/>}/>

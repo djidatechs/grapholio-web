@@ -176,12 +176,12 @@ export class GrapholioManager {
     //logic & visual
     const user =  this.blackboard.use()
     if (attr === "weight") {
-        g?.setEdgeAttribute(id,attr,parseInt(value));
-        user?.getEdgeWeight(id).setAttr("text", parseInt(value))
+        g?.setEdgeAttribute(id,attr,parseInt(value)||1);
+        user?.getEdgeWeight(id).setAttr("text", parseInt(value)||1)
     }
     else if (attr === "text_size") {
-        g?.setEdgeAttribute(id,attr,parseInt(value));
-        user?.getEdgeWeight(id).setAttr("fontSize", parseInt(value))
+        g?.setEdgeAttribute(id,attr,parseInt(value)||1);
+        user?.getEdgeWeight(id).setAttr("fontSize", parseInt(value)||1)
     }
     else if (attr === "color") {
         value = colorToHex(value)
@@ -202,6 +202,11 @@ export class GrapholioManager {
             g?.setNodeAttribute(node,attr,value)
             this.blackboard.use()?.getNodeText(node)?.setAttr("text", value)
         }
+        if (attr === "x" || attr === "y") {
+            value = value||100
+            g?.setNodeAttribute(node,attr,value)
+            this.blackboard.use()?.getNodeText(node)?.setAttr(attr, value)
+        }
 
         else if (attr === "color") {
             value = colorToHex(value)
@@ -211,13 +216,12 @@ export class GrapholioManager {
         }
 
         else if (attr === "size" ) {
-
             g?.setNodeAttribute(node,attr,value);
             const circle = this.blackboard.use()?.getNode(node)
             const text =this.blackboard.use()?.getNodeText(node)
             if (!circle || !text) return
-            circle.setAttr("width", parseInt(value))
-            circle.setAttr("height", parseInt(value))
+            circle.setAttr("width", parseInt(value)||1)
+            circle.setAttr("height", parseInt(value)||1)
 
             //fix text
             const _y = (circle.width()+20) * (circle.getStage()?.scale()?.x||1)
@@ -243,8 +247,8 @@ export class GrapholioManager {
         }
 
         else if (attr === "text_size" ) {
-            g?.setNodeAttribute(node,attr,parseInt(value));
-            this.blackboard.use()?.getNodeText(node)?.setAttr("fontSize", parseInt(value))
+            g?.setNodeAttribute(node,attr,parseInt(value)||1);
+            this.blackboard.use()?.getNodeText(node)?.setAttr("fontSize", parseInt(value)||1)
         }
         else g?.setNodeAttribute(node,attr,value);
 

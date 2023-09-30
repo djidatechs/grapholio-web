@@ -42,7 +42,6 @@ export default function NavbarOptions () {
                     <h2 className={"mt-10 text-2xl text-accent mb-2 font-bold"}>Support</h2>
                     <p>Support me ! </p>
                 </div>
-                <p>Here is an Example</p>
 
             </div>
 

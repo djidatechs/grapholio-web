@@ -38,7 +38,7 @@ export default function Scripting () {
 
                 <div className={" my-6 pt-6 space-y-3 text-xl "} id={"3"}>
                     <h2 className={"mt-10 text-2xl text-accent  font-bold"}>Examples</h2>
-                    <Suspense fallback={<Loading/>}>
+                    <Suspense fallback={<Loading height={"h-full"}/>}>
                     <CodeMirrorComponent/>
                     </Suspense>
                 </div>

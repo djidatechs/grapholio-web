@@ -17,10 +17,10 @@ function _Operations() {
 
     if (RequestValue)
     switch (operationDash){
-        case  OperationDash.INFO : return <InfoOperations/>
-        case  OperationDash.NODES : return <NodesOperations/>
-        case  OperationDash.EDGES : return <EdgesOperations/>
-        case  OperationDash.CODE : return (<Suspense fallback={<Loading/>}><CodeOperations/></Suspense>
+        case  OperationDash.INFO : return <Suspense fallback={<Loading height={"h-[50vh]"}/>}><InfoOperations/></Suspense>
+        case  OperationDash.NODES : return <Suspense fallback={<Loading height={"h-[50vh]"}/>}><NodesOperations/></Suspense>
+        case  OperationDash.EDGES : return <Suspense fallback={<Loading height={"h-[50vh]"}/>}><EdgesOperations/></Suspense>
+        case  OperationDash.CODE : return (<Suspense fallback={<Loading height={"h-screen"}/>}><CodeOperations/></Suspense>
         )
         default : return <></>
     }
