@@ -5,7 +5,9 @@ import Optimisation from "./Scripting/Optimisation.tsx";
 
 import {lazy, Suspense} from "react";
 import Loading from "../Loading.tsx";
-const CodeMirrorComponent = lazy(() => import("./Scripting/KruskalExample.tsx"));
+import {code_list} from "./Scripting/code examples.ts";
+import kruskal from "../../assets/kruskal.mp4";
+const CodeMirrorComponent = lazy(() => import("./Scripting/codeholder.tsx"));
 
 
 export default function Scripting () {
@@ -39,7 +41,16 @@ export default function Scripting () {
                 <div className={" my-6 pt-6 space-y-3 text-xl "} id={"3"}>
                     <h2 className={"mt-10 text-2xl text-accent  font-bold"}>Examples</h2>
                     <Suspense fallback={<Loading height={"h-full"}/>}>
-                    <CodeMirrorComponent/>
+                    <CodeMirrorComponent code={code_list.kruskal}/>
+                    </Suspense>
+                    <h2 className={"mt-10 text-2xl text-accent mb-2 font-bold"}>Importing Graphs</h2>
+                    <p>You can Import previously exported graphs</p>
+                    <video controls muted>
+                        <source src={kruskal} type="video/mp4" />
+                        Your browser does not support the video tag.
+                    </video>
+                    <Suspense fallback={<Loading height={"h-full"}/>}>
+                        <CodeMirrorComponent code={code_list.dijkstra}/>
                     </Suspense>
                 </div>
 

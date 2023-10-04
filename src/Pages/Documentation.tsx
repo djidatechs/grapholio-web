@@ -1,12 +1,15 @@
 import Sidebar from "./Documentation/SideBar.tsx";
 import {Outlet} from "react-router-dom";
 import Loading from "./Loading.tsx";
-import {Suspense} from "react";
+import {Suspense, useEffect} from "react";
 
 function Documentation() {
+    useEffect(() => {
+        document.title = "Documentation | Grapholio"
+    }, []);
 
     return (
-        <div className={"p-relative"}>
+        <div className={" relative"}>
             <div className={"flex justify-center"}>
             <div className={"w-full lg:w-[98%] px-2 mt-5 lg:mx-0 sm:px-0 max-w-[1500px] "}>
 

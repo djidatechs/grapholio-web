@@ -12,6 +12,7 @@ import {OperationDash} from "../../../../Constants.ts";
 //import {GrapholioCommandManager} from "../../../../Logic/GraphlolioScriptLanguage/GrapholioCommandManager.ts";
 import {GrapholioCommandManager_refactor} from "../../../../Logic/GraphlolioScriptLanguage/GCMrefactor.ts"
 import {TbCircleLetterL} from "react-icons/tb";
+import {ToastInfoWithAction} from "../../../../Logic/GrapholioManager/Messages.ts";
 function CodeOperations() {
         const editor = useRef(null)
         const wrapper = useRef(null)
@@ -26,11 +27,11 @@ function CodeOperations() {
 
 
         const editorWillUnmount = () => {
-                editor.current.display.wrapper.remove()
+                //editor.current.display.wrapper.remove()
         }
         const RunGivosCode= ()=> {
             setRunning(true);
-            fetch("https://grapholio-web-api.onrender.com/compiler", {
+            fetch("https://commonapi.djidax.com/compiler", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -55,11 +56,19 @@ function CodeOperations() {
             grapholioManager.write(value)
         }
         useEffect(() => {
+            ToastInfoWithAction(
+                "Click here to see code examples and tutorial in the documentation",
+                ()=>window.open("https://grapholio.djidax.com/documentation/scripting", '_blank')
+                )
             setCurrentCode (grapholioManager.graph_script())
+            editor.current.setValue ( grapholioManager.graph_script())
         }, []);
 
         useEffect(()=>{
-            container.current.style.height =  "44%"
+            if (container.current.style) container.current.style.height =  "44%"
+            const  oh = container.current?.clientHeight ;
+            if (oh && wrapper.current?.ref?.style )  wrapper.current.ref.style.height = oh+"px" ;
+            if (oh && editor.current?.ref?.style )  editor.current.ref.style.height = oh+"px" ;
 
             const  log_h = logContainer.current?.offsetTop ;
             const  page_h = pageContainer.current?.clientHeight ;
@@ -74,6 +83,8 @@ function CodeOperations() {
                 },
                 body: JSON.stringify({text: "//nothing"})
             }).then(() => console.log("Givos ... "))
+
+            return ()=>editor.current.display.wrapper.remove()
 
         },[])
 
@@ -99,6 +110,7 @@ function CodeOperations() {
                         className={"flex-auto h-7 w-7  fill-primary hover:fill-secondary hover:scale-105 transition duration-200 cursor-pointer"}/>
                     <TbCircleLetterL
                         onClick={()=>{
+                            console.log("log show hide")
                             const dis = logContainer.current.style.display
                             container.current.style.height = (dis === "block" ||dis === "") ? "82%" : "44%"
                             const  oh = container.current?.clientHeight ;
@@ -106,14 +118,11 @@ function CodeOperations() {
                             if (oh && editor.current?.ref?.style )  editor.current.ref.style.height = oh+"px" ;
                             logContainer.current.style.display = (dis === "block" ||dis === "") ? "none" : "block"
 
-
-
-
                         }}
                         className={"flex-auto h-7 w-7  text-primary hover:text-secondary hover:scale-105 transition duration-200 cursor-pointer"}/>
                 </div>
                 <div className="divider ">Code</div>
-                <div ref={container} className={" w-full h-[44%] bg-[#282a36]"}>
+                <div ref={container} className={" w-full h-[44%]  bg-[#282a36]"}>
 
                     <CodeMirror
                         className={" text-[16px] overflow-hidden p-0"}
@@ -130,7 +139,8 @@ function CodeOperations() {
                         editorDidMount={(e) => {
                             editor.current = e
                             const  oh = container.current?.clientHeight ;
-                            if (oh && wrapper.current?.ref?.style )  wrapper.current.ref.style.height = oh+"px" ;
+                            if (oh && wrapper.current?.ref?.style ) wrapper.current.ref.style.height = oh + "px";
+                            if (oh && editor.current?.ref?.style )  editor.current.ref.style.height = oh+"px" ;
                         }}
                         editorWillUnmount={editorWillUnmount}
                     />

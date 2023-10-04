@@ -8,7 +8,7 @@ import {BiSolidColorFill} from "react-icons/bi";
 function FastControl({parent}:{parent:any}) {
     const {grapholioManager : manager} = useGrapholio() ;
     return (
-        <div className="z-40 absolute text-black xl:font-semibold 2xl:font-bold select-none text-xs lg:text-sm 2xl:text-base   ">
+        <div className="z-40 absolute text-black lg:font-semibold xl:font-bold select-none text-xs lg:text-sm 2xl:text-base   ">
             <div className={"flex"}>
             <span
                 onClick={()=> {
@@ -18,13 +18,13 @@ function FastControl({parent}:{parent:any}) {
             <span
                 onContextMenu={(event)=>manager.handleFastControl(event, EdgeFastControl)}
                 onClick={()=>manager.addRandomEdge()}
-                className="py-[2px] 2xl:py-1 mr-2 px-2 2xl:px-3 bg-green-600  cursor-pointer hover:bg-green-900 transition duration-300 ease-out">Edge</span>
+                className="py-[2px] 2xl:py-1 mr-2 px-2 2xl:px-3 bg-green-600  cursor-pointer hover:bg-green-900 transition duration-300 ease-out">Random Edge</span>
             <span
                 onContextMenu={(event)=>manager.handleFastControl(event,NodeFastControl)}
                 onClick={()=> {
                     manager.addNode({})
                 }}
-                className="py-[2px] 2xl:py-1 mr-2 px-2 2xl:px-3 bg-green-600  cursor-pointer hover:bg-green-900 transition duration-300 ease-out">Node</span>
+                className="py-[2px] 2xl:py-1 mr-2 px-2 2xl:px-3 bg-green-600  cursor-pointer hover:bg-green-900 transition duration-300 ease-out">New Node</span>
             <span
                 onClick={()=> {
                     manager.zoomMinus()
@@ -65,8 +65,9 @@ function BlackBoard() {
     }, []);
     return (
         <div ref={ref} className="p-4 -z-1 text-white w-full h-full overflow-hidden" style={{position: "relative"}}>
-            <div className="overflow-auto  scrollbar-thin  scrollbar-thumb-green-600 "
-                 style={{height: 'calc(100vh - 100px)'}}>
+            <div className="overflow-auto  scrollbar-thin  scrollbar-thumb-green-600  h-[calc(100vh-65px)] lg:h-[calc(100vh-73px)] xl:h-[calc(100vh-75px)] 2xl:h-[calc(100vh-89px)] "
+                 //style={{height: 'calc(100vh - 100px)'}}
+            >
                 <div>
                     <FastControl parent={ref}/>
                     <div id={BlackBoard_Id}/>

@@ -1,5 +1,6 @@
 
-import image from "../../assets/pdz.png"
+import image from "../../assets/grapholio.jpg"
+import image2 from "../../assets/pdz.png"
 import avatar from "../../assets/mashroom.jpg"
 export default function Introduction (){
     return (
@@ -8,9 +9,11 @@ export default function Introduction (){
             <p className={"text-lg font-semibold space-y-2 text-justify"}>
                 <p>Grapholio is a web tool designed for teaching and learning about graph theory. It's made with the goal of helping students understand graphs better. Using easy-to-follow visuals and controls, it simplifies the learning process. Plus, you can use JavaScript to apply graph theory concepts. Unlike other complicated tools, Grapholio is all about making learning easy.</p>
                 <p>That's why I developed it - to give students a solid start in understanding graph theory with simplicity and confidence.</p>
+                <p className={"bg-warning text-warning-content"}>This is not a tool to build and maintain large networks, using it in this way is not intended by the developer </p>
             </p>
-            <figure className={"text-center "}>
+            <figure className={"text-center space-y-5 "}>
                 <img className={"rounded-xl"} src={image} loading={"lazy"} alt=""/>
+                <img className={"rounded-xl"} src={image2} loading={"lazy"} alt=""/>
             </figure>
             <div className={"py-[50px]"}>
             <div className={"flex w-full justify-center  "}>
@@ -25,8 +28,8 @@ export default function Introduction (){
                     <h2 className="card-title">Made With 😐 By Djida Issam</h2>
                     <a href = "mailto:ji_djida@esi.dz">ji_djida@esi.dz</a>
                     <div className="card-actions justify-end">
-                        <button className="btn btn-outline btn-primary text-white font-semibold">Github</button>
-                        <button className="btn btn-outline btn-primary text-white font-semibold">Facebook</button>
+                        <a href={"https://github.com/djidatechs"}  target="_blank" className="btn btn-outline btn-primary text-white font-semibold">Github</a>
+                        <a href={"https://web.facebook.com/issam.Uhan.djida"}  target="_blank" className="btn btn-outline btn-primary text-white font-semibold">Facebook</a>
                     </div>
                 </div>
             </div>

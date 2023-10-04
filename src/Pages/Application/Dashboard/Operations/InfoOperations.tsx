@@ -117,7 +117,7 @@ function Styling({ title, defaultVisible }: IAccorditionOptions) {
             localStorage.setItem(AutoAction + Separator + "DefaultLabelText" , num_labeltext.toString() )
             localStorage.setItem(AutoAction+Separator+"DefaultWeightText",num_weighttext.toString())
             localStorage.setItem(AutoAction+Separator+"DefaultNodeSize" , num_nodesize.toString())
-            // localStorage.setItem(AutoAction+Separator+"DefaultEdgeStrokeWidth")
+            localStorage.setItem(AutoAction+Separator+"DefaultEdgeStrokeWidth" , num_edgewidth.toString())
         }
 
 

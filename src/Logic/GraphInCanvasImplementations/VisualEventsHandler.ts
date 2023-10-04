@@ -13,9 +13,10 @@ import {
 } from "../../Pages/Application/BlackBoard/ContextualTypesEnums.ts";
 
 export class VisualEventsHandler {
-    private isConnecting : string|undefined ;
+    private isConnecting : Konva.Circle|null = null ;
     private managerRef :  GrapholioManager|undefined ;
     private isCurving : boolean = false;
+    private connectionArrow : Konva.Arrow | null = null
     private stage_mousemove_ref : ()=>any = ()=>{}
 
 
@@ -26,9 +27,20 @@ export class VisualEventsHandler {
         stage.on("contextmenu",(event)=>{
             event.evt.preventDefault()
         } )
-        stage.on("dblclick",()=>{
-            stage.off('mousemove',this.stage_mousemove_ref);
+        stage.on("dblclick tap",()=>{
+            stage.off('mousemove touchmove',this.stage_mousemove_ref);
             this.isCurving = false;
+        })
+        stage.on("click",()=>{
+            console.log("click")
+                const textarea = document.getElementById("textareaid")
+                if (!textarea ) return
+                textarea .enterKeyHint = 'enter'
+                const enterEvent = new Event('keydown');
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                //@ts-ignore
+                try {enterEvent.code = 'Enter'} catch {console.log("enter")}
+                textarea.dispatchEvent(enterEvent);
         })
         this.selectInstall(stage);
     }
@@ -49,7 +61,17 @@ export class VisualEventsHandler {
 
         let x1:any, y1:any, x2:any, y2 : any;
 
+        const supprSelectBox = (e: any) =>{
+            console.log(e.code)
+            if (e.code === "Delete") {
+                tr.nodes().map(node=> this.managerRef?.removeNode(node.attrs.id) )
+            }
+        }
+
+
         stage.on('mousedown touchstart', (e) => {
+            console.log("I am here")
+            document.addEventListener ("keydown", supprSelectBox )
             e.evt.preventDefault();
             const scale=  stage?.scale()?.x || 1
             x1 = (stage?.getPointerPosition()?.x||0)/ scale
@@ -102,6 +124,7 @@ export class VisualEventsHandler {
                 Konva.Util.haveIntersection(box, shape.getClientRect())
             );
             tr.nodes(selected);
+            if (!selected.length) document.removeEventListener ("keydown", supprSelectBox )
 
         });
     }
@@ -136,15 +159,15 @@ export class VisualEventsHandler {
         const fullNode = circle.getParent() as unknown as Konva.Group;
         if (fullNode===undefined) return
         this._nodeDragBound(fullNode)
-        fullNode.on("mousedown", (event)=>{
+        fullNode.on("mousedown touchstart", (event)=>{
             event.cancelBubble = true
         })
-        fullNode.on("click", (event)=>{
+        fullNode.on("click tap", (event)=>{
             event.cancelBubble = true;
             this._nodeClick(fullNode)
             this.managerRef?.useOperations()?.SentUpdateRequest()
         })
-        circle.on("dblclick", (event)=>{
+        circle.on("dblclick tap", (event)=>{
             event.cancelBubble = true;
             this._nodeDoubleClick(circle)
             this.managerRef?.useOperations()?.SentUpdateRequest()
@@ -165,12 +188,12 @@ export class VisualEventsHandler {
     handleNodeText(circle : Konva.Circle | undefined ,text:Konva.Text | undefined){
         if (circle===undefined || text===undefined) return
         this._nodeTextDragBound(circle,text)
-        text.on("mousedown",(e)=> {
+        text.on("mousedown touchstart",(e)=> {
             e.cancelBubble = true
         })
-        text.on("dblclick",(e)=> {
-                e.cancelBubble = true
-                this._nodeTextDoubleClick(text)
+        text.on("dblclick tap",(e)=> {
+            e.cancelBubble = true
+            this._nodeTextDoubleClick(text)
             this.managerRef?.useOperations()?.SentUpdateRequest()
 
         })
@@ -178,14 +201,14 @@ export class VisualEventsHandler {
     handleEdgeWeightText (text :Konva.Text ) {
         if (!text) return
 
-        text.on("mousedown", (e)=> e.cancelBubble = true )
+        text.on("mousedown touchstart", (e)=> e.cancelBubble = true )
 
-        text.on("dblclick",()=> {
+        text.on("dblclick tap",()=> {
             if (!this.isCurving ) {
                 this._edgeWeightDoubleClick(text)
             }
             else {
-                text.getStage()?.off('mousemove',this.stage_mousemove_ref);
+                text.getStage()?.off('mousemove touchmove',this.stage_mousemove_ref);
                 this.isCurving = false //
 
             }
@@ -236,11 +259,11 @@ export class VisualEventsHandler {
     handleEdge(arrow : Konva.Arrow | undefined  ){
         if (arrow === undefined) return
         this._edgeMovement(arrow);
-        arrow.on("mousedown",(e)=>e.cancelBubble = true )
+        arrow.on("mousedown touchstart",(e)=>e.cancelBubble = true )
         arrow.on("mouseenter",()=> this._edgeMouseEnter(arrow))
         arrow.on("mouseleave",()=> this._edgeMouseLeave(arrow))
-        arrow.on("click", ()=>this._edgeClick(arrow))
-        arrow.on("dblclick", (event)=> {
+        arrow.on("click tap", ()=>this._edgeClick(arrow))
+        arrow.on("dblclick tap", (event)=> {
             event.cancelBubble = ! (this.isCurving || this.isConnecting)
             this._edgeDoubleClick(arrow)
         })
@@ -287,11 +310,10 @@ export class VisualEventsHandler {
     AddingEdgeByMovingArrow(node_circle: Konva.Circle) {
 
         if (this.isConnecting) {
-            const node1 = this.isConnecting;
+            const node1 = this.isConnecting.getAttr("id");
             const node2 = node_circle.getAttr("id");
             this.managerRef?.addEdge(node1, node2, {})
-            const arrow = node_circle.getStage()?.findOne((arr: Konva.Node) => arr.getAttr("id") == MovingArrow_Id) as Konva.Arrow
-            this._MovingArrowDown(node_circle, arrow)
+            this._MovingArrowDown()
         } else {
             const arrow = new Konva.Arrow({
                 id: MovingArrow_Id,
@@ -307,7 +329,10 @@ export class VisualEventsHandler {
             arrow.show()
             arrow.moveToBottom()
             node_circle.getLayer()?.draw()
-            this._MovingArrowUp(node_circle, arrow)
+            this.connectionArrow = arrow
+            this.isConnecting = node_circle
+
+            this._MovingArrowUp()
         }
     }
 
@@ -327,16 +352,16 @@ export class VisualEventsHandler {
             x : areaPosition.x,
             y : areaPosition.y
         })
-        if (element) element.getStage()?.on("click", ()=>this._MenuDown(element) )
-        else window.document.addEventListener( "click", ()=>{
+        if (element) element.getStage()?.on("click tap", ()=>this._MenuDown(element) )
+        else window.document.addEventListener( "click tap", ()=>{
             this._MenuDown(undefined)
         })
 
     }
     _MenuDown(element:Konva.Node|undefined) {
         this.managerRef?.useBlackBoardMenu()?.setProps({})
-        if (element) element.getStage()?.off("click", ()=>this._MenuDown(element) )
-        else window.document.removeEventListener("click",()=>this._MenuDown(undefined))
+        if (element) element.getStage()?.off("click tap", ()=>this._MenuDown(element) )
+        else window.document.removeEventListener("click tap",()=>this._MenuDown(undefined))
     }
 
     _nodeDragStart(circle : Konva.Group  ){
@@ -383,7 +408,7 @@ export class VisualEventsHandler {
 
 
         if (this.isCurving) {
-            arrow.getStage()?.off('mousemove',this.stage_mousemove_ref);
+            arrow.getStage()?.off('mousemove touchmove',this.stage_mousemove_ref);
             this.isCurving = false;
         } else {
             this.isCurving = true;
@@ -411,7 +436,7 @@ export class VisualEventsHandler {
                 const node2 : Konva.Circle = (arrow.getLayer()?.find("Circle").find((node:any)=>node.attrs.id === node2_id)) as Konva.Circle
                 this._updatePoints(node1,node2,arrow)
             }
-            arrow.getStage()?.on('mousemove',this.stage_mousemove_ref );
+            arrow.getStage()?.on('mousemove touchmove',this.stage_mousemove_ref );
         }
     }
 
@@ -437,21 +462,24 @@ export class VisualEventsHandler {
     unwatchEdge(arrow:Konva.Arrow|undefined){
         if (!arrow) return
         const weight = arrow.getLayer()?.find("Text").find(text=>text.attrs.id === arrow.attrs.id) as Konva.Text
-        arrow.off();
-        weight.off();
+        arrow?.off();
+        weight?.off();
 
     }
     unwatchGraph(layer:Konva.Layer| null){
         if (!layer) return
-        layer.find("Arrow").map(arrow  =>this.unwatchEdge(arrow  as Konva.Arrow ))
+        layer.find("Arrow").map(arrow  => {
+            if ( arrow.attrs.id.includes(EdgeAutoAction)  )
+            this.unwatchEdge(arrow as Konva.Arrow)
+        })
         layer.find("Circle").map(circle=>this.unwatchNode(circle as Konva.Circle))
     }
     unwatchNode(node:Konva.Circle|undefined){
         if (!node) return
         const label = node.getLayer()?.find("Text").find(text=>text.attrs.id === node.attrs.id) as Konva.Text
         node.getParent()?.off()
-        node.off()
-        label.off()
+        node?.off()
+        label?.off()
 
 
     }
@@ -487,20 +515,10 @@ export class VisualEventsHandler {
                 arrowStart.y /= scale.y
                 arrowEnd.x /= scale.x
                 arrowEnd.y /= scale.y
-
-                /*const newDistance = Math.sqrt(Math.pow(arrowEnd.x - arrowStart.x, 2) + Math.pow(arrowEnd.y - arrowStart.y, 2));
-                const ratio = newDistance / originalDistance;
-                const middlePoints = {
-                    x: S_arrowMiddle.x + ((arrowEnd.x) - points[points.length - 2]) * ratio,
-                    y: S_arrowMiddle.y + ((arrowEnd.y) - points[points.length - 1]) * ratio,
-
-                }*/
-
+                
                 edge.setAttr("points", [
                     arrowStart.x,
                     arrowStart.y,
-                    //middlePoints.x,
-                    //middlePoints.y,
                     S_arrowMiddle.x,
                     S_arrowMiddle.y,
                     arrowEnd.x,
@@ -540,37 +558,34 @@ export class VisualEventsHandler {
             return null
         }catch {return null}
     }
-    _MovingArrowUp (circle : Konva.Circle , arrow : Konva.Arrow ){
-        this.isConnecting = circle.getAttr("id");
-        arrow.show()
-        circle.getLayer()?.add(arrow);
-        circle.getLayer()?.draw();
-        circle.getStage()?.on("mousemove", this.movingArrowUpdate(circle,arrow))
-        circle.getStage()?.on("click", ()=>this._MovingArrowDown(circle, arrow) )
-    }
-    _MovingArrowDown (circle : Konva.Circle , arrow : Konva.Arrow ){
-        this.isConnecting = undefined;
-        arrow.destroy()
-        arrow.getLayer()?.draw();
-        arrow.getStage()?.off("mousemove", this.movingArrowUpdate(circle,arrow))
+    _MovingArrowUp (){
 
-        circle.getStage()?.off("click", ()=>this._MovingArrowDown(circle, arrow) )
+        this.connectionArrow?.show()
+        if (this.connectionArrow) this.isConnecting?.getLayer()?.add(this.connectionArrow);
+        this.isConnecting?.getLayer()?.draw();
+        this.isConnecting?.getStage()?.on("mousemove", this.movingArrowUpdate.bind(this))
+        this.isConnecting?.getStage()?.on("click", this._MovingArrowDown.bind(this) )
+    }
+    _MovingArrowDown ( ){
+        this.isConnecting = null;
+        this.connectionArrow?.getStage()?.off("mousemove",this.movingArrowUpdate.bind(this))
+        this.connectionArrow?.destroy()
+
     }
 
-    private movingArrowUpdate(circle: Konva.Circle, arrow: Konva.Arrow) {
-        return ()=> {
-            const pos = circle.getStage()?.getPointerPosition() as Vector2d;
-            const NodePosition = circle.getAbsolutePosition();
-            const scale = circle.getStage()?.scale() || {x: 1, y: 1};
+    private movingArrowUpdate() {
 
-            arrow.points([NodePosition.x / scale.x, NodePosition.y / scale.y, pos.x / scale.x, pos.y / scale.y]);
-            circle.getLayer()?.draw();
-        }
+            if (!this.isConnecting) return
+            const pos = this.isConnecting.getStage()?.getPointerPosition() as Vector2d;
+            const NodePosition = this.isConnecting.getAbsolutePosition();
+            const scale = this.isConnecting.getStage()?.scale() || {x: 1, y: 1};
+
+            this.connectionArrow?.points([NodePosition.x / scale.x, NodePosition.y / scale.y, pos.x / scale.x, pos.y / scale.y]);
+            this.isConnecting.getLayer()?.draw();
     }
     _ChangeTextVisually (textNode:Konva.Text,{For}:{For:"label"|"weight"}) {
         if (this.isCurving ||this.isConnecting) return
         const manager = this.managerRef
-
 
 
         const textPosition = textNode.getAbsolutePosition()
@@ -596,6 +611,7 @@ export class VisualEventsHandler {
         textarea.style.overflow = 'hidden';
         textarea.style.width = textNode.width().toString();
         textarea.style.resize = 'none'; // Disabled textarea resizing
+        textarea.id = "textareaid"
 
         textarea.maxLength = 20; // Added maximum character limit
 

@@ -205,7 +205,7 @@ export class GrapholioManager {
         if (attr === "x" || attr === "y") {
             value = value||100
             g?.setNodeAttribute(node,attr,value)
-            this.blackboard.use()?.getNodeText(node)?.setAttr(attr, value)
+            this.blackboard.use()?.getNode(node)?.getParent()?.setAttr(attr, value)
         }
 
         else if (attr === "color") {
@@ -403,7 +403,7 @@ export class GrapholioManager {
 
     }
     import (json:string) {
-        const loadedData : Iimport = JSON.parse(json);
+        const loadedData : Iimport =  (JSON.parse(atob(json)))
         let g = new Graph(loadedData.graphology.options);
         const graphId = GraphAutoAction+ (GrapholioManager.graphCount++).toString()
         g = g.import(loadedData.graphology)
@@ -431,7 +431,7 @@ export class GrapholioManager {
         }
         return {
             fileName: g.getAttribute("name"),
-            result :JSON.stringify(exportation)
+            result :btoa (JSON.stringify(exportation))
         }
 
 

@@ -9,6 +9,15 @@ export default {
       screens:{
         'tall': { 'raw': '(min-height: 700px)' },
         'tillLg': {'max': '1023px'},
+      },
+      keyframes: {
+        slideIn: {
+          '0%': { transform: 'translateY(-500%)' , opacity : '0' },
+          '100%': { transform: 'translateY(-50%)',opacity : '1' },
+        }
+      },
+      animation: {
+        slideIn: 'slideIn 0.5s ease-in-out',
       }
     }
   },

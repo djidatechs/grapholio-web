@@ -51,11 +51,11 @@ export class Node extends GCMType {
     }
     x(){
         const id = this.properties["id"] as string
-        return this.manager?.blackboard.use()?.getNode(id)?.position().x
+        return this.manager?.blackboard.use()?.getNode(id)?.absolutePosition().x
     }
     y(){
         const id = this.properties["id"] as string
-        return this.manager?.blackboard.use()?.getNode(id)?.position().y
+        return this.manager?.blackboard.use()?.getNode(id)?.absolutePosition().y
     }
     degree(){
         const id = this.properties["id"] as string

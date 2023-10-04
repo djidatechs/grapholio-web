@@ -3,6 +3,8 @@ import firstlook from "../../assets/add first graph.mp4"
 import fastControl from "../../assets/fast control.mp4"
 import vnimpel from "../../assets/visual node impel.mp4"
 import vpimpel from "../../assets/visual edge impel.mp4"
+import selecttool from "../../assets/select tool.mp4"
+import firstlookvid from "../../assets/firstlookvid.mp4"
 export default function GettingStarted () {
 
     return (
@@ -13,7 +15,7 @@ export default function GettingStarted () {
                 <div className={" my-3 space-y-3 text-xl "} id={"1"}>
                     <h2 className={"mt-10 text-2xl text-accent mb-2 font-bold"}>Creating Your First Graph</h2>
                     <p>
-                        From the landing page you can click on Application <br/>
+                        From the landing page you can click on PLAYGROUND <br/>
                         you will be redirected to the web app where you can start creating graphs !
                     </p>
                     <video controls muted>
@@ -44,7 +46,13 @@ export default function GettingStarted () {
                             <h2 className="text-xl font-bold">Draw Board</h2>
                             <p className="text-sm">To view and control the visual items in the canvas</p>
                         </div>
+
                     </div>
+
+                    <video controls muted>
+                        <source src={firstlookvid} type="video/mp4" />
+                        Your browser does not support the video tag.
+                    </video>
                 </div>
                 <div id={"3"} className={"max-w-full my-3 space-y-3 text-xl"}>
                     <h2 className={"mt-10 text-2xl text-accent mb-2 font-bold"}>Fast Controls</h2>
@@ -53,10 +61,10 @@ export default function GettingStarted () {
                     </p>
                     <figure><img className={"rounded-xl w-72"} src={fastControl} alt={""}/></figure>
                     <div><h2 className={"text-primary inline font-bold"}>X</h2> <p className={"text-xl  inline "}> to clear the canvas </p></div>
-                    <div><h2 className={"text-primary inline font-bold"}>Edge</h2> <p className={"text-xl  inline "}> to add edge between random nodes </p></div>
-                    <div><h2 className={"text-primary inline font-bold"}>Node</h2> <p className={"text-xl  inline "}> to add a node to the canvas </p></div>
-                    <div><h2 className={"text-primary inline font-bold"}>Minus</h2> <p className={"text-xl  inline "}> to zoom out </p></div>
-                    <div><h2 className={"text-primary inline font-bold"}>Plus</h2> <p className={"text-xl  inline "}> to zoom in </p></div>
+                    <div><h2 className={"text-primary inline font-bold"}>Random Edge</h2> <p className={"text-xl  inline "}> to add edge between random nodes </p></div>
+                    <div><h2 className={"text-primary inline font-bold"}>New Node</h2> <p className={"text-xl  inline "}> to add a node to the canvas </p></div>
+                    <div><h2 className={"text-primary inline font-bold"}>Minus (-)</h2> <p className={"text-xl  inline "}> to zoom out </p></div>
+                    <div><h2 className={"text-primary inline font-bold"}>Plus (+)</h2> <p className={"text-xl  inline "}> to zoom in </p></div>
                     <div><BiSolidColorFill className={"inline fill-primary font-bold text-primary h-8  w-8"}/> <p className={"text-xl inline  "}>Toggle dark / light background</p></div>
                     <p>
                         here is an example :
@@ -74,13 +82,19 @@ export default function GettingStarted () {
                     <div><h2 className={"text-primary  inline font-bold"}>Rename Node (label)</h2> <p className={" text-xl  inline "}> Double Click on the node's label,or right click and choose Rename, rename label, and click Enter to save </p></div>
                     <div><h2 className={"text-primary  inline font-bold"}>remove Node</h2> <p className={" text-xl  inline "}>Right click and choose remove </p></div>
                     <div><h2 className={"text-primary  inline font-bold"}>Show Nodes Details</h2> <p className={" text-xl  inline "}>Right click and choose Details , this will show you controllable attributes on the dashboard  </p></div>
+                    <p>Here is an Example : </p>
+                    <video controls muted>
+                        <source src={selecttool} type="video/mp4" />
+                        Your browser does not support the video tag.
+                    </video>
                     <div><h2 className={"text-primary  inline font-bold"}>Selection Tool</h2> <p className={" text-xl  inline "}> Put the Mousedown and hover over the elemnts you want to select, a box will be created that you can drag over the canvas   </p></div>
-
                     <p>Here is an Example : </p>
                     <video controls muted>
                         <source src={vnimpel} type="video/mp4" />
                         Your browser does not support the video tag.
                     </video>
+
+
                     <div><h2 className={"text-primary  inline font-bold"}>Curving Edge</h2> <p className={" text-xl  inline "}> Double Click on the edge, or right click and choose Curve, move the cursor to any place, and then double Click and the position will be saved </p></div>
                     <div><h2 className={"text-primary  inline font-bold"}>Changing Weight</h2> <p className={" text-xl  inline "}> Double Click on the weight, or right click on the edge and choose Weight, change the weight ,  and click Enter to save </p></div>
                     <div><h2 className={"text-primary  inline font-bold"}>remove Edge</h2> <p className={" text-xl  inline "}>Right click and choose remove </p></div>

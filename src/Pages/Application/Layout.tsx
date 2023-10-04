@@ -2,11 +2,19 @@ import {Link} from "react-router-dom";
 import GrapholioProvider, {useGrapholio} from "./Context.tsx";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import {ChangeEvent, lazy, Suspense, useRef} from "react";
+import {ChangeEvent, lazy, Suspense, useEffect, useRef} from "react";
 import Loading from "../Loading.tsx";
 const Boards = lazy ( () =>import ("./Boards.tsx"));
 
 export default function AppWrapper () {
+    useEffect(() => {
+        document.title = "Grapholio | App"
+        window.onbeforeunload = function(event) {
+            event.returnValue= "Are you sure you want to leave this page? Your work will not be saved.";
+            return "Are you sure you want to leave this page? Your work will not be saved.";
+        };
+
+    }, []);
 
     return (
         <GrapholioProvider>
@@ -21,7 +29,7 @@ export default function AppWrapper () {
             </div></div>
             <div className={"bg-black overflow-hidden select-none h-screen min-h-screen max-h-screen "}>
                 <Navbar/>
-                <div id={"LAYOUT_ID"} className="  mt-10 lg:mt-12 xl:mt-[50px] 2xl:mt-16 max-h-[calc(100vh-40px)] lg:max-h-[calc(100vh-48px)] xl:max-h-[calc(100vh-50px)] 2xl:max-h-[calc(100vh-64px)] ">
+                <div id={"LAYOUT_ID"} className="  mt-10 lg:mt-12 xl:mt-[50px] 2xl:mt-16 h-[calc(100vh-40px)] lg:h-[calc(100vh-48px)] xl:h-[calc(100vh-50px)] 2xl:h-[calc(100vh-64px)] ">
                     <Suspense  fallback={<Loading height={"h-screen"}/>}>
                    <Boards/>
                     </Suspense>
@@ -86,11 +94,11 @@ function Navbar () {
                             let exportation = manager.export()
                             let dataStr = exportation?.result
                             if (!dataStr) return
-                            dataStr = "data:text/json;charset=utf-8,"+encodeURIComponent(dataStr)
+                            dataStr = "data:text/txt;charset=utf-8,"+encodeURIComponent(dataStr)
 
                             const dlAnchorElem = document.createElement("a");
                             dlAnchorElem.setAttribute("href",     dataStr     );
-                            dlAnchorElem.setAttribute("download", `${exportation?.fileName}.json`);
+                            dlAnchorElem.setAttribute("download", `${exportation?.fileName}.glf`);
                             dlAnchorElem.click();
                         } }
                     >Export</span>
@@ -105,7 +113,9 @@ function Navbar () {
                     <span
                         onClick={()=>window.open("/documentation", '_blank')}
                         className="text-white inline-block ml-4 font-bold cursor-pointer truncate">Documentation</span>
-                    <span className="text-white inline-block ml-4 font-bold cursor-pointer truncate">Support</span>
+                    <span
+                        onClick={()=>window.open("https://github.com/djidatechs", '_blank')}
+                        className="text-white inline-block ml-4 font-bold cursor-pointer truncate">Support</span>
                 </div>
             </div>
         </div>

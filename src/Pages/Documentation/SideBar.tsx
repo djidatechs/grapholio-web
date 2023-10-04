@@ -8,9 +8,9 @@ function Sidebar() {
     }
 
     return (
-        <div className={" z-50 tillLg:drawer-side  w-2/3  lg:w-3/12  lg:max-h-[90vh] overflow-y-auto lg:pr-1 lg:scrollbar-thin lg:scrollbar-thumb-accent  lg:sticky lg:top-5 "}>
+        <div className={" z-50 tillLg:drawer-side w-2/3 lg:w-3/12  lg:max-h-[90vh] overflow-y-auto lg:pr-1 lg:scrollbar-thin lg:scrollbar-thumb-accent  lg:sticky lg:top-5 "}>
             <label htmlFor="my-drawer" className="drawer-overlay"></label>
-            <ul className="menu bg-base-100 scrollbar-thin scrollbar-thumb-accent  pt-0  w-2/3 text-white space-y-2 ">
+            <ul className="menu bg-base-100 scrollbar-thin scrollbar-thumb-accent  pt-0   text-white space-y-2 ">
                     <li className="">
                         <h2 onClick={()=>navigate("/documentation")} className="text-accent  md:text-base font-bold mb-2">Introduction</h2>
                     </li>

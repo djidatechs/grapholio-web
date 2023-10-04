@@ -206,9 +206,6 @@ export class VisualGraphsManager {
     }
 
     themeToggle(){
-        console.log("hello")
-        console.log("world")
-        console.log(this.stage)
         const rect = this.stage?.find("Rect").find(rec=>rec.getAttr("theme") === true)
         const newstate = rect?.isVisible() !== undefined && !rect.isVisible()
         if (this.current){
@@ -231,7 +228,6 @@ export class VisualGraphsManager {
 
     saveImage(){
         const irect = this.current?.getClientRect()
-        console.log(irect)
         if (!irect || !irect.width || !irect.height) return
         const gr = new Konva.Group({irect})
         const g = this.current?.children?.map(c=>c.clone() as Konva.Group |Konva.Shape)

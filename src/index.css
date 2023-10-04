@@ -8,3 +8,6 @@
     overflow-x: hidden !important;
 
 }
+.animated {
+    transition: width 0.3s ease  , height 0.3s ease ; /* Add a smooth transition over 0.5 seconds */
+}
