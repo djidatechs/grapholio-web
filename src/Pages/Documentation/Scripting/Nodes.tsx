@@ -87,13 +87,13 @@ export default function NodesScripts (){
             <p>You can use attributes to filter and get the node you are looking for </p>
             <div className="mockup-code">
                     <pre data-prefix=">">
-                         <code>{'let A = get_node( { color:"red", : label : "A"}'})</code>
+                         <code>{'let A = get_node( { color:"red",  label : "A"}'})</code>
                     </pre>
                 <pre data-prefix=">">
                         <code >// A is a node that has the color red and the label A</code>
                     </pre>
                 <pre data-prefix=">">
-                        <code>print (A.color === true && a.label === "A")   // true </code>
+                        <code>print (A.color === "red" && a.label === "A")   // true </code>
                     </pre>
 
             </div>

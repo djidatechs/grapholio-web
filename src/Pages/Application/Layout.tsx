@@ -4,16 +4,17 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {ChangeEvent, lazy, Suspense, useEffect, useRef} from "react";
 import Loading from "../Loading.tsx";
+import {HelpDropDown, HelpModal} from "./Help.tsx";
 const Boards = lazy ( () =>import ("./Boards.tsx"));
 
 export default function AppWrapper () {
+
     useEffect(() => {
         document.title = "Grapholio | App"
         window.onbeforeunload = function(event) {
             event.returnValue= "Are you sure you want to leave this page? Your work will not be saved.";
             return "Are you sure you want to leave this page? Your work will not be saved.";
         };
-
     }, []);
 
     return (
@@ -36,6 +37,7 @@ export default function AppWrapper () {
                 </div>
             </div>
             <ToastContainer/>
+            <HelpModal/>
 
         </GrapholioProvider>
     )
@@ -75,6 +77,7 @@ function Navbar () {
             if ( inputRef.current) inputRef.current.value=""
         };
     };
+
     return (
         <><input type="file" ref={inputRef} onChange={handleChange} className={"appearance-none hidden  "} />
         <div className="fixed text-xs md:text-sm lg:text-base 2xl:text-lg w-full drop-shadow-md  top-0 left-0 right-0 h-10 lg:h-12 xl:h-[50px] 2xl:h-16 bg-green-600 z-50 transition-all ease duration-150 flex">
@@ -116,6 +119,7 @@ function Navbar () {
                     <span
                         onClick={()=>window.open("https://github.com/djidatechs", '_blank')}
                         className="text-white inline-block ml-4 font-bold cursor-pointer truncate">Support</span>
+                    <HelpDropDown/>
                 </div>
             </div>
         </div>

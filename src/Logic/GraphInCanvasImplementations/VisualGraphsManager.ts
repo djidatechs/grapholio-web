@@ -84,22 +84,27 @@ export class VisualGraphsManager {
         this.stage.scaleY(newScale);
         return {x:newScale , y:newScale};
     }
+    //you can abstract other actions in this manner
     forEachVisualNode ({toggleTextVisibility=undefined}:IforEachVisualNode){
-        if (toggleTextVisibility !== undefined)
+        if (toggleTextVisibility !== undefined) {
+            this.current?.setAttr("nodeVisibility" , toggleTextVisibility)
             this.current?.find("Text")
-                .map(textNode =>  (textNode.attrs.id.startsWith(NodeAutoAction))
+                .map(textNode => (textNode.attrs.id.startsWith(NodeAutoAction))
                     ? textNode.visible(toggleTextVisibility)
                     : undefined
                 )
+        }
         this.current?.draw()
     }
     forEachVisualEdge ({toggleWeightTextVisibility=undefined}:IforEachVisualEdge){
-        if (toggleWeightTextVisibility !== undefined)
+        if (toggleWeightTextVisibility !== undefined) {
+            this.current?.setAttr("edgeVisibility" , toggleWeightTextVisibility)
             this.current?.find("Text")
-                .map(textNode =>  (textNode.attrs.id.startsWith(EdgeAutoAction))
+                .map(textNode => (textNode.attrs.id.startsWith(EdgeAutoAction))
                     ? textNode.visible(toggleWeightTextVisibility)
                     : undefined
                 )
+        }
         this.current?.draw()
     }
     updateLabelsSize (newsize : number) {
@@ -118,7 +123,7 @@ export class VisualGraphsManager {
                 circle.width(newsize)
                 circle.height(newsize)
                 const text = this.current?.find("Text").find(text=>text.attrs.id == circle.attrs.id) as Konva.Text
-                text.y(newsize+20)
+                text?.y(newsize+20)
                 circle.getParent().draw();
             }
         })
@@ -204,6 +209,9 @@ export class VisualGraphsManager {
     export () {
         return this.current?.toJSON()
     }
+    theme(){
+        return this.stage?.find("Rect").find(rec=>rec.getAttr("theme") === true)?.isVisible()
+    }
 
     themeToggle(){
         const rect = this.stage?.find("Rect").find(rec=>rec.getAttr("theme") === true)
@@ -212,12 +220,12 @@ export class VisualGraphsManager {
             this.current.find("Text").map(text=> {
                 if (!text.attrs.id.startsWith(EdgeAutoAction)) return
             if  (newstate) {
-                (text as Konva.Text).attrs.fill = "red";
-                (text as Konva.Text).stroke("red")
+                (text as Konva.Text).attrs.fill = "#ff0303";
+                (text as Konva.Text).stroke("#ff0303")
             }
-            if (!newstate) {
-                (text as Konva.Text).attrs.fill = "yellow";
-                (text as Konva.Text).stroke("yellow")
+            else {
+                (text as Konva.Text).attrs.fill = "#ffff00";
+                (text as Konva.Text).stroke("#ffff00")
             }
 
         })

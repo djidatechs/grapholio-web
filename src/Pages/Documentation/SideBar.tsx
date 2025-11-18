@@ -1,4 +1,4 @@
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 function Sidebar() {
 
@@ -165,6 +165,9 @@ function Sidebar() {
                                     className={"font-semibold text-sm lg:text-base"}>Themes</h3></li>
                         </ul>
                     </li>
+                <li className="text-center">
+                    <Link to={"/application"} onClick={()=>navigate("/documentation")} className="text-primary btn w-full rounded-md  md:text-base font-bold mb-2">Go to playground</Link>
+                </li>
 
                 </ul>
         </div>

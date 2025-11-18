@@ -176,12 +176,12 @@ export class GrapholioManager {
     //logic & visual
     const user =  this.blackboard.use()
     if (attr === "weight") {
-        g?.setEdgeAttribute(id,attr,parseInt(value)||1);
-        user?.getEdgeWeight(id).setAttr("text", parseInt(value)||1)
+        g?.setEdgeAttribute(id,attr,isNaN(parseInt(value)) ? 1 : value );
+        user?.getEdgeWeight(id).setAttr("text", isNaN(parseInt(value)) ? 1 : value );
     }
     else if (attr === "text_size") {
-        g?.setEdgeAttribute(id,attr,parseInt(value)||1);
-        user?.getEdgeWeight(id).setAttr("fontSize", parseInt(value)||1)
+        g?.setEdgeAttribute(id,attr,isNaN(parseInt(value)) ? 1 : value );
+        user?.getEdgeWeight(id).setAttr("fontSize", isNaN(parseInt(value)) ? 1 : value );
     }
     else if (attr === "color") {
         value = colorToHex(value)
@@ -202,10 +202,19 @@ export class GrapholioManager {
             g?.setNodeAttribute(node,attr,value)
             this.blackboard.use()?.getNodeText(node)?.setAttr("text", value)
         }
-        if (attr === "x" || attr === "y") {
+        else if (attr === "x" ) {
             value = value||100
             g?.setNodeAttribute(node,attr,value)
-            this.blackboard.use()?.getNode(node)?.getParent()?.setAttr(attr, value)
+            const group = this.blackboard.use()?.getNode(node)?.getParent()
+            if (!group) return
+            this.watch.simulateDragEvent(group, ()=>this.blackboard.use()?.getNode(node)?.getParent()?.x(value))
+        }
+        else if (attr === "y" ){
+            value = value||100
+            g?.setNodeAttribute(node,attr,value)
+            const group = this.blackboard.use()?.getNode(node)?.getParent()
+            if (!group) return
+            this.watch.simulateDragEvent(group, ()=>this.blackboard.use()?.getNode(node)?.getParent()?.y(value))
         }
 
         else if (attr === "color") {
@@ -217,6 +226,7 @@ export class GrapholioManager {
 
         else if (attr === "size" ) {
             g?.setNodeAttribute(node,attr,value);
+
             const circle = this.blackboard.use()?.getNode(node)
             const text =this.blackboard.use()?.getNodeText(node)
             if (!circle || !text) return
@@ -243,6 +253,7 @@ export class GrapholioManager {
             const newX = circleCenterX + _y * Math.cos(angle);
             const newY = circleCenterY + _y * Math.sin(angle);
             this.blackboard.use()?.getNodeText(node)?.setAbsolutePosition({x:newX, y:newY});
+            if (circle?.getParent()) this.watch.simulateDragEvent(circle.getParent(),()=>{})
 
         }
 
@@ -290,6 +301,11 @@ export class GrapholioManager {
         attrs.id = id
         if(! attrs.weight)  attrs.weight = 1
         if( ! attrs?.text_size)  attrs.text_size = DefaultWeightText()
+        const theme = this.blackboard.theme()
+        if(!attrs.color ) attrs.color = theme ? "#000000"  : "#FFFFFF"
+        attrs.__weightTextColor = theme ? "#ff0303"  : "#ffff00"
+
+
         try {
             this.DetailedEdgeAddingCases(g, attrs, id, node1, node2);
         }
@@ -441,12 +457,19 @@ export class GrapholioManager {
     updateLabelsSize(newsize:number){
         //later add the logic part of it (graphology attrs)
         newsize = newsize ||0
+
         this.blackboard.updateLabelsSize(newsize)
     }
     updateNodeSize(newsize:number){
+
         newsize = newsize ||0
         //later add the logic part of it (graphology attrs)
         this.blackboard.updateNodeSize(newsize)
+        this.getCurrentGraph()?.nodes().map((node:string)=>{
+            const circle = this.blackboard.use()?.getNode(node) as Konva.Group | undefined
+            if (circle?.getParent()) this.watch.simulateDragEvent(circle.getParent(),()=>{})
+
+        })
     }
     updateEdgewidth(newwidth:number){
         this.blackboard.updateEdgewidth(newwidth)
@@ -486,7 +509,7 @@ export class GrapholioManager {
         for (let i = 0; i < nodeIds.length; i++) {
             for (let j = 0; j < nodeIds.length; j++) {
                 await new Promise((resolve) => setTimeout(resolve, 0));
-                this.addEdge(nodeIds[i], nodeIds[j], { color: "white" , weight:1 },false);
+                this.addEdge(nodeIds[i], nodeIds[j], {  weight:1 },false);
             }
         }
 
@@ -615,7 +638,7 @@ export class GrapholioManager {
         // Connect each node in group A to each node in group B
         for (const nodeIdA of nodeIdsA) {
             for (const nodeIdB of nodeIdsB) {
-                this.addEdge(nodeIdA, nodeIdB, { color: "white" , weight:1 }, false);
+                this.addEdge(nodeIdA, nodeIdB, {  weight:1 }, false);
                 await new Promise((resolve) => setTimeout(resolve, 0));
             }
         }
@@ -654,7 +677,7 @@ export class GrapholioManager {
 
         // Connect nodes to form the cycle
         for (let i = 0; i < n; i++) {
-            this.addEdge(nodeIds[i], nodeIds[(i + 1) % n], { color: "white" , weight:1 }, false);
+            this.addEdge(nodeIds[i], nodeIds[(i + 1) % n], {  weight:1 }, false);
             await new Promise((resolve) => setTimeout(resolve, 0));
         }
     }
@@ -707,7 +730,7 @@ export class GrapholioManager {
                 nodesPerLevel[currentLevel - 1]++;
 
                 // Connect the new node to its parent
-                this.addEdge(parentNodeId, nodeId, { color: "white" , weight:1 }, false);
+                this.addEdge(parentNodeId, nodeId, {  weight:1 }, false);
             }
 
             await new Promise((resolve) => setTimeout(resolve, 0));

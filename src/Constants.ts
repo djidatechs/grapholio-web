@@ -1,4 +1,5 @@
 import {Icontextual} from "./Pages/Application/BlackBoard/test.Contextual.tsx";
+import {Dispatch, SetStateAction} from "react";
 
 export const AutoAction = "@";
 export const Separator = "/"
@@ -24,6 +25,15 @@ export type Application = {
 export type GivosContext = {
     code : string ,
     write : (code : string)=>void
+}
+export type Helper = {
+    get : HelperValue | undefined,
+    set : Dispatch<SetStateAction<HelperValue | undefined>>
+}
+export type HelperValue = {
+    message? : string | undefined,
+    description : string | undefined,
+    media? : any
 }
 export type BlackBoardMenu = {
     props : Icontextual,
@@ -87,7 +97,7 @@ export const DefaultLabelText=()=> parseInt(localStorage.getItem(AutoAction + Se
 
 export const DefaultWeightText=()=>   parseInt(localStorage.getItem(AutoAction+Separator+"DefaultWeightText") ?? "23")
 export const DefaultNodeSize=()=>   parseInt(localStorage.getItem(AutoAction+Separator+"DefaultNodeSize") ?? "30")
-export const DefaultEdgeStrokeWidth=()=>   parseInt(localStorage.getItem(AutoAction+Separator+"DefaultEdgeStrokeWidth") ?? "03")
+export const DefaultEdgeStrokeWidth=()=>   parseInt(localStorage.getItem(AutoAction+Separator+"DefaultEdgeStrokeWidth") ?? "04")
 
 
 

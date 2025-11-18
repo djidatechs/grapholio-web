@@ -18,7 +18,7 @@ export default function PerformingOperations () {
                     <h2 className={"mt-10 text-2xl text-accent mb-2 font-bold"}>Nodes Operations</h2>
                    <h4 className={"text-xl text-primary"}>Information Table</h4>
                     <p>
-                        Retrieve information about the nodes of the graph
+                        Used to retrieve information about the nodes of the graph, to change directly the label,and to declare a variable that holds the node (by clicking on the node's id)
                     </p>
                     <h4 className={"text-xl text-primary"}>Selected Node Details</h4>
                     <p>
@@ -30,7 +30,7 @@ export default function PerformingOperations () {
                     <h2 className={"mt-10 text-2xl text-accent mb-2 font-bold"}>Edges Operations</h2>
                     <h4 className={"text-xl text-primary"}>Information Table</h4>
                     <p>
-                        Retrieve information about the edges of the graph
+                        Used to retrieve information about the edges of the graph, to change directly the weight, and to declare a variable that holds the edge (by clicking on the edge's id)
                     </p>
                     <h4 className={"text-xl text-primary"}>Selected Edge Details</h4>
                     <p>
@@ -53,7 +53,7 @@ export default function PerformingOperations () {
                     </p>
                 </div>
                 <p className={"pt-12"}>Here is an example of manipulating different operations</p>
-                <video controls muted>
+                <video controls muted preload="auto">
                     <source src={operations} type="video/mp4" />
                     Your browser does not support the video tag.
                 </video>

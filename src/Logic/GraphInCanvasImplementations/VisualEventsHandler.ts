@@ -32,14 +32,14 @@ export class VisualEventsHandler {
             this.isCurving = false;
         })
         stage.on("click",()=>{
-            console.log("click")
+            
                 const textarea = document.getElementById("textareaid")
                 if (!textarea ) return
                 textarea .enterKeyHint = 'enter'
                 const enterEvent = new Event('keydown');
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 //@ts-ignore
-                try {enterEvent.code = 'Enter'} catch {console.log("enter")}
+                try {enterEvent.code = 'Enter'} catch { /* empty */ }
                 textarea.dispatchEvent(enterEvent);
         })
         this.selectInstall(stage);
@@ -62,7 +62,6 @@ export class VisualEventsHandler {
         let x1:any, y1:any, x2:any, y2 : any;
 
         const supprSelectBox = (e: any) =>{
-            console.log(e.code)
             if (e.code === "Delete") {
                 tr.nodes().map(node=> this.managerRef?.removeNode(node.attrs.id) )
             }
@@ -70,7 +69,6 @@ export class VisualEventsHandler {
 
 
         stage.on('mousedown touchstart', (e) => {
-            console.log("I am here")
             document.addEventListener ("keydown", supprSelectBox )
             e.evt.preventDefault();
             const scale=  stage?.scale()?.x || 1
@@ -459,6 +457,25 @@ export class VisualEventsHandler {
         node1.getParent().on("dragmove", ()=>this._updatePoints(node1,node2,Arrow))
         node2.getParent().on("dragmove", ()=>this._updatePoints(node1,node2,Arrow))
     }
+    simulateDragEvent(group : Konva.Node|Konva.Group , call : any){
+        group.fire('dragstart', {
+            type: 'dragstart',
+            target: group
+        });
+
+        try{call()}catch{/*pass*/}
+
+        group.fire('dragmove', {
+            type: 'dragmove',
+            target: group
+        });
+
+        // Simulate dragend event
+        group.fire('dragend', {
+            type: 'dragend',
+            target: group
+        });
+    }
     unwatchEdge(arrow:Konva.Arrow|undefined){
         if (!arrow) return
         const weight = arrow.getLayer()?.find("Text").find(text=>text.attrs.id === arrow.attrs.id) as Konva.Text
@@ -528,7 +545,7 @@ export class VisualEventsHandler {
                 const dy = arrowEnd.y - arrowStart.y;
                 const angle = Math.atan2(dy, dx);
                 const px = S_arrowMiddle.x + 20 * Math.sin(angle);
-                const py = S_arrowMiddle.y - 20 * Math.cos(angle);
+                const py = S_arrowMiddle.y - 30 * Math.cos(angle);
 
 
                 weight.setAttr("x", px)

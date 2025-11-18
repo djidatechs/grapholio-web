@@ -24,6 +24,7 @@ export type EdgeVisualIdentity = {
     color : string,
     weight? : number,
     text_size? : number,
+    __weightTextColor?:string,
 }
 type coords = {
     x: number ,
@@ -75,19 +76,16 @@ export class VisualGraph {
             node1 : node1_?.radius() ,
             node2 : node2_?.radius() ,
         }
-        const rect = this.layer.getStage()?.find("Rect").find(rec=>rec.getAttr("theme") === true)
-        const state = rect?.isVisible() !== undefined && rect.isVisible()
         if (node1_pos == null || node2_pos == null ||!radius.node1 || !radius.node2) return  {Edge:undefined, weight:undefined}
-        const {arrowStart,arrowMiddle,arrowEnd} = MathCalculation_Update2dPointsLink({node1_pos,node2_pos},radius,undefined)
-        if(!edge.color ) edge.color = state ? "#000000"  : "#FFFFFF"
+        const {arrowStart,arrowEnd} = MathCalculation_Update2dPointsLink({node1_pos,node2_pos},radius,undefined)
 
-        const Edge = this._Arrow(edge,arrowStart,arrowMiddle,arrowEnd)
+
+        const Edge = this._Arrow(edge,arrowStart,arrowEnd)
 
         Edge.setAttr("node1",edge.source)
         Edge.setAttr("node2",edge.target)
         this.layer.add(Edge)
 
-        edge.color = state ? "red"  : "yellow"
 
         const weight = this._WeightText(edge,Edge)
         this.layer.add(weight)
@@ -157,7 +155,6 @@ export class VisualGraph {
         if (weight) weight.destroy()
         this.layer.draw()
     }
-    removeEdgesByNodeAdjecency(){}
 
     getEdgeById (edge: string) {
         return  this.layer.find("Arrow").find((arrow) => arrow.attrs.id == edge) as Konva.Arrow
@@ -200,6 +197,7 @@ export class VisualGraph {
             offsetY:0,
             fontSize:size,
             draggable:true,
+            visible : this.layer.getAttr("nodeVisibility") !== false
 
 
         })
@@ -207,9 +205,7 @@ export class VisualGraph {
         text.offsetY(text.height()/2)
         return text;
     }
-    _Arrow(edge:EdgeVisualIdentity,arrowStart:coords,arrowMiddle:coords,arrowEnd:coords){
-        arrowMiddle.x = arrowMiddle.x+1 //meaningless line
-
+    _Arrow(edge:EdgeVisualIdentity,arrowStart:coords,arrowEnd:coords){
         const scale = this.layer?.getStage()?.scale() || {x:1,y:1}
         return  new Konva.Arrow({
             id: edge.id,
@@ -223,8 +219,12 @@ export class VisualGraph {
                 arrowEnd.y / scale.y ,
             ],
             stroke:edge.color,
+
             strokeWidth: DefaultEdgeStrokeWidth(),
             pointerWidth:edge.pointer ? 6 : 0,
+
+
+
         })
 
     }
@@ -246,21 +246,24 @@ export class VisualGraph {
         const  dy = V2dp.node2_pos.y - V2dp.node1_pos.y;
         const  angle = Math.atan2(dy, dx);
         const  px = middlePoints.x + 20 * Math.sin(angle);
-        const  py = middlePoints.y - 20 * Math.cos(angle);
+        const  py = middlePoints.y - 30 * Math.cos(angle);
 
         const text:Konva.Text  = new Konva.Text({
             id:edge.id,
             text:""+(edge.weight||1).toString()+"",
-            fill:edge.color ,
-            stroke:edge.color,
+            fill:edge.__weightTextColor ,
+            stroke:edge.__weightTextColor,
             strokeWidth: 0.5,
             x: px ,
             y: py,
 
             fontSize:edge.text_size,
+            visible : this.layer.getAttr("edgeVisibility") !== false
 
 
         })
+        text.offsetX(text.width()/2)
+        text.offsetY(text.height()/2)
 
         return text;
     }

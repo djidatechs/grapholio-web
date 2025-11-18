@@ -9,7 +9,6 @@ function Landing() {
             const elem = (e.currentTarget as HTMLElement);
             const ow = "80px"
             const oh = "80px"
-
             elem.style.left = "50%" ;
             elem.style.width = window.innerWidth +"px";
             elem.style.height = "12px";
@@ -49,8 +48,8 @@ function Landing() {
     }, []);
 
     return (
-        <div className="h-screen overflow-hidden ">
-            <div className="h-3/6 lg:h-4/6 overflow-hidden relative">
+        <div className="h-screen overflow-auto ">
+            <div className="h-3/6 lg:h-4/6 overflow-auto relative">
                 <span className="animated z-40 w-[62px] h-[62px] bg-slate-300 rounded-full absolute top-2/3 left-[calc(50%-30px)] transform -translate-x-1/2 -translate-y-1/2  animate-slideIn">
                     <span className="hidden z-0  animated_prim text-primary absolute top-1/2 left-0 transform -translate-x-1/2 -translate-y-1/2">
                     <FaCircle className="w-[80px] h-[80px]    text-primary" />
@@ -66,7 +65,7 @@ function Landing() {
             </div>
             <div className={"h-2/6 lg:h-1/6  text-center tillLg:space-y-4 lg:space-x-8 lg:flex flex-wrap justify-center items-center "}>
                 <Link  to={"/application"} className={"opacity-0 transition duration-1000 btn lg:btn-lg btn-outline btn-primary w-[calc(50%+36px)] lg:w-1/4 "}>Playground</Link>
-                <Link  to={"/documentation"} className={"opacity-0 transition duration-1000 btn lg:btn-lg btn-outline btn-secondary w-[calc(50%+36px)] lg:w-1/4 "}>Documentation</Link>
+                <Link  to={"/documentation"} className={"opacity-0 transition duration-1000  btn lg:btn-lg btn-outline btn-secondary w-[calc(50%+36px)] lg:w-1/4 "}>Documentation</Link>
             </div>
             <div className={"h-1/6 w-full text-center  flex-wrap justify-center items-center"}>
                 <a href = "mailto:ji_djida@esi.dz" className={"opacity-0 transition duration-1000 btn lg:btn-lg btn-outline btn-primary w-[calc(50%+36px)]"}>ji_djida@esi.dz</a>

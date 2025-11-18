@@ -46,7 +46,25 @@ export function ToastInfoWithAction(message:string , action? : ()=>any){
         draggable: false,
         progress: undefined,
         theme: "dark",
-        type:"warning",
+        type:"info",
 
     })
 }
+
+export function HelpMessage (component:JSX.Element){
+    toast(component, {
+        position: "top-center",
+        autoClose: false,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "dark",
+        type:"info",
+        icon: false,
+        style: {height:"50vh",width:"500px"}
+
+    })
+}
+

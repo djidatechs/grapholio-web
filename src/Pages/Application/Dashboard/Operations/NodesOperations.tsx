@@ -1,8 +1,9 @@
 import {useGrapholio} from "../../Context.tsx";
 import {BsCircleFill} from "react-icons/bs";
 import Accordion, {IAccorditionOptions} from "./Accordion.tsx";
-import {Accoradations} from "../../../../Constants.ts";
+import {Accoradations, colorToHex, OperationDash} from "../../../../Constants.ts";
 import {memo, useEffect, useState} from "react";
+
 //import {useEffect} from "react";
 
 export function NodeDetails ({title,defaultVisible,accordation}:IAccorditionOptions){
@@ -24,6 +25,10 @@ export function NodeDetails ({title,defaultVisible,accordation}:IAccorditionOpti
             return ""
         }
         return T
+    }
+    const colorTransform = (color: string)=>{
+        if (!color.startsWith("#")) return colorToHex(color)
+        return color
     }
 
     /*
@@ -62,7 +67,7 @@ export function NodeDetails ({title,defaultVisible,accordation}:IAccorditionOpti
                     <span className={"lg:w-24"}>Color</span>
                     <input type="color"
                            onChange={(e)=>manager.updateNodeAttr(nodeVal,"color",e.currentTarget.value)}
-                           value={getPropableNodeAttributes("color")} className="input tillLg:input-sm  input-ghost   p-0  min-w-[30px] w-full ml-auto mr-0" />
+                           value={colorTransform(   getPropableNodeAttributes("color"))} className="input tillLg:input-sm  input-ghost   p-0  min-w-[30px] w-full ml-auto mr-0" />
                 </label>
             </div>
             <div className=" my-2 w-full">
@@ -105,6 +110,14 @@ function InformationTable ({title,defaultVisible,accordation}:IAccorditionOption
                 <tr>
                     <td>Node Id</td>
                     <td>Display Name</td>
+                    {
+                        manager?.getCurrentGraph()?.type !== "undirected" && (
+                            <>
+                            <td>In Degree</td>
+                            <td>out Degree</td>
+                            </>
+                        )
+                    }
                     <td>Degree</td>
                     <td>color</td>
 
@@ -116,8 +129,15 @@ function InformationTable ({title,defaultVisible,accordation}:IAccorditionOption
                     manager.getCurrentGraph()?.nodes().map(node=>{
                         const display = manager.getCurrentGraph()?.getNodeAttribute(node,"label");
                         const degree = manager.getCurrentGraph()?.degree(node) || 0;
+                        const indegree = manager.getCurrentGraph()?.inDegree(node)
+                        const outdegree = manager.getCurrentGraph()?.outDegree(node)
                         const color = manager.getCurrentGraph()?.getNodeAttribute(node,"color");
-                        return  <MemoNodeLine key={node} node={node} color={color} degree={degree} display={display}/>
+                        return  <MemoNodeLine
+                            key={node} node={node}
+                            color={color}
+                            indegree={indegree}
+                            outdegree={outdegree}
+                            degree={degree} display={display}/>
                     })
                 }
                 </tbody>
@@ -126,7 +146,7 @@ function InformationTable ({title,defaultVisible,accordation}:IAccorditionOption
     )
 }
 
-function NodeLine ({node,degree,color,display}:{node:string,degree:number,color:string,display:string}){
+function NodeLine ({node,degree,indegree,outdegree,color,display}:{node:string,degree:number,indegree?:number,outdegree?:number,color:string,display:string}){
     const {grapholioManager:manager} = useGrapholio()
 
     return (
@@ -134,6 +154,11 @@ function NodeLine ({node,degree,color,display}:{node:string,degree:number,color:
             <td className={"font-bold cursor-pointer hover:bg-green-600"}
                 onMouseEnter={()=>manager.HighlightNode(node,{turn:"on"})}
                 onMouseLeave={()=>manager.HighlightNode(node,{turn:"off"})}
+                onClick={()=> {
+                    manager.write(`${manager.graph_script()}\r\nlet node = get_node({id:'${node}'}) //triggerd by click event`)
+                    manager.useOperations()?.operateOn(OperationDash.CODE)
+                    manager.HighlightNode(node,{turn:"off"})
+                }}
             >{node}</td>
             {//<td></td>
             }
@@ -142,6 +167,15 @@ function NodeLine ({node,degree,color,display}:{node:string,degree:number,color:
                 onChange={(e)=>manager.updateNodeAttr(node,"label",e.currentTarget.value)}
                 className={"w-full border-none p-0 m-0"} value={display.toString()}/>
             </td>
+            {
+                manager?.getCurrentGraph()?.type !== "undirected" && (
+                    <>
+                    <td>{indegree }</td>
+                    <td>{outdegree }</td>
+                    </>
+                )
+            }
+
 
             <td>{degree || 0}</td>
             <td><BsCircleFill style={{color:color}} className={"w-5 h-5"} /></td>

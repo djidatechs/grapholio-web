@@ -10,7 +10,7 @@ export default function NavbarOptions () {
                 <div className={" my-3 space-y-3 text-xl "} id={"1"}>
                     <h2 className={"mt-10 text-2xl text-accent mb-2 font-bold"}>Importing Graphs</h2>
                     <p>You can Import previously exported graphs</p>
-                    <video controls muted>
+                    <video controls muted preload="auto">
                         <source src={importmp4} type="video/mp4" />
                         Your browser does not support the video tag.
                     </video>
@@ -24,7 +24,7 @@ export default function NavbarOptions () {
                 <div className={" my-3 space-y-3 text-xl "} id={"3"}>
                     <h2 className={"mt-10 text-2xl text-accent mb-2 font-bold"}>Downloading As An Image</h2>
                     <p>You can download the graph as PNG images</p>
-                    <video controls muted>
+                    <video controls muted preload="auto">
                         <source src={saveasimage} type="video/mp4" />
                         Your browser does not support the video tag.
                     </video>

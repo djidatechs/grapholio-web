@@ -31,7 +31,7 @@ function CodeOperations() {
         }
         const RunGivosCode= ()=> {
             setRunning(true);
-            fetch("https://commonapi.djidax.com/compiler", {
+            fetch("http://localhost:3000/compiler", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -76,7 +76,7 @@ function CodeOperations() {
 
 
 
-            fetch("https://grapholio-web-api.onrender.com/compiler", {
+            fetch("http://localhost:3000/compiler", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -110,7 +110,6 @@ function CodeOperations() {
                         className={"flex-auto h-7 w-7  fill-primary hover:fill-secondary hover:scale-105 transition duration-200 cursor-pointer"}/>
                     <TbCircleLetterL
                         onClick={()=>{
-                            console.log("log show hide")
                             const dis = logContainer.current.style.display
                             container.current.style.height = (dis === "block" ||dis === "") ? "82%" : "44%"
                             const  oh = container.current?.clientHeight ;

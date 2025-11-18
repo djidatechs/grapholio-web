@@ -6,7 +6,8 @@ import {
     BlackBoardMenu,
     GivosContext,
     OperationDash,
-    Operations
+    Operations,
+    Helper, HelperValue
 } from "../../Constants.ts";
 import {Icontextual} from "./BlackBoard/test.Contextual.tsx";
 
@@ -17,7 +18,8 @@ interface GrapholioContextValue {
     application : Application,
     operations : Operations ,
     blackBoardMenu : BlackBoardMenu,
-    givos : GivosContext
+    givos : GivosContext,
+    helper : Helper
 
 }
 
@@ -33,6 +35,7 @@ export default function GrapholioProvider ({ children }:{children:ReactNode})   
     const [visualItem,_setVisualItem] = useState<string|undefined>(undefined);
     const [accordation,setAccordation] = useState<AccordationsOptions>({});
     const [code,setCode] = useState<string>("//code here ...");
+    const [helper,setHelper] = useState<HelperValue|undefined>();
     const value : GrapholioContextValue  = {
         grapholioManager : grapholioManager as GrapholioManager,
         application : {
@@ -55,6 +58,11 @@ export default function GrapholioProvider ({ children }:{children:ReactNode})   
             setVisualItem : (item:string)=>_setVisualItem(item),
             accordation,
             setAccordation,
+        },
+        helper : {
+            get : helper,
+            set : setHelper
+
         },
         blackBoardMenu : {
             props,

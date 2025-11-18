@@ -18,8 +18,8 @@ export default function GettingStarted () {
                         From the landing page you can click on PLAYGROUND <br/>
                         you will be redirected to the web app where you can start creating graphs !
                     </p>
-                    <video controls muted>
-                        <source src={firstlook} type="video/mp4" />
+                    <video controls muted preload="auto">
+                        <source src={firstlook}  type="video/mp4" />
                         Your browser does not support the video tag.
                     </video>
                     <p>
@@ -49,7 +49,7 @@ export default function GettingStarted () {
 
                     </div>
 
-                    <video controls muted>
+                    <video controls muted preload="auto">
                         <source src={firstlookvid} type="video/mp4" />
                         Your browser does not support the video tag.
                     </video>
@@ -69,7 +69,7 @@ export default function GettingStarted () {
                     <p>
                         here is an example :
                     </p>
-                    <video controls muted>
+                    <video controls muted preload="auto">
                         <source src={fastControl} type="video/mp4" />
                         Your browser does not support the video tag.
                     </video>
@@ -83,13 +83,13 @@ export default function GettingStarted () {
                     <div><h2 className={"text-primary  inline font-bold"}>remove Node</h2> <p className={" text-xl  inline "}>Right click and choose remove </p></div>
                     <div><h2 className={"text-primary  inline font-bold"}>Show Nodes Details</h2> <p className={" text-xl  inline "}>Right click and choose Details , this will show you controllable attributes on the dashboard  </p></div>
                     <p>Here is an Example : </p>
-                    <video controls muted>
+                    <video controls muted preload="auto">
                         <source src={selecttool} type="video/mp4" />
                         Your browser does not support the video tag.
                     </video>
                     <div><h2 className={"text-primary  inline font-bold"}>Selection Tool</h2> <p className={" text-xl  inline "}> Put the Mousedown and hover over the elemnts you want to select, a box will be created that you can drag over the canvas   </p></div>
                     <p>Here is an Example : </p>
-                    <video controls muted>
+                    <video controls muted preload="auto">
                         <source src={vnimpel} type="video/mp4" />
                         Your browser does not support the video tag.
                     </video>
@@ -101,7 +101,7 @@ export default function GettingStarted () {
                     <div><h2 className={"text-primary  inline font-bold"}>Un/Directed Edge</h2> <p className={" text-xl  inline "}>Right click and choose Directed ( works in mixed graphs ) </p></div>
                     <div><h2 className={"text-primary  inline font-bold"}>Show Edges Details</h2> <p className={" text-xl  inline "}>Right click and choose Details , this will show you controllable attributes on the dashboard  </p></div>
                     <p>Here is an Example : </p>
-                    <video controls muted>
+                    <video controls muted preload="auto">
                         <source src={vpimpel} type="video/mp4" />
                         Your browser does not support the video tag.
                     </video>

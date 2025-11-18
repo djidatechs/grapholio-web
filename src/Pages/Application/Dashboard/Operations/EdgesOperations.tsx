@@ -1,11 +1,11 @@
-import {Accoradations} from "../../../../Constants.ts";
+import {Accoradations, OperationDash} from "../../../../Constants.ts";
 import {useGrapholio} from "../../Context.tsx";
 import Accordion, {IAccorditionOptions} from "./Accordion.tsx";
 import {memo, useEffect, useState} from "react";
 
 
 
-function EdgeDetails ({title,defaultVisible,accordation}:IAccorditionOptions){
+const  EdgeDetails = memo( ({title,defaultVisible,accordation}:IAccorditionOptions)=>{
     const {grapholioManager:manager,operations} = useGrapholio()
     const [edgeVal,setEdge] = useState<string|undefined>(undefined)
 
@@ -69,7 +69,7 @@ function EdgeDetails ({title,defaultVisible,accordation}:IAccorditionOptions){
 
         </div>
     </div>
-}
+})
 const MemoEdgeLine = memo(EdgeLine)
 
 function InformationTable ({title,defaultVisible}:IAccorditionOptions) {
@@ -123,16 +123,36 @@ function EdgeLine ({edge,node1,node2,node1Display,node2Display,weight,directed}:
             <td className={"font-bold cursor-pointer hover:bg-green-600"}
                 onMouseEnter={()=>manager.HighlightEdge(edge,{turn:"on"})}
                 onMouseLeave={()=>manager.HighlightEdge(edge,{turn:"off"})}
+                onClick={()=> {
+                    manager.write(`${manager.graph_script()}\r\nlet edge = get_edge({id:'${edge}'}) //triggerd by click event`)
+                    manager.useOperations()?.operateOn(OperationDash.CODE)
+                    manager.HighlightEdge(edge,{turn:"off"})
+                }}
             >{edge}</td>
             <td className={"font-bold cursor-pointer hover:bg-green-600"}
                 onMouseEnter={()=>manager.HighlightNode(node1,{turn:"on"})}
                 onMouseLeave={()=>manager.HighlightNode(node1,{turn:"off"})}
+                onClick={()=> {
+                    manager.write(`${manager.graph_script()}\r\nlet node = get_node({id:'${node1}'}) //triggerd by click event`)
+                    manager.useOperations()?.operateOn(OperationDash.CODE)
+                    manager.HighlightNode(node1,{turn:"off"})
+                }}
             >{node1Display} {(node1 != node1Display) && (" id("+node1+")")}</td>
             <td className={"font-bold cursor-pointer hover:bg-green-600"}
                 onMouseEnter={()=>manager.HighlightNode(node2,{turn:"on"})}
                 onMouseLeave={()=>manager.HighlightNode(node2,{turn:"off"})}
+                onClick={()=> {
+                    manager.write(`${manager.graph_script()}\r\nlet node = get_node({id:'${node2}'}) //triggerd by click event`)
+                    manager.useOperations()?.operateOn(OperationDash.CODE)
+                    manager.HighlightNode(node2,{turn:"off"})
+                }}
             >{node2Display} {(node2 != node2Display) && (" id("+node2+")")}</td>
-            <td>{weight === undefined ? "-": weight}</td>
+            <td>
+                <input
+                    type={"number"}
+                    onChange={(e)=>manager.updateEdgeAttr(edge,"weight",e.currentTarget.value)}
+                    className={"w-full border-none p-0 m-0"} value={weight}/>
+            </td>
             <td>{directed ? "yes" : "no"}</td>
         </tr>
     )

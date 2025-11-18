@@ -45,7 +45,7 @@ export default function Scripting () {
                     </Suspense>
                     <h2 className={"mt-10 text-2xl text-accent mb-2 font-bold"}>Importing Graphs</h2>
                     <p>You can Import previously exported graphs</p>
-                    <video controls muted>
+                    <video controls muted preload="auto">
                         <source src={kruskal} type="video/mp4" />
                         Your browser does not support the video tag.
                     </video>
